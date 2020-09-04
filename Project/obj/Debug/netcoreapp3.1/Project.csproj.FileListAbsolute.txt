@@ -1,0 +1,13 @@
+C:\Users\Martin\projects\P3\P3-Projekt\Project\bin\Debug\netcoreapp3.1\Project.exe
+C:\Users\Martin\projects\P3\P3-Projekt\Project\bin\Debug\netcoreapp3.1\Project.deps.json
+C:\Users\Martin\projects\P3\P3-Projekt\Project\bin\Debug\netcoreapp3.1\Project.runtimeconfig.json
+C:\Users\Martin\projects\P3\P3-Projekt\Project\bin\Debug\netcoreapp3.1\Project.runtimeconfig.dev.json
+C:\Users\Martin\projects\P3\P3-Projekt\Project\bin\Debug\netcoreapp3.1\Project.dll
+C:\Users\Martin\projects\P3\P3-Projekt\Project\bin\Debug\netcoreapp3.1\Project.pdb
+C:\Users\Martin\projects\P3\P3-Projekt\Project\obj\Debug\netcoreapp3.1\Project.csprojAssemblyReference.cache
+C:\Users\Martin\projects\P3\P3-Projekt\Project\obj\Debug\netcoreapp3.1\Project.AssemblyInfoInputs.cache
+C:\Users\Martin\projects\P3\P3-Projekt\Project\obj\Debug\netcoreapp3.1\Project.AssemblyInfo.cs
+C:\Users\Martin\projects\P3\P3-Projekt\Project\obj\Debug\netcoreapp3.1\Project.csproj.CoreCompileInputs.cache
+C:\Users\Martin\projects\P3\P3-Projekt\Project\obj\Debug\netcoreapp3.1\Project.dll
+C:\Users\Martin\projects\P3\P3-Projekt\Project\obj\Debug\netcoreapp3.1\Project.pdb
+C:\Users\Martin\projects\P3\P3-Projekt\Project\obj\Debug\netcoreapp3.1\Project.genruntimeconfig.cache
