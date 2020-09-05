@@ -6,6 +6,7 @@ using System;
 
 // ALL THE CODE HERE IS SomeClassTest CODE COMMENTED! IF THE TESTS WONT WORK, JUST SHIFT-CLICK ON THE "VIAL" IN TEST EXPLORER!
 // This is primarily a lookup of how/why the tests are done. In reality, tests shouldn't be commented at all (the Test itself and TestName should be fully explanatory)
+// Official documentation: https://docs.nunit.org/articles/nunit/intro.html
 
 // General Rules:
 // Everything should be fully clear in the Test. Don't use "magical variables" such as "0", give it a name (see Test 1)
@@ -49,8 +50,8 @@ namespace Tests
         public void AddOne_SingleNumber_ReturnsNumberIncrementedByOne_commented(int Arranged, int Expected, string TestName)
         {
             int ArrangedValue = Arranged;
-            int VALUE_NEEDED_FOR_INITIALISATION = 0; // This explicitates what the "0" in FakeSomeClass is used for. In a test, make as much explicit as possible.
-            SomeClass StubObject = FakeSomeClass(VALUE_NEEDED_FOR_INITIALISATION);
+            int INITIAL_SALARY = 0; // This explicitates what the "0" in FakeSomeClass is used for. In a test, make as much explicit as possible.
+            SomeClass StubObject = FakeSomeClass(INITIAL_SALARY);
             int ExpectedValue = Expected;
 
             int ActualValue = StubObject.AddOne(ArrangedValue);
@@ -66,8 +67,8 @@ namespace Tests
         public void IncreaseSalary_SingleNumber_IncreaseInternalSalaryAttribute_commented(int Arranged, int Expected, string TestName)
         {
             int ArrangedValue = Arranged;
-            int INITIAL_SALARY_IS_ZERO = 0;
-            SomeClass MockObject = FakeSomeClass_commented(INITIAL_SALARY_IS_ZERO); // Please see the difference if it is a Stub or Mock object.
+            int INITIAL_SALARY = 0;
+            SomeClass MockObject = FakeSomeClass_commented(INITIAL_SALARY); // Please see the difference if it is a Stub or Mock object.
             int ExpectedValue = Expected;
 
             MockObject.IncreaseSalary(ArrangedValue);
@@ -76,6 +77,21 @@ namespace Tests
                 ExpectedValue == MockObject.Salary, // The assertion
                 TestName // The fail message. Should be given by each TestCase. Will not give the message if an exception is thrown!
             );
+        }
+        [Test]
+        // This tests for throwing an exception. (It could use "TestCase" instead of "Test", but this is just to show that Test works fine))
+        public void IncreaseSalary_NegativeNumber_ShouldThrowException()
+        {
+            int ArrangedValue = -3;
+            int INITIAL_SALARY = 0;
+            SomeClass MockObject = FakeSomeClass(INITIAL_SALARY);
+
+            // throwing an exception with Assert.Throws<NameOfException>() RETURNS that exception, which means it can be used to verify test messages.
+            CustomException exception = Assert.Throws<Project.CustomException>(() => MockObject.IncreaseSalary(ArrangedValue));
+            // An example of this is verifying that the text message is the same as in the Project.SomeClass file.
+            // This is NOT necessarily needed, unless it is a specific requirement that an exception needs to throw some specific values under specific circumstances!
+            Assert.AreEqual(exception.Message, "Salary must not increase by one", "Testing for message in SomeClass.IncreaseSalary when a negative number is given");
+            // These assertions could continue if needed.
         }
     }
 }

@@ -7,8 +7,9 @@ namespace Project
     public class CustomException : Exception
     {
         public CustomException(string message)
+        : base(String.Format(message))
         {
-            // So far, the exception does nothing but throwing the stack.
+            // The base part at line 10 
         }
     }
     public class SomeClass
@@ -25,7 +26,7 @@ namespace Project
         }
         public void IncreaseSalary(decimal increase)
         {
-            if (increase > 0)
+            if (increase >= 0)
             {
                 Salary += increase;
             }

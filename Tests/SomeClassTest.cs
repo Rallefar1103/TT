@@ -20,8 +20,8 @@ namespace Tests
         public void AddOne_SingleNumber_ReturnsNumberIncrementedByOne(int Arranged, int Expected, string TestName)
         {
             int ArrangedValue = Arranged;
-            int VALUE_NEEDED_FOR_INITIALISATION = 0; 
-            SomeClass StubObject = FakeSomeClass(VALUE_NEEDED_FOR_INITIALISATION);
+            int INITIAL_SALARY = 0; 
+            SomeClass StubObject = FakeSomeClass(INITIAL_SALARY);
             int ExpectedValue = Expected;
 
             int ActualValue = StubObject.AddOne(ArrangedValue);
@@ -36,8 +36,8 @@ namespace Tests
         public void IncreaseSalary_SingleNumber_IncreaseInternalSalaryAttribute(int Arranged, int Expected, string TestName)
         {
             int ArrangedValue = Arranged;
-            int INITIAL_SALARY_IS_ZERO = 0;
-            SomeClass MockObject = FakeSomeClass(INITIAL_SALARY_IS_ZERO);
+            int INITIAL_SALARY = 0;
+            SomeClass MockObject = FakeSomeClass(INITIAL_SALARY);
             int ExpectedValue = Expected;
 
             MockObject.IncreaseSalary(ArrangedValue);
@@ -51,13 +51,11 @@ namespace Tests
         public void IncreaseSalary_NegativeNumber_ShouldThrowException()
         {
             int ArrangedValue = -3;
-            int INITIAL_SALARY_IS_ZERO = 0;
-            SomeClass MockObject = FakeSomeClass(INITIAL_SALARY_IS_ZERO);
+            int INITIAL_SALARY = 0;
+            SomeClass MockObject = FakeSomeClass(INITIAL_SALARY);
 
-            Assert.That(
-                () => MockObject.IncreaseSalary(ArrangedValue),
-                Throws.TypeOf<Project.CustomException>()
-            );
+            CustomException exception = Assert.Throws<Project.CustomException>(() => MockObject.IncreaseSalary(ArrangedValue));
+            Assert.AreEqual(exception.Message, "Salary must not increase by one", "Testing for message in SomeClass.IncreaseSalary when a negative number is given");
         }
     }
 }
