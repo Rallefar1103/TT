@@ -1,47 +1,50 @@
-using Microsoft.VisualStudio.TestPlatform.TestHost;
+﻿using Microsoft.VisualStudio.TestPlatform.TestHost;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
-using Project; // Be aware of this import! Project and Tests are NOT the same project, and do not share namespace, which makes it better for compile time.
+using Project; 
+using System;
 
 namespace Tests
 {
-    [TestFixture] // Denotes that SomeClassTest is a test-suite which should be run by Test/Run All Tests.
+    [TestFixture]
     public class SomeClassTest
     {
-        private SomeClass ArrangedObject;
-
-        [SetUp] // This method is called before each [Test] method.
-        public void SetUp()
+        private SomeClass FakeSomeClass(decimal salary)
         {
-            // Should ONLY be used if it enhances clarity. If in doubt, put all test code in the same test method.
-            // IE. The reason this is made here, is because it can be assumed that all tests needs an instance of the SomeClass object.
-            ArrangedObject = new SomeClass();
+            return new SomeClass(salary);
         }
 
-        [TearDown] // This method is called after each [Test] method.
-        public void TearDown()
+        [TestCase(4, 5, "Testing for small number")]
+        [TestCase(-1, 0, "Testing for negative number")]
+        [TestCase(123, 124, "Testing for large number")]
+        public void AddOne_SingleNumber_ReturnsNumberIncrementedByOne(int Arranged, int Expected, string TestName)
         {
-            // Should have the same restrictions as SetUp.
-        }
-     
-        // TestCase takes its parameters and puts them in the Test Methods. 
-        // This means this test is run 3 times with 3 different tests to try different aspects of the same requirement.
-        // See if, and how, you can make the test fail (hint: float, please read line 44!)
-        [TestCase(4,5, "Testing for small number")]
-        [TestCase(-1,0, "Testing for negative number")]
-        [TestCase(123,124, "Testing for large number")]
-        public void Test_SomeClass_Should_Add_One_To_Value(int Arranged, int Expected, string TestName)
-        {
-            // The test is explicit in what requirement it is testing for. (Ie. "To_Value" specifies why the method exists. 
-            // "To Bank Account" "Add_One_Million_To_House_Value", etc. are examples of a test explaining its requirement, so it is easier to understand)
             int ArrangedValue = Arranged;
+            int VALUE_NEEDED_FOR_INITIALISATION = 0; 
+            SomeClass StubObject = FakeSomeClass(VALUE_NEEDED_FOR_INITIALISATION);
             int ExpectedValue = Expected;
 
-            int ActualValue = ArrangedObject.AddOne(ArrangedValue);
-            
+            int ActualValue = StubObject.AddOne(ArrangedValue);
+
             Assert.IsTrue(
-                ExpectedValue == ActualValue, // The assertion
-                TestName // The fail message. Should be given by each TestCase. Will not give the message if an exception is thrown!
+                ExpectedValue == ActualValue,
+                TestName
+            );
+        }
+        [TestCase(4, 4, "Testing for small number")]
+        [TestCase(0, 0, "Testing for zero")]
+        public void IncreaseSalary_SingleNumber_IncreaseInternalSalaryAttribute(int Arranged, int Expected, string TestName)
+        {
+            int ArrangedValue = Arranged;
+            int INITIAL_SALARY_IS_ZERO = 0;
+            SomeClass MockObject = FakeSomeClass(INITIAL_SALARY_IS_ZERO);
+            int ExpectedValue = Expected;
+
+            MockObject.IncreaseSalary(ArrangedValue);
+
+            Assert.IsTrue(
+                ExpectedValue == MockObject.Salary, 
+                TestName 
             );
         }
     }
