@@ -4,6 +4,13 @@ using System.Text;
 
 namespace Project
 {
+    public class CustomException : Exception
+    {
+        public CustomException(string message)
+        {
+            // So far, the exception does nothing but throwing the stack.
+        }
+    }
     public class SomeClass
     {
         public decimal Salary = 0;
@@ -18,7 +25,14 @@ namespace Project
         }
         public void IncreaseSalary(decimal increase)
         {
-            Salary += increase;
+            if (increase > 0)
+            {
+                Salary += increase;
+            }
+            else
+            {
+                throw new CustomException("Salary must not increase by one");
+            }
         }
     }
 }

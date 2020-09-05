@@ -47,5 +47,17 @@ namespace Tests
                 TestName 
             );
         }
+        [Test]
+        public void IncreaseSalary_NegativeNumber_ShouldThrowException()
+        {
+            int ArrangedValue = -3;
+            int INITIAL_SALARY_IS_ZERO = 0;
+            SomeClass MockObject = FakeSomeClass(INITIAL_SALARY_IS_ZERO);
+
+            Assert.That(
+                () => MockObject.IncreaseSalary(ArrangedValue),
+                Throws.TypeOf<Project.CustomException>()
+            );
+        }
     }
 }
