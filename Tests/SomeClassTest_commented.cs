@@ -19,9 +19,15 @@ using System;
 // Use a "seam" which creates a public interface which can manipulate the output so as to make testable code
 // Their example:
 // public interface IDateTimeProvider {    DayOfWeek DayOfWeek();    }                          Creates the interface
-// In production code (logic example): dateTimeProvider.DayOfWeek() == DayOfWeek.Tuesday        Uses the interface in production
+
+// In production code (function def ): public int GetDiscountedPrice(int price, IDateTimeProvider dateTimeProvider) {
+// In production code (logic example): dateTimeProvider.DayOfWeek() == DayOfWeek.Tuesday 
+//  
 // In test code: var dateTimeProviderStub = new Mock<IDateTimeProvider>();                      Creates a Stub object in test
 //               dateTimeProviderStub.Setup(dtp => dtp.DayOfWeek()).Returns(DayOfWeek.Monday);  Overwrites Stub attributes to make it testable
+//    What happens in the last two lines, is that dateTimeProvicerStub becomes a Mocked object (ie. a replica where you can substitute values)
+//    In the last line, that means that IDateTimeProviders (dtp) DayOfWeek method gets overwritten with the static value DayOfWeek.Monday
+//    This way, we make sure that we can test the code, no matter what day it is!
 /*
 namespace Tests
 {
