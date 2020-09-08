@@ -4,7 +4,7 @@ using NUnit.Framework.Internal;
 using Project; 
 using System;
 
-namespace Tests
+namespace Unittests
 {
     [TestFixture]
     public class SomeClassTest
@@ -51,9 +51,9 @@ namespace Tests
         public void IncreaseSalary_NegativeNumber_ShouldThrowException(int Arranged, string Expected, string TestName)
         {
             int ArrangedValue = Arranged;
-            string ExpectedString = Expected;
             int INITIAL_SALARY = 0;
             SomeClass MockObject = FakeSomeClass(INITIAL_SALARY);
+            string ExpectedString = Expected;
 
             CustomException exception = Assert.Throws<Project.CustomException>(() => MockObject.IncreaseSalary(ArrangedValue));
             Assert.AreEqual(exception.Message, ExpectedString, TestName);

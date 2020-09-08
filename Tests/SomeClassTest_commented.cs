@@ -29,7 +29,7 @@ using System;
 //    In the last line, that means that IDateTimeProviders (dtp) DayOfWeek method gets overwritten with the static value DayOfWeek.Monday
 //    This way, we make sure that we can test the code, no matter what day it is!
 /*
-namespace Tests
+namespace Unittests
 {
     // All Tests have the name: "The Class Being Tested"Test. Makes it easier to navigate through.
     [TestFixture] // Denotes that SomeClassTest is a test-suite which should be run by Test/Run All Tests.
