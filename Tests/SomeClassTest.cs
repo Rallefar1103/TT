@@ -47,8 +47,8 @@ namespace Unittests
                 TestName 
             );
         }
-        [TestCase(-3, "Salary must not increase by one", "Testing for message in SomeClass.IncreaseSalary when a negative number is given")]
-        public void IncreaseSalary_NegativeNumber_ShouldThrowException(int Arranged, string Expected, string TestName)
+        [TestCase(1, "Salary must not increase by one", "Testing for errormessage in SomeClass.IncreaseSalary when the parameter is 1")]
+        public void IncreaseSalary_IntOne_ShouldThrowException(int Arranged, string Expected, string TestName)
         {
             int ArrangedValue = Arranged;
             int INITIAL_SALARY = 0;

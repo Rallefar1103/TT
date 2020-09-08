@@ -26,7 +26,7 @@ namespace Project
         }
         public void IncreaseSalary(decimal increase)
         {
-            if (increase >= 0)
+            if (increase != 1)
             {
                 Salary += increase;
             }
