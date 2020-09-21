@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">XamarinAndroidExperiment</string>
+    <string name="action_settings">Settings</string>
+	<string name="example">Enter a word you want in ASCII</string>
+</resources>
