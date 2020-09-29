@@ -1,0 +1,302 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage Title="TestForms1 with ZXing"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+             xmlns:zxcm="clr-namespace:ZXing.Common;assembly=zxing.portable"
+             x:Class="testForms1.MainPage"> 
+    <StackLayout>
+        <!--TITEL PÅ APP-->
+        <Frame
+            BackgroundColor="#2196F3"
+            Padding="24"
+            CornerRadius="0">
+
+            <Label Text="Welcome to Turf Tank registration application"
+                   HorizontalTextAlignment="Center"
+                   TextColor="White"
+                   FontSize="40" />
+        </Frame>
+
+        <!--SELVE APPENS KROP-->
+        <StackLayout
+            Orientation="Horizontal"
+            Spacing="100" >
+
+            <!--DE FORSKELLIGE MENUER-->
+            <ScrollView>
+                <StackLayout>
+                
+                    <Button Text="Register SIMCARD serial number" Clicked="Generate_Barcode" />
+                    <Button Text="Register GPS serial number" />
+                    <Button Text="Register CONTROLLER serial number" />
+                
+                    <Button Text="Register BASE serial number" />
+                    <Button Text="Register ROBOT serial number" />
+                    <Button Text="3" />
+                
+                    <Button Text="1" />
+                    <Button Text="2" />
+                    <Button Text="3" />
+
+                    <Button Text="1" />
+                    <Button Text="2" />
+                    <Button Text="3" />
+                
+                    <Button Text="1" />
+                    <Button Text="2" />
+                    <Button Text="3" />
+                
+                    <Button Text="1" />
+                    <Button Text="2" />
+                    <Button Text="3" />
+                </StackLayout>
+               </ScrollView>
+
+            <!--DETAIL BILLEDET SOM INDEHOLDER CAMERAVIEW, MASKINAFLÆST SN, LISTE MED SCANNEDE SN-->
+            <StackLayout
+                Orientation="Vertical">
+
+                <!--<Frame
+                    BackgroundColor="BlueViolet"
+                    Padding="24"
+                    CornerRadius="0">
+
+                    <Label Text="CAMERA VIEW HERE"
+                       HorizontalTextAlignment="Center"
+                       TextColor="White"
+                       FontSize="20" />
+                </Frame>-->
+
+                <!--<BoxView Color="Azure" />-->
+
+                <!--CAMERAVIEW og MASKINAFLÆST VÆRDI-->
+                <Frame
+                    BackgroundColor="BlueViolet"
+                    HeightRequest="500"
+                    WidthRequest="700" >
+
+                    <StackLayout >
+                        <!--BARCODE VIEW-->
+                           
+                        <StackLayout Orientation="Horizontal"
+                                     VerticalOptions="Center"
+                                     HorizontalOptions="End">
+                            <!--SCANNER VIEW-->
+                            <zxing:ZXingScannerView x:Name="BarcodeScanView"
+                                                    IsVisible="true"
+                                                    BackgroundColor="Red"
+                                                    HeightRequest="200"
+                                                    WidthRequest="200"
+                                                    HorizontalOptions="Center"
+                                                    VerticalOptions="Center"
+                                                    OnScanResult="Handle_OnScanResult"/>
+
+                            <!--<Label Text="[                   ]"
+                                   FontSize="50"
+                                   BackgroundColor="White"
+                                   VerticalOptions="Center"/>-->
+
+                            <zxing:ZXingBarcodeImageView HorizontalOptions="Center"
+                                                         VerticalOptions="Center"
+                                                         x:Name="BarcodeImageView"
+                                                         BarcodeFormat="QR_CODE"
+                                                         IsVisible="true"
+                                                         BarcodeValue="Nu er vi klar, vi glæder os til at programmere den mest fantastiske app til TurfTank">
+                                <zxing:ZXingBarcodeImageView.BarcodeOptions>
+                                    <zxcm:EncodingOptions Width="200" Height="200"/>
+                                </zxing:ZXingBarcodeImageView.BarcodeOptions>
+                            </zxing:ZXingBarcodeImageView>
+
+                        </StackLayout>
+
+                        <StackLayout Orientation="Horizontal"
+                                     VerticalOptions="Center"
+                                     HorizontalOptions="End">
+
+                           
+
+                           
+                         </StackLayout><Label x:Name="Serial"
+                                     BackgroundColor="White"
+                                     HorizontalOptions="CenterAndExpand"
+                                     VerticalOptions="Center"
+                                     FontSize="10"
+                                     Text=""/>
+
+                    </StackLayout>
+                        
+                 <!--LISTE MED SCANNEDE SERIENUMRE-->   
+                </Frame>
+
+                
+                    <ContentView>
+                        <StackLayout Orientation="Horizontal" Spacing="30">
+
+                        
+                            <StackLayout HorizontalOptions="Center">
+                                <!--<Frame
+                                    BackgroundColor="#2196F3"
+                                    Padding="24"
+                                    CornerRadius="0">
+
+                                     <Label Text="Her kommer alle de scannede serienumre til at stå"
+                                            HorizontalTextAlignment="Center"
+                                            TextColor="White"
+                                            FontSize="20" />
+                                </Frame>-->
+                                <Frame BackgroundColor="AliceBlue"><Label Text="SIM"/></Frame>
+                                <!--<ListView x:Name="ScannedSIMView" ItemsSource="{Binding ScannedSIMs}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <ViewCell>
+                                                <Label Text="{Binding SerialNumber}"/>
+                                            </ViewCell>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                    <ListView.ItemsSource>
+                                        <x:Array Type="{x:Type x:String}">
+                                            <x:String>abcd</x:String>
+                                            <x:String>abcd</x:String>
+                                            <x:String>abcd</x:String>
+                                        </x:Array>
+                                    </ListView.ItemsSource>
+
+                                </ListView>-->
+                                <ScrollView>
+                                    <StackLayout>
+                                        <Label Text="SIM: 12345"/>
+                                        <Label Text="SIM: Serial#"/>
+                                        <Label Text="SIM: 12345"/>
+                                        <Label Text="SIM: Serial#"/>
+                                    </StackLayout>
+                                </ScrollView>
+                                
+
+                            </StackLayout>
+                            <StackLayout HorizontalOptions="Center">
+                                <Frame BackgroundColor="AliceBlue"><Label Text="Base"/></Frame>
+
+                                <ScrollView>
+                                    <StackLayout>
+                                        <Label Text="BASE: 12345"/>
+                                        <Label Text="BASE: 23456"/>
+                                        <Label Text="BASE: 34567"/>
+                                    </StackLayout>
+                                </ScrollView>
+                                
+                                
+
+                            </StackLayout>
+                            <StackLayout HorizontalOptions="Center">
+                                <Frame BackgroundColor="AliceBlue"><Label Text="Gps"/></Frame>
+
+                                <ScrollView>
+                                    <StackLayout>
+                                        <StackLayout Orientation="Horizontal"><Label Text="GPS: 12"/><CheckBox HorizontalOptions="End"/></StackLayout>
+                                        <StackLayout Orientation="Horizontal"><Label Text="GPS: 13"/><CheckBox HorizontalOptions="End"/></StackLayout>
+                                        <StackLayout Orientation="Horizontal"><Label Text="GPS: 14"/><CheckBox HorizontalOptions="End"/></StackLayout>
+                                        <StackLayout Orientation="Horizontal"><Label Text="GPS: 17"/><CheckBox HorizontalOptions="End"/></StackLayout>
+                                        <StackLayout Orientation="Horizontal"><Label Text="GPS: 120"/><CheckBox HorizontalOptions="End"/></StackLayout>
+                                        <StackLayout Orientation="Horizontal"><Label Text="GPS: 130"/><CheckBox HorizontalOptions="End"/></StackLayout>
+                                        <StackLayout Orientation="Horizontal"><Label Text="GPS: 140"/><CheckBox HorizontalOptions="End"/></StackLayout>
+                                        <StackLayout Orientation="Horizontal"><Label Text="GPS: 170"/><CheckBox HorizontalOptions="End"/></StackLayout>
+                                        <StackLayout Orientation="Horizontal"><Label Text="GPS: 1200"/><CheckBox HorizontalOptions="End"/></StackLayout>
+                                        <StackLayout Orientation="Horizontal"><Label Text="GPS: 1300"/><CheckBox HorizontalOptions="End"/></StackLayout>
+                                        <StackLayout Orientation="Horizontal"><Label Text="GPS: 1400"/><CheckBox HorizontalOptions="End"/></StackLayout>
+                                        <StackLayout Orientation="Horizontal"><Label Text="GPS: 1700"/><CheckBox HorizontalOptions="End"/></StackLayout>
+                                    </StackLayout>
+                                </ScrollView>
+                                
+
+                            </StackLayout>
+
+                            <StackLayout HorizontalOptions="Center">
+                                <Frame BackgroundColor="AliceBlue"><Label Text="Controller"/></Frame>
+
+                                <ScrollView>
+                                    <StackLayout>
+                                        <StackLayout Orientation="Horizontal"><Label Text="1234"/><CheckBox HorizontalOptions="End"/></StackLayout>
+                                        <StackLayout Orientation="Horizontal"><Label Text="Serial#"/><CheckBox HorizontalOptions="End"/></StackLayout>
+                                        <StackLayout Orientation="Horizontal"><Label Text="1236"/><CheckBox HorizontalOptions="End"/></StackLayout>
+                                        <StackLayout Orientation="Horizontal"><Label Text="Serial#"/><CheckBox HorizontalOptions="End"/></StackLayout>
+                                        <StackLayout Orientation="Horizontal"><Label Text="Serial#"/><CheckBox HorizontalOptions="End"/></StackLayout>
+                                        <StackLayout Orientation="Horizontal"><Label Text="Serial#"/><CheckBox HorizontalOptions="End"/></StackLayout>
+                                        <StackLayout Orientation="Horizontal"><Label Text="Serial#"/><CheckBox HorizontalOptions="End"/></StackLayout>
+                                        <StackLayout Orientation="Horizontal"><Label Text="Serial#"/><CheckBox HorizontalOptions="End"/></StackLayout>
+                                        <StackLayout Orientation="Horizontal"><Label Text="Serial#"/><CheckBox HorizontalOptions="End"/></StackLayout>
+                                        <StackLayout Orientation="Horizontal"><Label Text="Serial#"/><CheckBox HorizontalOptions="End"/></StackLayout>
+
+                                    </StackLayout>
+                                </ScrollView>
+                                
+
+                            </StackLayout>
+
+                             <StackLayout HorizontalOptions="Center">
+                                <Frame BackgroundColor="AliceBlue"><Label Text="Robot"/></Frame>
+
+                                 <ScrollView>
+                                    <StackLayout>
+                                        
+                                        <StackLayout Orientation="Horizontal"><Label Text="Robot: 1"/><CheckBox HorizontalOptions="End"/></StackLayout>
+                                        <StackLayout Orientation="Horizontal"><Label Text="Robot: 12"/><CheckBox HorizontalOptions="End"/></StackLayout>
+                                    </StackLayout>
+                                </ScrollView>
+                                
+                            </StackLayout>
+                            <StackLayout HorizontalOptions="Center">
+                                <Frame BackgroundColor="AliceBlue"><Label Text="Make connection"/></Frame>
+
+                                 <ScrollView>
+                                    <StackLayout>
+                                        <StackLayout Orientation="Horizontal">
+                                            <StackLayout>
+                                                <Label Text="Robot: 1"/>
+                                                <Label Text="GPS: 12"/>
+                                                <Label Text="  SIM: 123"/>
+                                                <Label Text="Controller: 1234"/>
+                                                <Label Text="Base: 10"/>
+                                                <Label Text="SIM: 124"/>
+                                            </StackLayout>
+                                            <CheckBox HorizontalOptions="End" VerticalOptions="Start"/>
+                                        </StackLayout>
+                                        <BoxView Color="AliceBlue"/>
+
+                                        <StackLayout Orientation="Horizontal">
+                                            <StackLayout>
+                                                <Label Text="Robot: 12"/>
+                                                <Label Text="GPS: 13"/>
+                                                <Label Text="  SIM: 133"/>
+                                                <Label Text="Controller: 1236"/>
+                                                <Label Text="Base: 22"/>
+                                                <Label Text="SIM: 134"/>
+                                            </StackLayout>
+                                            <CheckBox HorizontalOptions="End" VerticalOptions="Start"/>
+                                        </StackLayout>
+                                        <BoxView Color="AliceBlue"/>
+                                    </StackLayout>
+                                </ScrollView>
+                                
+                            </StackLayout>
+                         </StackLayout>
+                    </ContentView>
+
+
+            </StackLayout>
+        </StackLayout>
+
+        <!--<Label Text="Start developing now" FontSize="Title" Padding="30,10,30,10" />
+        <Label Text="Make changes to your XAML file and save to see your UI update in the running app with XAML Hot Reload. Give it a try!" FontSize="16" Padding="30,0,30,0" />
+        <Label FontSize="16" Padding="30,24,30,0">
+            <Label.FormattedText>
+                <FormattedString>
+                    <FormattedString.Spans>
+                        <Span Text="Learn more at " />
+                        <Span Text="https://aka.ms/xamarin-quickstart" FontAttributes="Bold" />
+                    </FormattedString.Spans>
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>-->
+    </StackLayout>
+</ContentPage>
