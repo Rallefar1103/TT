@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TurfTankRegistration.Views.StartPage">
+    <ContentView.Content>
+    <StackLayout>
+      <Label Text="Hello TurfTank!" />
+      <Button Text="Sign In" Command=""/>
+    </StackLayout>
+  </ContentView.Content>
+</ContentView>
