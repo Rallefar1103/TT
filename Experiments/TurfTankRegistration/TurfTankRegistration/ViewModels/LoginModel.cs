@@ -18,9 +18,9 @@ namespace TurfTankRegistration.ViewModels
 {
     public class LoginModel : BaseViewModel
     {
-        // Models used in LoginViewModel
-        // The following code breaks the whole program. Can't get models into ViewModels this way.
-        //public ProductionEmployee User = new ProductionEmployee();
+        // Models in LoginViewModel
+        // CANT CREATE MODELS, ie: var User = new ProductionEmployee();
+
         // LoginModel Initializer
         public LoginModel()
         {
@@ -56,7 +56,7 @@ namespace TurfTankRegistration.ViewModels
         public ICommand LoginCommand { get; }
         public void UserLogin()
         {
-            Username = "Login is on the way!";
+            Username = "Login Not Working Yet";
         }
     }
 }
