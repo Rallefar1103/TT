@@ -10,7 +10,7 @@ using Xamarin.Forms.Xaml;
 namespace TurfTankRegistration.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class LoginPage : ContentView
+    public partial class LoginPage : ContentPage
     {
         public LoginPage()
         {

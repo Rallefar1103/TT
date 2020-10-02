@@ -1,12 +1,16 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TurfTankRegistration.ViewModels"
              x:Class="TurfTankRegistration.Views.LoginPage">
-  <ContentView.Content>
-      <StackLayout>
-          <Label Text="This is the Login Form" />
-          <Label Text="Here you should enter Username" />
-          <Label Text="Here you should enter Password" />
-      </StackLayout>
-  </ContentView.Content>
-</ContentView>
+    <ContentPage.BindingContext>
+        <local:LoginModel/>
+    </ContentPage.BindingContext>
+  <ContentPage.Content>
+        <StackLayout Padding="20">
+            <Entry Text="{Binding Username}" Placeholder="Enter username"/>
+            <Entry Text="{Binding displayPassword}" Placeholder="Enter password"/>
+            <Button Text="{Binding ShowOrHide}" Command="{Binding ShowOrHideCommand}"/>
+        </StackLayout>
+  </ContentPage.Content>
+</ContentPage>
