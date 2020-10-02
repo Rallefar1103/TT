@@ -7,6 +7,9 @@ using System.Windows.Input;
 using TurfTankRegistration.Views;
 using Xamarin.Forms;
 using System.Text.RegularExpressions;
+using System.Net;
+using System.IO;
+using System.Threading;
 
 namespace TurfTankRegistration.ViewModels
 {
@@ -22,10 +25,11 @@ namespace TurfTankRegistration.ViewModels
         // LoginModel Initializer
         public LoginModel()
         {
-            ShowOrHideCommand = new Command(() => { ShowOrHidePassword(); });
+            ShowOrHideCommand = new Command(execute: () => { ShowOrHidePassword(); });
+            LoginCommand = new Command(execute: () => { Login(); });
         }
 
-        // Username Business Logic
+        // Username Entry
         private string username = string.Empty;
         public string Username
         {
@@ -41,11 +45,9 @@ namespace TurfTankRegistration.ViewModels
             }
         }
 
-        // Password Business Logic
-        public string ShowOrHide { get; set; } = "Show";
-        public bool HidePassword { get; set; } = true;
+        // Password Entry
+        public string HidePassword { get; set; } = "True";
         private string password = string.Empty;
-        private string displayPassword = string.Empty;
         public string Password
         {
             get => password;
@@ -53,37 +55,49 @@ namespace TurfTankRegistration.ViewModels
             {
                 if (password == value)
                     return;
-                else if (HidePassword == true) // THIS DOESNT WORK YET!
-                {
-                    password = value;
-                    displayPassword = Regex.Replace(password,@"[a-zA-Z0-9]","*");
-                }
-                else if (HidePassword == false)
-                {
-                    password = value;
-                    displayPassword = value;
-                }
                 else
-                    throw new Exception("Setting of password failed, please restart app");
-
-                OnPropertyChanged(nameof(displayPassword));
+                    password = value;
+                
+                OnPropertyChanged(nameof(Password));
             }
         }
         public ICommand ShowOrHideCommand { get; }
-        private bool ShowOrHidePassword()
+        private void ShowOrHidePassword()
         {
-            if (HidePassword == true)
-            {
-                ShowOrHide = "Hide";
-                HidePassword = false;
-            }
-            else
-            {
-                ShowOrHide = "Show";
-                HidePassword = true;
-            }
-            OnPropertyChanged(nameof(ShowOrHide));
-            return HidePassword;
+            HidePassword = HidePassword == "True" ? "False" : "True";
+            OnPropertyChanged(nameof(HidePassword));
         }
-    }
+
+        // Login Button
+        public string RandomData { get; set; } = "Press Login to get some RandomData from the U.S. National Library of Medicine";
+        public ICommand LoginCommand { get; }
+        private void Login()
+        {
+            var rxcui = "198440";
+            var request = System.Net.HttpWebRequest.Create(string.Format(@"https://rxnav.nlm.nih.gov/REST/RxTerms/rxcui/{0}/allinfo", rxcui));
+            request.ContentType = "application/json";
+            request.Method = "GET";
+
+            using (System.Net.HttpWebResponse response = request.GetResponse() as System.Net.HttpWebResponse)
+            {
+                if (response.StatusCode != HttpStatusCode.OK)
+                    Console.Out.WriteLine("Error fetching data. Server returned status code: {0}", response.StatusCode);
+                using (System.IO.StreamReader reader = new StreamReader(response.GetResponseStream()))
+                {
+                    var content = reader.ReadToEnd();
+                    if (string.IsNullOrWhiteSpace(content))
+                    {
+                        Console.Out.WriteLine("Response contained empty body...");
+                    }
+                    else
+                    {
+                        RandomData = content;
+                        OnPropertyChanged(nameof(RandomData));
+                    }
+                }
+            }
+        }
+
+    }   
+        
 }

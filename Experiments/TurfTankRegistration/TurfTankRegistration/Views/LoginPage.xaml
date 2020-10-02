@@ -9,8 +9,10 @@
   <ContentPage.Content>
         <StackLayout Padding="20">
             <Entry Text="{Binding Username}" Placeholder="Enter username"/>
-            <Entry Text="{Binding displayPassword}" Placeholder="Enter password"/>
-            <Button Text="{Binding ShowOrHide}" Command="{Binding ShowOrHideCommand}"/>
+            <Entry IsPassword="{Binding HidePassword}" Text="{Binding Password}" Placeholder="Enter password"/>
+            <Button Text="Toggle Password" Command="{Binding ShowOrHideCommand}"/>
+            <Button Text="Login" Command="{Binding LoginCommand}"/>
+            <Label Text="{Binding RandomData}"/>
         </StackLayout>
   </ContentPage.Content>
 </ContentPage>
