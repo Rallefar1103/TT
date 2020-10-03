@@ -52,11 +52,16 @@ namespace TurfTankRegistration.ViewModels
         }
 
         // Login Button
-        public string RandomData { get; set; } = "Press Login to get some RandomData from the U.S. National Library of Medicine";
+        private string randomdata = "Press login to get the data from a Robot Model";
+        public string RandomData { get => randomdata; set { SetProperty(ref randomdata, value); } }
         public ICommand LoginCommand { get; }
+        public Robot Test1 = new Robot();
         public void UserLogin()
         {
-            Username = "Login Not Working Yet";
+            Test1.SerialNumber = "Robot1 created in class scope";
+            Username = Test1.SerialNumber;
+            Robot Test2 = new Robot();
+            RandomData = Test2.SerialNumber;
         }
     }
 }

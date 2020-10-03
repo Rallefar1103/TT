@@ -11,6 +11,10 @@ namespace TurfTankRegistration.Models
         protected Controller RegisteredController { get; set; }
         protected Rover RegisteredRover { get; set; }
         protected Tablet RegisteredTablet { get; set; }
+        public Robot()
+        {
+            SerialNumber = "Default Robot created in scope of a method";
+        }
         public Robot SaveRobot()
         {
             return this;
