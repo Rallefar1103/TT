@@ -4,12 +4,8 @@ using System.Text;
 
 namespace TurfTankRegistration.Models
 {
-    class StorageEmployee : Employee
+    class StorageEmployee
     {
-        /*
-         A ProductionEmployee uses the program to register SimCards with GPS's and Tablets
-         */
-        // Initializers
-        public StorageEmployee(string username, string password) : base(username, password) { }
+        // pass
     }
 }

@@ -10,6 +10,13 @@ namespace TurfTankRegistration.Models
         public string ICCID { get; set; }
         public Component ComponentType { get; set; }
         public bool Active { get; set; }
+
+        public SimCard()
+        {
+            SerialNumber = "";
+            ICCID = "";
+            Active = false;
+        }
         public void RegisterTo(Component TabletOrGPS)
         {
             

@@ -7,15 +7,18 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace TurfTankRegistration
+namespace TurfTankRegistration.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainPage : ContentPage
+    public partial class SigninPage : ContentPage
     {
-        public MainPage()
+        public SigninPage()
         {
             InitializeComponent();
-            // This is not used
+        }
+        private async void GoToLogin(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new LoginPage());
         }
     }
 }

@@ -8,6 +8,11 @@ namespace TurfTankRegistration.Models
     {
         public string SerialNumber { get; set; }
         protected SimCard RegisteredSimCard { get; set; }
+        public Rover()
+        {
+            SerialNumber = "";
+            RegisteredSimCard = new SimCard();
+        }
         public override void GetSerialNumber()
         {
             

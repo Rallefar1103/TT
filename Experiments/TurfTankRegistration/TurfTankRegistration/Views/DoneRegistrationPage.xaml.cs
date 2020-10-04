@@ -7,15 +7,14 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace TurfTankRegistration
+namespace TurfTankRegistration.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainPage : ContentPage
+    public partial class DoneRegistrationPage : ContentPage
     {
-        public MainPage()
+        public DoneRegistrationPage()
         {
             InitializeComponent();
-            // This is not used
         }
     }
 }

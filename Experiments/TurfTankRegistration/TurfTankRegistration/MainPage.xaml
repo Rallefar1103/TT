@@ -2,13 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TurfTankRegistration.MainPage">
-
-    <StackLayout>
-        <Frame BackgroundColor="#2196F3" Padding="24" CornerRadius="0">
-            <Label Text="TurfTankRegistration" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
-        </Frame>
-        <Button Text="Sign In" Clicked="GoToLogin_OnClicked"/>
-
-    </StackLayout>
-
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="This Page is not used"/>
+        </StackLayout>
+    </ContentPage.Content>
 </ContentPage>

@@ -12,20 +12,17 @@ using System.IO;
 using System.Threading;
 using TurfTankRegistration.Models;
 using System.Security.Cryptography.X509Certificates;
-
+using System.Runtime.InteropServices;
 
 namespace TurfTankRegistration.ViewModels
 {
     public class LoginModel : BaseViewModel
     {
-        // Models in LoginViewModel
-        // CANT CREATE MODELS, ie: var User = new ProductionEmployee();
-
-        // LoginModel Initializer
+         // LoginModel Initializer
         public LoginModel()
         {
             ShowOrHideCommand = new Command(execute: () => { ShowOrHidePassword(); });
-            LoginCommand = new Command(execute: () => { UserLogin(); });
+            LoginCommand = new Command(execute: () => { Login(); });
         }
 
         // Username Entry
@@ -52,16 +49,16 @@ namespace TurfTankRegistration.ViewModels
         }
 
         // Login Button
-        private string randomdata = "Press login to get the data from a Robot Model";
+        private string randomdata = "Login works with any username and password 'Test'";
         public string RandomData { get => randomdata; set { SetProperty(ref randomdata, value); } }
         public ICommand LoginCommand { get; }
-        public Robot Test1 = new Robot();
-        public void UserLogin()
+        public async void Login()
         {
-            Test1.SerialNumber = "Robot1 created in class scope";
-            Username = Test1.SerialNumber;
-            Robot Test2 = new Robot();
-            RandomData = Test2.SerialNumber;
+            ProductionEmployee User = new ProductionEmployee(Username, Password);
+            if (User.LoginVerified() && User.Password == "Test") 
+                await App.Current.MainPage.Navigation.PushAsync(new StartRegistrationPage());
+            else
+                Password = "";
         }
     }
 }

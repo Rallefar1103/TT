@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TurfTankRegistration.ViewModels"
+             x:Class="TurfTankRegistration.Views.RegistrationPage">
+    <ContentPage.BindingContext>
+        <local:RegistrationViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <StackLayout>
+            <Button Text="Register Base" Command="{Binding BaseCommand}"/>
+            <Label Text="{Binding BaseNum}"/>
+            <Button Text="Register Controller" Command="{Binding ControllerCommand}"/>
+            <Label Text="{Binding ControllerNum}"/>
+            <Button Text="Register Rover" Command="{Binding RoverCommand}"/>
+            <Label Text="{Binding RoverNum}"/>
+            <Button Text="Register Tablet" Command="{Binding TabletCommand}"/>
+            <Label Text="{Binding TabletNum}"/>
+            <Button Text="Register Robot" Command="{Binding RobotCommand}"/>
+            <Label Text="{Binding RobotNum}"/>
+            <Button Text="Done Registration" Command="{Binding DoneCommand}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
