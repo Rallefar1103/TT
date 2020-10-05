@@ -36,6 +36,7 @@ namespace testForms1
             Device.BeginInvokeOnMainThread(() =>
             {
                 Serial.Text = result.Text;
+                Console.WriteLine($"QR-detected: {result.Text}");
             });
             BarcodeScanView.IsScanning = true;
         }
