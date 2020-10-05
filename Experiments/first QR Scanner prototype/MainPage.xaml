@@ -102,7 +102,7 @@
                                                          x:Name="BarcodeImageView"
                                                          BarcodeFormat="QR_CODE"
                                                          IsVisible="true"
-                                                         BarcodeValue="Nu er vi klar, vi glæder os til at programmere den mest fantastiske app til TurfTank">
+                                                         BarcodeValue="SSID:TUAP_ROBOT1234;PW:TUPW_ROBOT4321;SERIAL:1234">
                                 <zxing:ZXingBarcodeImageView.BarcodeOptions>
                                     <zxcm:EncodingOptions Width="200" Height="200"/>
                                 </zxing:ZXingBarcodeImageView.BarcodeOptions>
