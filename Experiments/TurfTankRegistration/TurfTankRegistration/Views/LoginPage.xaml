@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TurfTankRegistration.ViewModels"
+             x:Class="TurfTankRegistration.Views.LoginPage">
+    <ContentPage.BindingContext>
+        <local:LoginModel/>
+    </ContentPage.BindingContext>
+  <ContentPage.Content>
+        <StackLayout Padding="20">
+            <Entry Text="{Binding Username}" Placeholder="Enter username"/>
+            <Entry IsPassword="{Binding HidePassword}" Text="{Binding Password}" Placeholder="Enter password"/>
+            <Button Text="Toggle Password" Command="{Binding ShowOrHideCommand}"/>
+            <Button Text="Login" Command="{Binding LoginCommand}"/>
+            <Label Text="{Binding RandomData}"/>
+        </StackLayout>
+  </ContentPage.Content>
+</ContentPage>
