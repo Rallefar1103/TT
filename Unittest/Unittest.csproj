@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{385CB84D-CA50-4B71-B5C6-0D141D4F6B8F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Unittest</RootNamespace>
+    <AssemblyName>Unittest</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="Xamarin.UITest" Version="3.0.5" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TurfTankRegistrationApplication\TurfTankRegistrationApplication.Android\TurfTankRegistrationApplication.Android.csproj">
+      <Project>{96a1a9a2-a5c5-4e50-b933-5140b8f729ba}</Project>
+      <Name>TurfTankRegistrationApplication.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TurfTankRegistrationApplication\TurfTankRegistrationApplication\TurfTankRegistrationApplication.csproj">
+      <Project>{d43fc160-3d2f-47a4-a3f3-69518987b7e4}</Project>
+      <Name>TurfTankRegistrationApplication</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Connection\TestConnection1.cs" />
+    <Compile Include="AppInitializer.cs" />
+    <Compile Include="IntegrationAndroid\TestPage1.cs" />
+    <Compile Include="Model\TestClass1.cs" />
+    <Compile Include="ViewModel\TestViewModel1.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewAndroid\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

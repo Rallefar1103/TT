@@ -12,7 +12,7 @@
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
             <Label Text="The press five calls all layers of the application, try it out!"/>
-            <Label Text="To run the unittests, please go to XXX"/>
+            <Label Text="To run the unittests, please go to Test (between Debug and Tools) -> Test Explorer -> Run All Test (upper left corner)"/>
             <Button Text="PressForFive" Command="{Binding PressForFiveCommand}"/>
             <Label Text="{Binding ShowFive}"/>
         </StackLayout>
