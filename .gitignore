@@ -56,6 +56,7 @@ x64/
 *.pidb
 *.log
 *.scc
+*.vpp
 
 # OS generated files #
 .DS_Store*
