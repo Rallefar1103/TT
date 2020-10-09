@@ -16,7 +16,6 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
     <AndroidUseAapt2>true</AndroidUseAapt2>
@@ -90,7 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TurfTankRegistration\TurfTankRegistration.csproj">
-      <Project>{1A04644E-49AE-4F63-B95E-3CABEC681FE8}</Project>
+      <Project>{0C92093F-74D3-41A4-815B-5A70E0A025A7}</Project>
       <Name>TurfTankRegistration</Name>
     </ProjectReference>
   </ItemGroup>

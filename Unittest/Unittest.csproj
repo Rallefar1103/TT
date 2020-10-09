@@ -33,10 +33,6 @@
     <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TurfTankRegistrationApplication\TurfTankRegistrationApplication.Android\TurfTankRegistrationApplication.Android.csproj">
-      <Project>{96a1a9a2-a5c5-4e50-b933-5140b8f729ba}</Project>
-      <Name>TurfTankRegistrationApplication.Android</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TurfTankRegistrationApplication\TurfTankRegistrationApplication\TurfTankRegistrationApplication.csproj">
       <Project>{d43fc160-3d2f-47a4-a3f3-69518987b7e4}</Project>
       <Name>TurfTankRegistrationApplication</Name>
