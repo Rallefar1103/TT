@@ -1,0 +1,34 @@
+﻿Et overblik over hvad de forskellige lag tester, hvad de Mocker (ud fra mine tanker om det)
+
+View laget        -> Test af udseende på skærmen. Mocker alt funktionalitet væk (kun test af UI)
+ViewModel laget   -> Test af logikken for skærmen. Mocker alle modeller væk (Kun test af business logic)
+Model laget       -> Test af klasserne. Mocker alle Connections væk (Kun test af om modellerne kalder de korrekte metoder)
+Connection laget  -> Test af logikken for interaktionen med Databasen. Mocker alle reele kald til databasen (kun test af interaktion med databasen)
+Integration laget -> Test af hele pakken. Simuler tryk på knap i View til kald til databasen.
+
+Det er en god ide at mocke, da hvis vi ikke mocker (ie. erstatter funktioner), så vil vi komme til at lave en masse database kald i vores 
+
+De forskellige test er lavet ud fra forskellige "mocking" principper:
+
+Connection bruger mock objektet til at kalde funktionen.
+Dette betyder der laves en reel "kopi" af objektet, hvor man så kan overskrive de forskellige funktioner efter behov.
+Dette kræver dog man husker at sætte mock.CallBase til true, og at alle ens metoder er enten public virtual eller protected virtual
+
+Model injecter et mock objekt ind for at overskrive nogle funktionaliteter.
+Dette betyder at den API som model normalt opretter, bliver overskrevet af en "fake" mock, som minder om en Connection1, men som får overskrevet metoder.
+Problemet med denne er, at der så skal laves en unik Constructor til testene. Dette kan evt. blive et mindre problem hvis den blot expander en Initializer metode.
+
+ViewModel tager de forskellige commands og mocker de classes der er brugt ud.
+Dette gør at mock objektet "injectes" ind i de enkelte metoder, og reducere behovet for en ekstra constructor.
+Dette minder meget om den før, blot at her kan man ikke teste den initial state af et objekt når det laves 
+(da det kræver injection ind i constructoren, hvorimod dette kun injecter ind i de enkelte funktioner)
+
+ViewAndroid og IntegrationAndroid skal forestille at være en "live" brug af programmet i en android applikation.
+ViewAndroid mocker alt med viewmodel ud (den tjekker så at sige "kun" om knapperne er som de skal være), mens
+IntegrationAndroid laver et fuldt kald hele vejen gennem systemet, for at se om det hele passer sammen.
+
+Jeg har forsøgt at give forskellige bud, samtidigt med at jeg mener de forskellige bud passer bedst til deres kontekst.
+(Ie. connection laget er altsammen "virtual" som det øverste lag. Models bruger ofte initializers (structure), mens
+ViewModels mere er bestemt af commands (behaviour), og View/Integration er fokuseret på hvad brugeren kan gøre)
+
+Det skal dog selvf. diskuteres (+ dette også er super, mega, overdrevent, test nørdet. Men jeg tror det kan noget!)

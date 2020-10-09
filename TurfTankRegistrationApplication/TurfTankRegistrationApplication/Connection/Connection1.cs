@@ -4,11 +4,32 @@ using System.Text;
 
 namespace TurfTankRegistrationApplication.Connection
 {
-    public class Connection1
+    public interface IConnectable
     {
-        public int GetFiveFromData()
+        int MakeAnAPICall();
+    }
+    public class Connection1 : IConnectable
+    {
+        public Connection1()
         {
-            return 5;
+            
+        }
+        protected virtual void Close() // Simulates closing the connection
+        {
+            // Me Am Close
+        }
+
+        public virtual int MakeAnAPICall() // Handles the logic regarding HOW to access the database
+        {
+            string options = "Some options needed to satisfy the database access";
+            int data = ResponseFromDB(options);
+            this.Close();
+            return data;
+        }
+        public virtual int ResponseFromDB(string options) // Simulates the actual response from the database. Would probably be an http call or something
+        {
+            return 3; // Something wrong with the DB! Returns wrong value! 
+            // This is just made to show how all the mocked tests pass, while integration fails ;)
         }
     }
 }

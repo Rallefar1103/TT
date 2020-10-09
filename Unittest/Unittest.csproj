@@ -43,10 +43,12 @@
     <Compile Include="AppInitializer.cs" />
     <Compile Include="IntegrationAndroid\TestPage1.cs" />
     <Compile Include="Model\TestClass1.cs" />
+    <Compile Include="ViewAndroid\TestView1.cs" />
     <Compile Include="ViewModel\TestViewModel1.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="ViewAndroid\" />
+    <Content Include="Overblik.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

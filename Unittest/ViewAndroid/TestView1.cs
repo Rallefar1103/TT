@@ -9,15 +9,17 @@ using System.Threading.Tasks;
 using Xamarin.UITest;
 using Xamarin.UITest.Queries;
 
-namespace Unittest.IntegrationAndroid
+using TurfTankRegistrationApplication.ViewModel;
+
+namespace Unittest.ViewAndroid
 {
     [TestFixture(Platform.Android)]
-    public class TestPage1
+    public class TestView1
     {
         IApp app;
         Platform platform;
 
-        public TestPage1(Platform platform)
+        public TestView1(Platform platform)
         {
             this.platform = platform;
         }
@@ -32,8 +34,9 @@ namespace Unittest.IntegrationAndroid
         public void TestPressForFiveButton_PressButton_ShouldCreateAFiveString()
         {
             // Arrange
-            AppResult[] before_results = app.Query(c => c.Marked("ShowFiveLabel"));
             app.Screenshot("Before Tap");
+            AppResult[] before_results = app.Query(c => c.Marked("ShowFiveLabel"));
+            // In some way, if we even want/need it, the ViewModel Command should be mocked out to return the value we want.
 
             // Act
             app.Tap(c => c.Button("PressForFive"));
@@ -42,7 +45,7 @@ namespace Unittest.IntegrationAndroid
 
             //Assert
             Assert.IsTrue(before_results != after_results);
-            Assert.AreEqual("5", after_results[0].Text);
+            Assert.AreEqual("3", after_results[0].Text); // Here I am cheating and providing the right, wrong value ;-)
         }
     }
 }
