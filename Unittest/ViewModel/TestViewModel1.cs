@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using Moq;
+using NUnit.Framework;
+using NUnit.Framework.Constraints;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,10 +16,18 @@ namespace Unittest.ViewModel
     [TestFixture]
     public class TestViewModel1
     {
-        [TestCase(5, "Testing that the command is properly executed.")]
-        public void TestMethod(int Expected, string TestDesc)
+        [TestCase(8, "8", "Testing that the command is properly executed.")]
+        public void TestPressForFiveCommand_FiveVarAttribute_ShouldBeSetToShowFiveAsString(int Arranged, string Expected, string TestDesc)
         {
-            Assert.AreEqual(1, 0, "Not implemented yet");
+            Mock<Class1> mock = new Mock<Class1>();
+            mock.Object.FiveVar = Arranged;
+            ViewModel1 vm = new ViewModel1();
+            vm.AFiveObject = mock.Object;
+
+            vm.PressForFiveCommand.Execute(mock.Object);
+            string Actual = vm.ShowFive;
+
+            Assert.AreEqual(Expected, Actual, TestDesc);
         }
     }
 }

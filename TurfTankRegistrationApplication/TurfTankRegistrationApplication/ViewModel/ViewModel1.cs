@@ -5,23 +5,24 @@ using System.Windows.Input;
 using TurfTankRegistrationApplication.ViewModel;
 using TurfTankRegistrationApplication.Model;
 using Xamarin.Forms;
+using System.Security.Cryptography.X509Certificates;
 
 namespace TurfTankRegistrationApplication.ViewModel
 {
     public class ViewModel1 : BaseViewModel
     {
-        public ViewModel1()
+        public Class1 AFiveObject { get; set; }
+        public ViewModel1() // "Normal" constructor
         {
-            PressForFiveCommand = new Command(execute: () => PressForFive());
+            AFiveObject = new Class1();
+            PressForFiveCommand = new Command(execute: () => PressForFive(AFiveObject)); // Delegates the handling of the command to a method
         }
         public ICommand PressForFiveCommand { get; }
         private string showfive = "No Five";
         public string ShowFive { get => showfive; set { SetProperty(ref showfive, value); } }
-        public int PressForFive()
+        public void PressForFive(Class1 fiveobject) // Handles the logic of what should happen when a button is pressed
         {
-            Class1 FiveObject = new Class1();
-            ShowFive = $"{FiveObject.FiveVar}";
-            return FiveObject.FiveVar;
+            ShowFive = $"{fiveobject.FiveVar}";
         }
     }
 }
