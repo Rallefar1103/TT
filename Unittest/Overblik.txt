@@ -33,5 +33,5 @@ ViewModels mere er bestemt af commands (behaviour), og View/Integration er fokus
 
 Det skal dog selvf. diskuteres (+ dette også er super, mega, overdrevent, test nørdet. Men jeg tror det kan noget!)
 
-Et forslag kunne være at lave en ny mappe med IntegrationsTests (Som inddeles i Android og IOS) og så fjerne ViewAndroid og IntegrationAndroid.
+Et forslag kunne være at lave en ny mappe med IntegrationsTests (Som inddeles i Android og IOS) og så fjerne ViewAndroid og IntegrationAndroid fra Unittest.
 Disse kan så puttes ind i et github workflow hvor de hurtige unittests kan testes, mens de langsomme og omstændige integration tests kan klares manuelt ;)
