@@ -6,7 +6,7 @@ on:
 
 # This is the description of the different "Jobs" which will be done (ie. The "main" application, Android and Unittest, where IOS can be added later)
 jobs:
-  Practice:
+  Workflow Practice:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v1
