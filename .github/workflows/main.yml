@@ -18,7 +18,7 @@ jobs:
           ls
           
   Android:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - name: Try Build Android Application
