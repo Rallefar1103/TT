@@ -2,7 +2,6 @@ name: Continous Integration for building and unittesting TurfTankRegistrationApp
 
 # This action will activate at each pull request
 on:
-  push:
   pull_request:
 
 # This is the description of the different "Jobs" which will be done (ie. The "main" application, Android and Unittest, where IOS can be added later)
