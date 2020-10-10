@@ -1,6 +1,6 @@
 name: Continous Integration for building and unittesting TurfTankRegistrationApplication
 
-# This action will activate at each push or pull request
+# This action will activate at each pull request
 on:
   pull_request:
 
