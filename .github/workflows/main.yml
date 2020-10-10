@@ -1,0 +1,29 @@
+name: Continous Integration for building and unittesting TurfTankRegistrationApplication
+
+# This action will activate at each push or pull request
+on:
+  push:
+  pull_request:
+
+# This is the description of the different "Jobs" which will be done (ie. The "main" application, Android and Unittest, where IOS can be added later)
+jobs:
+  Practice:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run a one-line script
+        run: echo Hello World!
+      - name: Show the working directory
+        run: |
+          ls
+          
+  Android:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Try Build Android Application
+        run: |
+          cd TurfTankRegistrationApplication
+          nuget restore
+          cd TurfTankRegistrationApplication.Android
+          msbuild TurfTankRegistrationApplication.Android.csproj /verbosity:normal /t:Rebuild /p:Configuration=Debug
