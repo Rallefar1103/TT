@@ -70,7 +70,7 @@
 			</ProjectUserPermission>
 			<ProjectInfo projectDescription="&lt;html&gt;&#13;&#10;  &lt;head&gt;&#13;&#10;    &lt;style type=&quot;text/css&quot;&gt;&#10;      &lt;!--&#10;        body { color: #000000; font-family: Dialog; font-size: 12px }&#10;      --&gt;&#10;    &lt;/style&gt;&#13;&#10;    &#13;&#10;  &lt;/head&gt;&#13;&#10;  &lt;body&gt;&#13;&#10;  &lt;/body&gt;&#13;&#10;&lt;/html&gt;&#13;&#10;" projectDisplayName="TurfTankRegistrationApplication" projectId="08f44K6GAqBwAQpK" projectIntId="1" projectName="TurfTankRegistrationApplication" version="2"/>
 		</Project>
-		<Project checkedOut="true" dateTime="1602230967482" filePath="projects/Complete physical workflow/Complete physical workflow.vpp" lastLocalStatus="0" lastLocalStatusProjectModifiedDate="-1" lastServerRevision="1" name="Complete physical workflow" origVppMd5="059e601b8cea8ef55941ae9513a008ef" revision="1" workingCopyName="Complete physical workflow">
+		<Project checkedOut="true" dateTime="1602506243216" filePath="projects/Complete physical workflow/Complete physical workflow.vpp" lastLocalStatus="2" lastLocalStatusProjectModifiedDate="1602514637916" lastServerRevision="2" name="Complete physical workflow" origVppMd5="190e4b8de1e8447fdf5aef173a10845f" revision="2" workingCopyName="Complete physical workflow">
 			<Repository encrypted_password="DXigXKBQYKPMS4UaI3h/NA==" ldapSAMAccountName="" paletteTooltipLastModified="0" path="/vpteamwork/VPTeamworkServer" portNumber="" protocol="vponline://" proxyHost="" proxyPort="0" serverHost="imfnfayi" twFileFeatureSupport="true" useProxy="false" userDisplayName="Jakob Skov S\u00f8ndergaard" userName="jsonde18@student.aau.dk">
 				<ClientPermission allow="false" name="allowAccessLockedContent"/>
 				<ClientPermission allow="true" name="manageReferenceProject"/>
@@ -92,7 +92,28 @@
 				<ClientPermission allow="true" name="deleteBranch"/>
 				<Checksum value="2f4ddee4c3ca0ee51b5d0092637f3e18"/>
 			</Repository>
-			<ProjectInfo projectDescription="&lt;html&gt;&#10;  &lt;head&gt;&#10;    &lt;style type=&quot;text/css&quot;&gt;&#10;      &lt;!--&#10;        body { color: #000000; font-family: Dialog; font-size: 12px }&#10;      --&gt;&#10;    &lt;/style&gt;&#10;    &#10;  &lt;/head&gt;&#10;  &lt;body&gt;&#10;    &lt;p&gt;&#10;      En beskrivelse af nuv&amp;#230;rende workflow, hvad kommer hvorn&amp;#229;r i processen og &#10;      hvordan udf&amp;#248;res det?&#10;    &lt;/p&gt;&#10;  &lt;/body&gt;&#10;&lt;/html&gt;&#10;" projectDisplayName="Complete physical workflow" projectId="baoWMK6GAqACxRyU" projectIntId="2" projectName="Complete physical workflow" version="1"/>
+			<ProjectUserPermission>
+				<ClientPermission allow="false" name="allowAccessLockedContent"/>
+				<ClientPermission allow="false" name="manageReferenceProject"/>
+				<ClientPermission allow="false" name="changeProjectOptions"/>
+				<ClientPermission allow="false" name="configProjectStereotype"/>
+				<ClientPermission allow="false" name="configDefaultTaggedValues"/>
+				<ClientPermission allow="false" name="configRequirements"/>
+				<ClientPermission allow="false" name="configProjectManagementLookups"/>
+				<ClientPermission allow="false" name="configViewpoints"/>
+				<ClientPermission allow="false" name="configBusinessRuleKeywords"/>
+				<ClientPermission allow="false" name="configUxStatus"/>
+				<ClientPermission allow="false" name="designPattern"/>
+				<ClientPermission allow="false" name="changeDocTemplate"/>
+				<ClientPermission allow="false" name="configAutoMirrorModelElement"/>
+				<ClientPermission allow="false" name="customProcessCanvas"/>
+				<ClientPermission allow="false" name="createTag"/>
+				<ClientPermission allow="false" name="createBranch"/>
+				<ClientPermission allow="false" name="mergeBranch"/>
+				<ClientPermission allow="false" name="deleteBranch"/>
+				<Checksum value="80bfe1f391bc9a5b5e09073851cd54e4"/>
+			</ProjectUserPermission>
+			<ProjectInfo projectDescription="&lt;html&gt;&#10;  &lt;head&gt;&#10;    &lt;style type=&quot;text/css&quot;&gt;&#10;      &lt;!--&#10;        body { color: #000000; font-family: Dialog; font-size: 12px }&#10;      --&gt;&#10;    &lt;/style&gt;&#10;    &#10;  &lt;/head&gt;&#10;  &lt;body&gt;&#10;    &lt;p&gt;&#10;      En beskrivelse af nuv&amp;#230;rende workflow, hvad kommer hvorn&amp;#229;r i processen og &#10;      hvordan udf&amp;#248;res det?&#10;    &lt;/p&gt;&#10;  &lt;/body&gt;&#10;&lt;/html&gt;&#10;" projectDisplayName="Complete physical workflow" projectId="baoWMK6GAqACxRyU" projectIntId="2" projectName="Complete physical workflow" version="2"/>
 		</Project>
 	</Projects>
 </VptsInfio>

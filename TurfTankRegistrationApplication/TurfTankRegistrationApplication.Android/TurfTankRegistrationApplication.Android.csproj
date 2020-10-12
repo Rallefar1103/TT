@@ -92,7 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TurfTankRegistrationApplication\TurfTankRegistrationApplication.csproj">
-      <Project>{F3C80810-D444-48C8-B02C-B67377E696D5}</Project>
+      <Project>{D43FC160-3D2F-47A4-A3F3-69518987B7E4}</Project>
       <Name>TurfTankRegistrationApplication</Name>
     </ProjectReference>
   </ItemGroup>
