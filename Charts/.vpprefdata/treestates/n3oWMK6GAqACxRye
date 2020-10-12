@@ -2,7 +2,11 @@
 <ProjectTreeState projectID="4EXe4K6GAqACxQ3U" projectPath="/Users/saxjax/developer/SW3/Charts/teamwork_client/projects/Complete physical workflow/Complete physical workflow.vpp">
 	<TreeState name="TWFileTree" viewX="0" viewY="0"/>
 	<TreeState name="ModelRepository" viewX="0" viewY="0"/>
-	<TreeState name="DiagramNavigator" viewX="0" viewY="0"/>
+	<TreeState name="DiagramNavigator" viewX="0" viewY="0">
+		<ExpandedPath>DiagramNavigator</ExpandedPath>
+		<ExpandedPath>DiagramNavigator,Requirements Capturing</ExpandedPath>
+		<SelectedPath>RequirementDiagram</SelectedPath>
+	</TreeState>
 	<TreeState name="ClassBrowser" viewX="0" viewY="0"/>
 	<TreeState name="LogicalView" viewX="0" viewY="0"/>
 	<TreeState name="DiagramBacklog" viewX="0" viewY="0"/>
