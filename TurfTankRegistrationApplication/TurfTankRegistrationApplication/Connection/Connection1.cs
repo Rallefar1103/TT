@@ -4,11 +4,11 @@ using System.Text;
 
 namespace TurfTankRegistrationApplication.Connection
 {
-    public interface IConnectable
+    public interface IConnection1
     {
         int MakeAnAPICall();
     }
-    public class Connection1 : IConnectable
+    public class Connection1 : IConnection1
     {
         public Connection1()
         {

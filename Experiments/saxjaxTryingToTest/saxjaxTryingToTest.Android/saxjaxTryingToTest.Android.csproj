@@ -1,14 +1,14 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{96A1A9A2-A5C5-4E50-B933-5140B8F729BA}</ProjectGuid>
+    <ProjectGuid>{D3114D02-2D53-42AF-B6E7-A92ED3A59E59}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TemplateGuid>{c9e5eea5-ca05-42a1-839b-61506e0a37df}</TemplateGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>TurfTankRegistrationApplication.Droid</RootNamespace>
-    <AssemblyName>TurfTankRegistrationApplication.Android</AssemblyName>
+    <RootNamespace>saxjaxTryingToTest.Droid</RootNamespace>
+    <AssemblyName>saxjaxTryingToTest.Android</AssemblyName>
     <Deterministic>True</Deterministic>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
@@ -53,8 +53,14 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1560" />
+    <PackageReference Include="Xamarin.Forms" Version="4.6.0.1141" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
+    <PackageReference Include="Moq">
+      <Version>4.14.7</Version>
+    </PackageReference>
+    <PackageReference Include="NSubstitute">
+      <Version>4.2.2</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -88,10 +94,10 @@
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TurfTankRegistrationApplication\TurfTankRegistrationApplication.csproj">
-      <Project>{D43FC160-3D2F-47A4-A3F3-69518987B7E4}</Project>
-      <Name>TurfTankRegistrationApplication</Name>
+    <ProjectReference Include="..\saxjaxTryingToTest\saxjaxTryingToTest.csproj">
+      <Project>{3CFEF7CB-572C-416B-889A-5E97E34BF14C}</Project>
+      <Name>saxjaxTryingToTest</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+ <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>
