@@ -18,6 +18,15 @@ namespace TestUnit
     [TestFixture]
     public class TestClass1
     {
+        [Test]
+        public void SomeTest(){
+            Assert.AreEqual(1,1);
+        }
+    }
+    /*
+    [TestFixture]
+    public class TestClass1
+    {
         [TestCase(5, "Testing for running the test without a parameter")]
         public void TestInitializationOfClass_NoParams_MustCreateDefaultFiveValue(int ExpectedValue, string TestDesc)
         {
@@ -31,4 +40,6 @@ namespace TestUnit
             Assert.AreEqual(ExpectedValue, Actual, TestDesc);
         }
     }
+    */
 }
+
