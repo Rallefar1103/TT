@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:TurfTankRegistrationApplication.ViewModel"
              x:Class="TurfTankRegistrationApplication.View.Page1">
-    <!--<ContentPage.BindingContext>
+    <ContentPage.BindingContext>
         <local:ViewModel1/>
-    </ContentPage.BindingContext>-->
+    </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Welcome to Turf Tank Registration Application!"
