@@ -4,6 +4,15 @@
 *.bak_000f
 *.lck
 
+#The output from the automated unittests
+CHANGES.txt
+TestResult.xml
+
+# Very anoying syntax to make our files necesarry for test available
+!NUnitConsole/bin/
+NUnitConsole/bin/*
+!NUnitConsole/bin/net20/
+
 #Plagierede ignore file ----------------------------------------------------------------------------------
 
 # User-specific files
@@ -219,4 +228,6 @@ project.lock.json
 *.feature.cs
 *.feature.xlsx.*
 *.Specs_*.html
+
+
 

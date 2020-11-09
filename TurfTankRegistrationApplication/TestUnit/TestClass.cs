@@ -22,7 +22,13 @@ namespace TestUnit
         public void SomeTest(){
             Assert.AreEqual(1,1);
         }
+        [Test]
+        public void SomeOtherTest()
+        {
+            Assert.AreEqual(1, 1);
+        }
     }
+
     /*
     [TestFixture]
     public class TestClass1

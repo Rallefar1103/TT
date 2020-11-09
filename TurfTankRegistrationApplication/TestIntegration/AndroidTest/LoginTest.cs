@@ -7,19 +7,16 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.UITest;
 using Xamarin.UITest.Queries;
-using NSubstitute;
 
-using TurfTankRegistrationApplication.Model;
-
-namespace TestIntegration
+namespace TestIntegration.AndroidTest
 {
     [TestFixture(Platform.Android)]
-    public class TestPage1
+    public class LoginTest
     {
         IApp app;
         Platform platform;
 
-        public TestPage1(Platform platform)
+        public LoginTest(Platform platform)
         {
             this.platform = platform;
         }
@@ -27,19 +24,14 @@ namespace TestIntegration
         [SetUp]
         public void BeforeEachTest() // Makes it so that an emulator is initialised at the beginning of each test.
         {
-            
             app = AppInitializer.StartApp(platform);
         }
 
-        [Test]
+        [TestCase()]
         public void TestPressForFiveButton_PressButton_ShouldCreateAFiveString()
         {
-            // Mock
-            var mockUser = Substitute.For<IEmployee>();
-            mockUser.Username.Returns("5");
-
             // Arrange
-            AppResult[] before_results = app.Query(c => c.Marked("ShowFiveLabel"));
+            AppResult[] before_results = app.Query(c => c.Marked("???"));
             app.Screenshot("Before Tap");
 
             // Act

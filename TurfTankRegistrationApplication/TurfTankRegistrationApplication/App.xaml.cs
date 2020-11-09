@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 using TurfTankRegistrationApplication.View;
+using TurfTankRegistrationApplication.Model;
 
 namespace TurfTankRegistrationApplication
 {

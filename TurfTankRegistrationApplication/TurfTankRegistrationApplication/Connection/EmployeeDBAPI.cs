@@ -8,19 +8,19 @@ using TurfTankRegistrationApplication.Model;
 
 namespace TurfTankRegistrationApplication.Connection
 {
-    interface IEmployeeDBAPI
+    public interface IEmployeeDBAPI : IDBAPI<Employee>
     {
-        // pass
+        bool Authorize(Employee user);
     }
-    class EmployeeDBAPI : DBAPI<Employee>, IEmployeeDBAPI
+    public class EmployeeDBAPI : DBAPI<Employee>, IEmployeeDBAPI
     {
         public EmployeeDBAPI()
         {
             // pass
         }
-        public override Employee Get(Employee employee)
+
+        public bool Authorize(Employee user)
         {
-            // Call to base
             throw new NotImplementedException();
         }
     }

@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace TurfTankRegistrationApplication.ViewModel
 {
-    /// <summary>
-    ///     Implementation of INotifyPropertyChanged so all ViewModels have access to the functionality.
-    /// </summary>
     public abstract class BaseViewModel : INotifyPropertyChanged
     {
+        #region INotifyPropertyChanged
         /// <summary>
         ///     "Multicast event for property change notifications." - https://www.danrigby.com/2015/09/12/inotifypropertychanged-the-net-4-6-way/
         /// </summary>
@@ -44,5 +43,6 @@ namespace TurfTankRegistrationApplication.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion INotifyPropertyChanged
     }
 }

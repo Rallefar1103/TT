@@ -16,10 +16,6 @@ namespace TurfTankRegistrationApplication.Connection
         {
             // pass
         }
-        public override T Get(T someObject)
-        {
-            throw new NotImplementedException();
-        }
 
         public T Save(T someObject)
         {

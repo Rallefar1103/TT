@@ -6,13 +6,19 @@ using System.Threading.Tasks;
 
 namespace TurfTankRegistrationApplication.Connection
 {
-    interface IDBAPI<T>
+    public interface IDBAPI<T>
     {
-        T Get(T someObject);
+        T GetById(T someObject);
+        List<T> GetListOfObjects(List<T> someListWithIds);
     }
-    abstract class DBAPI<T> : IDBAPI<T>
+    public abstract class DBAPI<T> : IDBAPI<T>
     {
-        public virtual T Get(T someObject)
+        public T GetById(T someObject)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<T> GetListOfObjects(List<T> someListWithIds)
         {
             throw new NotImplementedException();
         }
