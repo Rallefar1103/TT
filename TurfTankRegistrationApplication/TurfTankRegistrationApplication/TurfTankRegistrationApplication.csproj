@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="View\Page1.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
+    <Folder Include="Pages\" />
+    <Folder Include="Views\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
 </Project>
