@@ -9,6 +9,7 @@ namespace TurfTankRegistrationApplication
 	{
 		public App()
 		{
+			// dette skal med fordi at Markup stadig er experimental.
 			Device.SetFlags(new string[] { "Markup_Experimental" });
 			MainPage = new TurfTankRegistrationApplication.Pages.RobotRegistrationPage();
 		}
