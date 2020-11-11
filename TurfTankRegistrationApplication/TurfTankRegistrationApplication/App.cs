@@ -11,7 +11,7 @@ namespace TurfTankRegistrationApplication
 		{
 			// dette skal med fordi at Markup stadig er experimental.
 			Device.SetFlags(new string[] { "Markup_Experimental" });
-			MainPage = new TurfTankRegistrationApplication.Pages.RobotRegistrationPage();
+			MainPage = new NavigationPage (new TurfTankRegistrationApplication.Pages.LoginPage());
 		}
 
 		protected override void OnStart()
