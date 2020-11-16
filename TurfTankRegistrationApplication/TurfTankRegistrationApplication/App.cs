@@ -1,6 +1,5 @@
 ﻿using System;
 using Xamarin.Forms;
-using Xamarin.Forms.Markup;
 using TurfTankRegistrationApplication.Pages;
 
 namespace TurfTankRegistrationApplication
@@ -11,7 +10,7 @@ namespace TurfTankRegistrationApplication
 		{
 			// dette skal med fordi at Markup stadig er experimental.
 			Device.SetFlags(new string[] { "Markup_Experimental" });
-			MainPage = new NavigationPage (new TurfTankRegistrationApplication.Pages.LoginPage());
+			MainPage = new NavigationPage (new SignInPage());
 		}
 
 		protected override void OnStart()

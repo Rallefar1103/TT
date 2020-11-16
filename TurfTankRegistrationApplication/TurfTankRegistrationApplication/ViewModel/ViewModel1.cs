@@ -10,7 +10,7 @@ using System.Diagnostics;
 
 namespace TurfTankRegistrationApplication.ViewModel
 {
-    public class ViewModel1 : BaseViewModel
+    public class ViewModel1 
     {
         public IEmployee User { get; set; }
         //public Class1 AFiveObject { get; set; }
@@ -26,11 +26,11 @@ namespace TurfTankRegistrationApplication.ViewModel
         }
         public ICommand PressForFiveCommand { get; }
         private string showfive = "No Five";
-        public string ShowFive { get => showfive; set { SetProperty(ref showfive, value); } }
+        //public string ShowFive { get => showfive; set { SetProperty(ref showfive, value); } }
         public void PressForFive() // Handles the logic of what should happen when a button is pressed
         {
             
-            ShowFive = User.Username;
+            //ShowFive = User.Username;
         }
     }
 }

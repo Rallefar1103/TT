@@ -2,47 +2,55 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+
+using Xamarin.Forms;
+
+using TurfTankRegistrationApplication.Model;
+//using TurfTankRegistrationApplication.Services;
 
 namespace TurfTankRegistrationApplication.ViewModel
 {
-    public abstract class BaseViewModel : INotifyPropertyChanged
+    public class BaseViewModel : INotifyPropertyChanged
     {
-        #region INotifyPropertyChanged
-        /// <summary>
-        ///     "Multicast event for property change notifications." - https://www.danrigby.com/2015/09/12/inotifypropertychanged-the-net-4-6-way/
-        /// </summary>
-        /// <helper>The previous sentence means "A general purpose handler for registering when events change some property, so that it can be updated instantly in the View"</helper>
-        public event PropertyChangedEventHandler PropertyChanged;
-        /// <summary>
-        /// This is used to set a property and update the View with the new value.
-        /// It is basically just a very fancy "set", which also updates the view.
-        /// </summary>
-        /// <typeparam name="T">A generic type, which is set on the instantiation of the method</typeparam>
-        /// <param name="storage">A reference to the variable which should hold the value</param>
-        /// <param name="value">The value which is given to the storage</param>
-        /// <param name="propertyName">The name of the property. Read docs in OnPropertyChanged</param>
-        /// <returns>Returns true if there is a new value to the storage, otherwise returns false</returns>
-        protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
+        //public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
+
+        bool isBusy = false;
+        public bool IsBusy
         {
-            if (Object.Equals(storage, value))
+            get { return isBusy; }
+            set { SetProperty(ref isBusy, value); }
+        }
+
+        string title = string.Empty;
+        public string Title
+        {
+            get { return title; }
+            set { SetProperty(ref title, value); }
+        }
+
+        protected bool SetProperty<T>(ref T backingStore, T value,
+            [CallerMemberName] string propertyName = "",
+            Action onChanged = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(backingStore, value))
                 return false;
 
-            storage = value;
+            backingStore = value;
+            onChanged?.Invoke();
             OnPropertyChanged(propertyName);
             return true;
         }
-        /// <summary>
-        /// The method uses the PropertyChanged event handler to put the new value out into the View.
-        /// </summary>
-        /// <param name="propertyName">The name of the variable being assigned a new value</param>
-        /// <helper>The "?" after PropertyChanged means "aside from its usual type, this one can also be NULL". This is done to make it thread-safe: https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/member-access-operators#null-conditional-operators--and- </helper>
-        /// <helper>"Invoke" is a function which means "Find everywhere in "this" View where this propertyName is used and update it to the new value"</helper>
-        protected void OnPropertyChanged(string propertyName)
+
+        #region INotifyPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            var changed = PropertyChanged;
+            if (changed == null)
+                return;
+
+            changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        #endregion INotifyPropertyChanged
+        #endregion
     }
 }

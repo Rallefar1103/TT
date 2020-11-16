@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:TurfTankRegistrationApplication.ViewModel"
              x:Class="TurfTankRegistrationApplication.View.LoginView">
     <ContentView.BindingContext>
-        <local:LoginViewModel/>
+        <!--<local:LoginViewModel/>-->
     </ContentView.BindingContext>
     <ContentView.Content>
         <StackLayout>

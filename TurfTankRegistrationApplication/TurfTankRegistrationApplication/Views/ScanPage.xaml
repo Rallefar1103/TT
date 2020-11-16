@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:TurfTankRegistrationApplication.Views"
+             xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+             xmlns:zxcm="clr-namespace:ZXing.Common;assembly=zxing.portable"
+             x:Class="TurfTankRegistrationApplication.Views.ScanPage"
+              Title="{Binding Title}">
+    <!--The Title of this view is gained from its ViewModel-->
+
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="20" />
+                
+            </Grid.ColumnDefinitions>
+            <!--ZXing Goes here or in stead of the imageview x name=QR -->
+            <!--<views:Scanner Grid.Row="1"/>-->
+            <ContentView x:Name="TheScanner"
+                         Grid.RowSpan="11" Grid.ColumnSpan="4"
+                     BackgroundColor="Teal"
+                         />
+           
+            
+<!--Greeting-->
+            <Label x:Name="Greeting"
+                Grid.Row="0" Grid.Column="1"
+                   Text ="{Binding Greeting}" />
+<!--State-information-->
+            <Label x:Name="scanner_State" 
+                 Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3"
+                   Text ="WWW" TextColor="Orange" FontSize="Title" />
+
+
+
+<!--ZXing Goes here in stead of image or in the first box x name=theScanner -->
+            <zxing:ZXingBarcodeImageView x:Name="QR"
+                                         Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" Grid.ColumnSpan="2"
+                                         HorizontalOptions="Center"
+                                                         VerticalOptions="Center"
+                                                         BarcodeFormat="QR_CODE"
+                                                         IsVisible="true"
+                                                         BarcodeValue="{Binding Result}">
+                                <zxing:ZXingBarcodeImageView.BarcodeOptions>
+                                    <zxcm:EncodingOptions Width="200" Height="200"/>
+                                </zxing:ZXingBarcodeImageView.BarcodeOptions>
+                            </zxing:ZXingBarcodeImageView>
+
+            <!--<Image x:Name="QR" Source="QRSticker.png"
+                 Grid.Row="4" Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="2"
+                   IsVisible="true"/>-->
+<!--overlay for the camera, gets visible when a QR is analysed, could show the scanned QR-->
+            <BoxView x:Name="Dimmer"
+                 Grid.Row="4" Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="2"
+                     Color="Yellow" Opacity="{Binding DimmValue}" />
+
+
+<!--The Resulting string of the Scan -->
+            <Label x:Name="Camera_Data"
+                 Grid.Row="3" Grid.Column="1" Grid.RowSpan="3" Grid.ColumnSpan="2" 
+                   Text ="{Binding Result}" HorizontalTextAlignment="Start" FontSize="Title" FontAttributes="Bold" VerticalTextAlignment="Start" TextColor="Red"
+                   />
+
+            
+<!--For simulation, starts simulating a QR-scan-->
+            <Button x:Name="StartScannerButton"
+                Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2"
+                    BackgroundColor="Teal"
+                    Text="START SCANNER"
+                    Clicked="StartScanner"/>
+
+<!--Save the scanned data to a component-->
+            <Button x:Name="RegisterBtn"
+                  Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2"
+                    Text="USE SCANNED DATA"
+                    Clicked="Save_Scanned_Data"
+                    IsEnabled="false"
+                     />
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

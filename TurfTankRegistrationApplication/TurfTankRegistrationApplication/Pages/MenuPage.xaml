@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TurfTankRegistrationApplication.Pages.MenuPage"
+             BackgroundColor="Black"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+
+        <Grid HorizontalOptions="Center"
+              VerticalOptions="Center"
+              Padding="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                 <RowDefinition Height="*"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Text="Registration Menu"
+                   Grid.ColumnSpan="2"
+                   TextColor="White"
+                   FontSize="35"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
+
+            <Button Grid.Column="0" Grid.Row="2"
+                    Command="{Binding NavigateToRobotRegistration}"
+                    HeightRequest="60"
+                    WidthRequest="150"
+                    CornerRadius="25"
+                    Text="Robot"
+                    BackgroundColor="White"/>
+            
+            <Button Grid.Column="1" Grid.Row="2"
+                    Command="{Binding NavigateToPreRegistration}"
+                    HeightRequest="60"
+                    WidthRequest="150"
+                    CornerRadius="25"
+                    Text="Component"
+                    Background="White"/>
+
+            <Button Grid.Column="2" Grid.Row="2"
+                    Command="{Binding NavigateToScanner}"
+                    HeightRequest="60"
+                    WidthRequest="150"
+                    CornerRadius="25"
+                    Text="Scanner"
+                    Background="White"/>
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

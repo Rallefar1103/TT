@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:TurfTankRegistrationApplication.Views.Registration_views"
+             x:Class="TurfTankRegistrationApplication.Pages.PreRegistrationPage"
+             Title="Component Registration"
+             NavigationPage.HasNavigationBar="True"
+             BackgroundColor="Black">
+    <ContentPage.Content>
+
+    </ContentPage.Content>
+</ContentPage>

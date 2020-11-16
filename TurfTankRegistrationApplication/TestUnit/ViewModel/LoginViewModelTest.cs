@@ -13,7 +13,7 @@ using System.Security.Cryptography;
 
 namespace TestUnit.ViewModel
 {
-    [TestFixture]
+  /*  [TestFixture]
     public class LoginViewModelTest
     {
         [TestCase("SomeUser", "SomePassword", "Testing that the employee gets redirected to the correct page")]
@@ -61,5 +61,5 @@ namespace TestUnit.ViewModel
             mockUser.DidNotReceive().Login();
             Assert.IsTrue(ActualErrorMsg != "", Desc);
         }
-    }
+    }*/
 }

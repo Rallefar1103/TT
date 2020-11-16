@@ -3,7 +3,7 @@ namespace TurfTankRegistrationApplication.Model
 {
      public interface IRobotPackage
     {
-         int SerialnumberFromChassi { get; set; }
+         string SerialnumberFromChassi { get; set; }
          Controller Controller { get; set; }
          Tablet Tablet { get; set; }
          GPS RoverGps { get; set; }
@@ -20,7 +20,7 @@ namespace TurfTankRegistrationApplication.Model
     {
         #region Public Attributes
 
-        public int SerialnumberFromChassi { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string SerialnumberFromChassi { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public Controller Controller { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public Tablet Tablet { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public GPS RoverGps { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -51,13 +51,9 @@ namespace TurfTankRegistrationApplication.Model
 
         public RobotPackage()
         {
-            throw new NotImplementedException();
+           
         }
 
-         public RobotPackage(IRobotPackage robotPackage)
-        {
-            throw new NotImplementedException();
-        }
 
         #endregion Constructor
 
