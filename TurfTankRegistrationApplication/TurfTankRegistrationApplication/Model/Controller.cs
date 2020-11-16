@@ -16,12 +16,12 @@ namespace TurfTankRegistrationApplication.Model
     {
         public string ControllerQRSticker { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public string OCRSticker { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string ActiveSSID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string ActivePassword { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string ActiveSSID { get; set; }
+        public string ActivePassword { get; set; }
 
         public void SetupWifi()
         {
-            throw new NotImplementedException();
+            // Connect to Robot SSID
         }
     }
 }
