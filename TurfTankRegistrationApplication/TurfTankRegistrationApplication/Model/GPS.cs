@@ -17,5 +17,10 @@ namespace TurfTankRegistrationApplication.Model
         }
 
         public Type ofType;
+
+        public GPS()
+        {
+
+        }
     }
 }

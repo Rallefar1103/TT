@@ -57,37 +57,56 @@ namespace TurfTankRegistrationApplication.Model
         // Method returns the old component with the isBroken attribute.
         public Component SwapBrokenComponent(Component component)
         {
-            Component OldComponent;
-            
-            if (component == Controller)
+
+            if (component is Controller)
             {
-                OldComponent = Controller;
+                Controller oldController = Controller;
+                oldController.FlagAsBroken();
                 Console.WriteLine("Swapping Controller");
                 Controller = (Controller)component;
-              
-            } else if (component == RoverGPS)
+
+                return oldController;
+
+            }
+            else if (component is GPS)
             {
-                OldComponent = RoverGPS;
-                Console.WriteLine("Swapping Rover");
-                RoverGPS = (GPS)component;
-            } else if (component == BaseGPS)
+                if (((GPS)component).ofType == GPS.Type.Rover)
+                {
+                    GPS oldRover = RoverGPS;
+                    oldRover.FlagAsBroken();
+                    Console.WriteLine("Swapping Rover");
+                    RoverGPS = (GPS)component;
+
+                    return oldRover;
+                }
+                else
+                {
+                    GPS oldBase = BaseGPS;
+                    oldBase.FlagAsBroken();
+                    Console.WriteLine("Swapping Base");
+                    BaseGPS = (GPS)component;
+
+                    return oldBase;
+                }
+
+
+            }
+            else if (component is Tablet)
             {
-                OldComponent = BaseGPS;
-                Console.WriteLine("Swapping Base");
-                BaseGPS = (GPS)component;
-            } else if (component == Tablet)
-            {
-                OldComponent = Tablet;
+                Tablet oldTablet = Tablet;
+                oldTablet.FlagAsBroken();
                 Console.WriteLine("Swapping Tablet");
                 Tablet = (Tablet)component;
-            } else
+
+                return oldTablet;
+
+            }
+            else
             {
-                OldComponent = null;
                 Console.WriteLine("Invalid input");
+                return null;
             }
 
-            OldComponent.FlagAsBroken();
-            return OldComponent;
         }
 
         #endregion Public functions
