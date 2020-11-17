@@ -14,14 +14,32 @@ namespace TurfTankRegistrationApplication.Model
     }
     public class Controller : Component, IController
     {
-        public string ControllerQRSticker { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string OCRSticker { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string ActiveSSID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string ActivePassword { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string ControllerQRSticker { get; set; }
+        public string OCRSticker { get; set; }
+        public string ActiveSSID { get; set; }
+        public string ActivePassword { get; set; }
 
         public void SetupWifi()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Connecting to Robot");
+            // Connect to Robot SSID
+        }
+
+        // Method returns serial number for controller.
+        // If the serial number (ID) is null it starts the process of retrieving the serial number
+        public override string GetSerialNumber()
+        {
+            if (ID == null)
+            {
+                SetupWifi();
+                ID = "ControllerSerialNumber";
+                return ID;
+            }
+            else
+            {
+                return ID;
+            }
+
         }
     }
 }

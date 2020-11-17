@@ -8,25 +8,29 @@ namespace TurfTankRegistrationApplication.Model
 
     interface IComponent
     {
-        string ID { get; set; }
+        string ID { get; set; } 
         bool ConnectedToRobot { get; set; }
+        bool isBroken { get; set; }
         string GetSerialNumber();
         void FlagAsBroken();
     }
 
     public abstract class Component : IComponent
     {
-        public string ID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool ConnectedToRobot { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string ID { get; set; }
+        public bool ConnectedToRobot { get; set; }
+        public bool isBroken { get; set; } = false;
 
         public void FlagAsBroken()
         {
-            throw new NotImplementedException();
+            isBroken = true;
         }
 
-        public string GetSerialNumber()
+        // Method returns the serial number of the specific component
+        // if serial number is null it returns a string saying "null" else the actual serial number
+        public virtual string GetSerialNumber()
         {
-            throw new NotImplementedException();
+            return ID ?? "null";      
         }
     }
 }
