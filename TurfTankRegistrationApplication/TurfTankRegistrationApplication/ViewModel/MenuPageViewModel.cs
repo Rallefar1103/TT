@@ -33,6 +33,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         {
             await Navigation.PushAsync(new PreRegistrationPage());
         }
+
         public async Task GoToScanner()
         {
             await Navigation.PushAsync(new ScanPage());

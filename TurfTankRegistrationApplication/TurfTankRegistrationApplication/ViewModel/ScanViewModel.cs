@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
+using TurfTankRegistrationApplication.Pages;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using ZXing;
@@ -75,14 +76,16 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         private double _dimmValue = 0.0;
 
-
+        public INavigation Navigation { get; set; }
         #region Constructor
-        public ScanViewModel()
+        public ScanViewModel(INavigation navigation)
         {
             //ScannerState = state.No_Scanable_Recognized;
             ////recieveScan = new Command(doSomething);
             Title = "Scanner";
             //ScanData = "XXX-XX-XXXX";
+
+            Navigation = navigation;
 
         }
 

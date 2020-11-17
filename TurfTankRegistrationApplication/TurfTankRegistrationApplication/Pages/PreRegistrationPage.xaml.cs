@@ -16,7 +16,7 @@ namespace TurfTankRegistrationApplication.Pages
 
             ComponentBtn RoverBtn = new ComponentBtn(PreRegVM.Rover, PreRegVM.RegistrateRover);
             ComponentBtn BaseBtn = new ComponentBtn(PreRegVM.Base, PreRegVM.RegistrateBase);
-            
+
             Label Header = new Label
             {
                 Text = "Choose Component",

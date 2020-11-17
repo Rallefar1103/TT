@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using TurfTankRegistrationApplication.Model;
 using Xamarin.Forms;
+using TurfTankRegistrationApplication.Pages;
 
 namespace TurfTankRegistrationApplication.ViewModel
 {
@@ -27,8 +28,11 @@ namespace TurfTankRegistrationApplication.ViewModel
         public string BaseSN { get; set; } = "";
         public string TabletSN { get; set; } = "";
 
-        public RobotRegistrationViewModel()
+        public INavigation Navigation { get; set; }
+
+        public RobotRegistrationViewModel(INavigation navigation)
         {
+            this.Navigation = navigation;
             robotItem.SetAsSelected();
             DidChangeChassisSN = new Command(RegistrateChassis);
             DidChangeControllerSN = new Command(RegistrateControllerAsync);
