@@ -23,5 +23,20 @@ namespace TurfTankRegistrationApplication.Model
         {
             // Connect to Robot SSID
         }
+
+        public override string GetSerialNumber()
+        {
+            if (this.ID != null || this.ID.Length != 0)
+            {
+                return this.ID;
+
+            }
+            else
+            {
+                SetupWifi();
+                this.ID = "ControllerSerialNumber";
+                return this.ID;
+            }
+        }
     }
 }

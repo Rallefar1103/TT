@@ -28,7 +28,7 @@ namespace TurfTankRegistrationApplication.Model
 
         // Method returns the serial number of the specific component
         // if serial number is null it returns a string saying "null" else the actual serial number
-        public string GetSerialNumber()
+        public virtual string GetSerialNumber()
         {
             return ID ?? "null";      
         }
