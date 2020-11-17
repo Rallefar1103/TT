@@ -25,26 +25,26 @@ namespace TurfTankRegistrationApplication.Model
 
         public override string GetSerialNumber()
         {
-            if (this.ID != null || this.ID.Length != 0)
+            if (ID == null)
             {
-                return this.ID;
-
-            }
-            else
-            {
-                if (this.ofType == Type.Rover)
+                if (ofType == Type.Rover)
                 {
                     // Connect to Controller
-                    this.ID = "SerialNumberRover";
-                    return this.ID;
+                    ID = "SerialNumberRover";
+                    return ID;
 
                 }
                 else
                 {
                     // Connect to Base through Bluetooth
-                    this.ID = "SerialNumberBase";
-                    return this.ID;
+                    ID = "SerialNumberBase";
+                    return ID;
                 }
+            }
+            else
+            {
+                return ID;
+
             }
         }
     }

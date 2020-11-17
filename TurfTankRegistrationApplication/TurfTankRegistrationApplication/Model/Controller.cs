@@ -14,13 +14,14 @@ namespace TurfTankRegistrationApplication.Model
     }
     public class Controller : Component, IController
     {
-        public string ControllerQRSticker { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string OCRSticker { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string ControllerQRSticker { get; set; }
+        public string OCRSticker { get; set; }
         public string ActiveSSID { get; set; }
         public string ActivePassword { get; set; }
 
         public void SetupWifi()
         {
+            Console.WriteLine("Connecting to Robot");
             // Connect to Robot SSID
         }
 
