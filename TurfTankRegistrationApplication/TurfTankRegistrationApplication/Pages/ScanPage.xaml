@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:views="clr-namespace:TurfTankRegistrationApplication.Views"
+             xmlns:views="clr-namespace:TurfTankRegistrationApplication.Pages"
              xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              xmlns:zxcm="clr-namespace:ZXing.Common;assembly=zxing.portable"
-             x:Class="TurfTankRegistrationApplication.Views.ScanPage"
+             x:Class="TurfTankRegistrationApplication.Pages.ScanPage"
               Title="{Binding Title}">
     <!--The Title of this view is gained from its ViewModel-->
 
-    <ContentPage.Content>
+  <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="20" />
@@ -39,24 +39,25 @@
            
             
 <!--Greeting-->
-            <Label x:Name="Greeting"
+            <!--<Label x:Name="Greeting"
                 Grid.Row="0" Grid.Column="1"
-                   Text ="{Binding Greeting}" />
+                   Text ="{Binding Greeting}" />-->
 <!--State-information-->
             <Label x:Name="scanner_State" 
-                 Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3"
-                   Text ="WWW" TextColor="Orange" FontSize="Title" />
+                 Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"
+                   Text ="WWW" TextColor="Orange" FontSize="Medium" />
 
 
 
 <!--ZXing Goes here in stead of image or in the first box x name=theScanner -->
             <zxing:ZXingBarcodeImageView x:Name="QR"
-                                         Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" Grid.ColumnSpan="2"
-                                         HorizontalOptions="Center"
-                                                         VerticalOptions="Center"
-                                                         BarcodeFormat="QR_CODE"
-                                                         IsVisible="true"
-                                                         BarcodeValue="{Binding Result}">
+                                         Grid.Row="4" Grid.Column="2" Grid.RowSpan="3" Grid.ColumnSpan="1"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Start"
+                                            BarcodeFormat="QR_CODE"
+                                            IsVisible="true"
+                                            Opacity="1"
+                                            BarcodeValue="{Binding Result}">
                                 <zxing:ZXingBarcodeImageView.BarcodeOptions>
                                     <zxcm:EncodingOptions Width="200" Height="200"/>
                                 </zxing:ZXingBarcodeImageView.BarcodeOptions>
@@ -73,26 +74,35 @@
 
 <!--The Resulting string of the Scan -->
             <Label x:Name="Camera_Data"
-                 Grid.Row="3" Grid.Column="1" Grid.RowSpan="3" Grid.ColumnSpan="2" 
-                   Text ="{Binding Result}" HorizontalTextAlignment="Start" FontSize="Title" FontAttributes="Bold" VerticalTextAlignment="Start" TextColor="Red"
+                 Grid.Row="4" Grid.Column="1" Grid.RowSpan="3" Grid.ColumnSpan="1" 
+                   Text ="{Binding Result}" HorizontalTextAlignment="Start" FontSize="Medium" FontAttributes="Bold" VerticalTextAlignment="Start" TextColor="DarkRed" 
                    />
 
             
 <!--For simulation, starts simulating a QR-scan-->
-            <Button x:Name="StartScannerButton"
+            <!--<Button x:Name="StartScannerButton"
                 Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2"
                     BackgroundColor="Teal"
                     Text="START SCANNER"
-                    Clicked="StartScanner"/>
+                    Clicked="StartScanner"/>-->
 
 <!--Save the scanned data to a component-->
             <Button x:Name="RegisterBtn"
-                  Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2"
+                  Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2"
                     Text="USE SCANNED DATA"
                     Clicked="Save_Scanned_Data"
                     IsEnabled="false"
                      />
+<!--Save the scanned data to a component-->
+<Button x:Name="SwitchToManual"
+        Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2"
+        Text="MANUAL INPUT"
+        Clicked="SwitchToManual_Clicked"
+        IsEnabled="true"
+            />
 
         </Grid>
     </ContentPage.Content>
 </ContentPage>
+
+
