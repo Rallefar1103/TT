@@ -13,12 +13,8 @@ namespace TurfTankRegistrationApplication.Pages
         [Obsolete]
         public RobotRegistrationPage()
         {
-
             InitializeComponent();
             
-
-
-
             RobotRegistrationViewModel RobotRegVM = new RobotRegistrationViewModel(Navigation);
             BindingContext = RobotRegVM;
 
@@ -34,7 +30,7 @@ namespace TurfTankRegistrationApplication.Pages
             SNLabel BaseSN = new SNLabel();
             SNLabel TabletSN = new SNLabel();
 
-            //ChassisSN.SetBinding<RobotRegistrationViewModel>(Label.TextProperty, vm => vm.ChassisSN);
+            ChassisSN.SetBinding<RobotRegistrationViewModel>(Label.TextProperty, vm => vm.ChassisSN);
             ControllerSN.SetBinding<RobotRegistrationViewModel>(Label.TextProperty, vm => vm.ControllerSN);
             RoverSN.SetBinding<RobotRegistrationViewModel>(Label.TextProperty, vm => vm.RoverSN);
             BaseSN.SetBinding<RobotRegistrationViewModel>(Label.TextProperty, vm => vm.BaseSN);
@@ -84,17 +80,7 @@ namespace TurfTankRegistrationApplication.Pages
                 }
             };
 
-            MessagingCenter.Subscribe<ScanPage, string>(this, "Result", (sender, data) =>
-            {
-                ChassisSN.Text = data;
-            });
-
         }
 
-
-        //void NavigateToNewPage(object sender, System.EventArgs e)
-        //{
-        //    Navigation.PushAsync(new ScanPage());
-        //}
     }
 }

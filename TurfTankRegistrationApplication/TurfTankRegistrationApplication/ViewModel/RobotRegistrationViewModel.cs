@@ -10,6 +10,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 {
     public interface IRegistrateRobot
     {
+        void NavigateToScanPage();
         void RegistrateChassis();
         void RegistrateControllerAsync();
         void RegistrateRover();
@@ -42,14 +43,28 @@ namespace TurfTankRegistrationApplication.ViewModel
             this.Navigation = navigation;
             robotItem.SetAsSelected();
 
-            DidChangeChassisSN = new Command(RegistrateChassis);
-            DidChangeControllerSN = new Command(RegistrateControllerAsync);
+            DidChangeChassisSN = new Command(NavigateToScanPage);
+            DidChangeControllerSN = new Command(NavigateToScanPage);
             DidChangeRoverSN = new Command(RegistrateRover);
             DidChangeBaseSN = new Command(RegistrateBase);
-            DidChangeTabletSN = new Command(RegistrateTablet);    
-        }
+            DidChangeTabletSN = new Command(RegistrateTablet);
 
-        public RobotRegistrationViewModel() { }
+            MessagingCenter.Subscribe<ScanPage, string>(this, "Result", (sender, data) =>
+            {
+                if (data.Contains("https://"))
+                {
+                    ChassisSN = data;
+                    OnPropertyChanged(nameof(ChassisSN));
+
+                }
+                else if (data.Contains("SSID"))
+                {
+                    ControllerSN = data;
+                    OnPropertyChanged(nameof(ControllerSN));
+                }
+            });
+
+        }
 
         public Command DidChangeChassisSN { get; }
         public Command DidChangeControllerSN { get; }
@@ -58,31 +73,20 @@ namespace TurfTankRegistrationApplication.ViewModel
         public Command DidChangeTabletSN { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public event EventHandler<string> RetrievedSerialNumber;
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public void NavigateToScanPage()
+        {
+            Navigation.PushAsync(new ScanPage());
+        }
 
         public void RegistrateChassis()
         {
-            Navigation.PushAsync(new ScanPage());
-
-            //ChassisSN = robotItem.SerialNumber;
-
-            //if (ChassisSN.Length > 0)
-            //{
-            //    await Application.Current.MainPage.DisplayAlert("Success!", "Chassis Scanned", "OK");
-            //    OnPropertyChanged(nameof(ChassisSN));
-
-            //}
-            //else
-            //{
-            //    Console.WriteLine("Error retrieving chassis SN");
-            //}
-            //Console.WriteLine("------------------------- ChassisSN: " + ChassisSN + "-----------------------__!!!!!!");
+            
         }
 
         public async void RegistrateControllerAsync()
