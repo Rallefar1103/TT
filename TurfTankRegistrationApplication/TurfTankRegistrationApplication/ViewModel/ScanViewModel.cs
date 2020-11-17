@@ -18,7 +18,8 @@ namespace TurfTankRegistrationApplication.ViewModel
             Analyzing,
             ScanResult_Ready,
             Saving_Data,
-            Saved
+            Saved,
+            mere
         }
         public bool ResultIsLocked = false;
 
@@ -48,6 +49,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             }
         }
         private state _scannerState = state.No_Scanable_Recognized;
+
 
         public string Greeting
         {
