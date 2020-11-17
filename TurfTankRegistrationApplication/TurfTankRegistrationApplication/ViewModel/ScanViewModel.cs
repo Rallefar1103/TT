@@ -76,16 +76,14 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         private double _dimmValue = 0.0;
 
-        public INavigation Navigation { get; set; }
         #region Constructor
-        public ScanViewModel(INavigation navigation)
+        public ScanViewModel()
         {
             //ScannerState = state.No_Scanable_Recognized;
             ////recieveScan = new Command(doSomething);
             Title = "Scanner";
             //ScanData = "XXX-XX-XXXX";
 
-            Navigation = navigation;
 
         }
 

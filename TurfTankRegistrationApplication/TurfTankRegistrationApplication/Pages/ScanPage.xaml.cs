@@ -31,7 +31,6 @@ namespace TurfTankRegistrationApplication.Pages
     public partial class ScanPage : ContentPage
     {
         ScanViewModel vm;
-        public RobotRegistrationViewModel RobotVM = new RobotRegistrationViewModel();
 
         //Create a ZXing Scanner for displaying and analyzins QR-codes
         ZXingScannerView Scanner = new ZXingScannerView();
@@ -47,7 +46,7 @@ namespace TurfTankRegistrationApplication.Pages
             Saved
         }
 
-
+        public event EventHandler<string> ResultValueChanged;
         
 
         #region Constructor
@@ -55,7 +54,7 @@ namespace TurfTankRegistrationApplication.Pages
         {
             InitializeComponent();
             //Binding to the viewmodel
-            BindingContext = vm = new ScanViewModel(Navigation);
+            BindingContext = vm = new ScanViewModel();
 
 
             //Initializing the viewmodel
@@ -86,6 +85,11 @@ namespace TurfTankRegistrationApplication.Pages
             //Show/hide the QR sticker
             //QR.IsVisible = true;
 
+        }
+
+        void SendResultBack()
+        {
+            MessagingCenter.Send(this, "Result", vm.Result);
         }
 
 
@@ -247,6 +251,8 @@ namespace TurfTankRegistrationApplication.Pages
             //Dis-activate the Registration Button
             RegisterBtn.BackgroundColor = Color.LightGray;
             RegisterBtn.IsEnabled = false;
+            SendResultBack();
+            Navigation.PopAsync();
             
 
         }

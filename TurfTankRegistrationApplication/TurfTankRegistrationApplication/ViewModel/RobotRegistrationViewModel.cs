@@ -21,6 +21,7 @@ namespace TurfTankRegistrationApplication.ViewModel
     public class RobotRegistrationViewModel : INotifyPropertyChanged, IRegistrateRobot
     {
         public RobotPackage robotItem = new RobotPackage();
+        public ScanViewModel scanVM = new ScanViewModel();
 
         public string ChassisSN { get; set; } = "";
         public string ControllerSN { get; set; } = "";
@@ -41,7 +42,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             this.Navigation = navigation;
             robotItem.SetAsSelected();
 
-            DidChangeChassisSN = new Command(NavigateToScan);
+            DidChangeChassisSN = new Command(RegistrateChassis);
             DidChangeControllerSN = new Command(RegistrateControllerAsync);
             DidChangeRoverSN = new Command(RegistrateRover);
             DidChangeBaseSN = new Command(RegistrateBase);
@@ -57,31 +58,31 @@ namespace TurfTankRegistrationApplication.ViewModel
         public Command DidChangeTabletSN { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler<string> RetrievedSerialNumber;
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public async void NavigateToScan()
-        {
-            await Navigation.PushAsync(new ScanPage());
-        }
 
-        public async void RegistrateChassis()
+        public void RegistrateChassis()
         {
-            ChassisSN = robotItem.SerialNumber;
-            
-            if (ChassisSN.Length > 0)
-            {
-                await Application.Current.MainPage.DisplayAlert("Success!", "Chassis Scanned", "OK");
-                OnPropertyChanged(nameof(ChassisSN));
+            Navigation.PushAsync(new ScanPage());
 
-            } else
-            {
-                Console.WriteLine("Error retrieving chassis SN");
-            }
-            Console.WriteLine("------------------------- ChassisSN: " + ChassisSN + "-----------------------__!!!!!!");
+            //ChassisSN = robotItem.SerialNumber;
+
+            //if (ChassisSN.Length > 0)
+            //{
+            //    await Application.Current.MainPage.DisplayAlert("Success!", "Chassis Scanned", "OK");
+            //    OnPropertyChanged(nameof(ChassisSN));
+
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Error retrieving chassis SN");
+            //}
+            //Console.WriteLine("------------------------- ChassisSN: " + ChassisSN + "-----------------------__!!!!!!");
         }
 
         public async void RegistrateControllerAsync()
