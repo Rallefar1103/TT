@@ -26,17 +26,17 @@ namespace TurfTankRegistrationApplication.Model
 
         public override string GetSerialNumber()
         {
-            if (this.ID != null || this.ID.Length != 0)
+            if (ID == null)
             {
-                return this.ID;
-
+                SetupWifi();
+                ID = "ControllerSerialNumber";
+                return ID;
             }
             else
             {
-                SetupWifi();
-                this.ID = "ControllerSerialNumber";
-                return this.ID;
+                return ID;
             }
+
         }
     }
 }
