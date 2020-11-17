@@ -8,9 +8,9 @@ using ZXing.Net.Mobile.Forms;
 
 namespace TurfTankRegistrationApplication.ViewModel
 {
-    public class ScanViewModel: BaseViewModel
+    public class ScanViewModel : BaseViewModel
     {
-        
+
         public enum state
         {
             No_Scanable_Recognized,
@@ -18,24 +18,30 @@ namespace TurfTankRegistrationApplication.ViewModel
             Analyzing,
             ScanResult_Ready,
             Saving_Data,
-            Saved
+            Saved,
+            mere
         }
+        public bool ResultIsLocked = false;
+
         public string Result
         {
-            get=> _result;
+            get => _result;
             set
             {
-                _result = value;
-                OnPropertyChanged(nameof(Result));
-
+                if (!ResultIsLocked)
+                {
+                    _result = value;
+                    OnPropertyChanged(nameof(Result));
+                }
             }
         }
         private string _result = "";
 
 
         public string ScannerStateString { get => $"{ScannerState}"; }
-        public state ScannerState {
-            get=>_scannerState;
+        public state ScannerState
+        {
+            get => _scannerState;
             set
             {
                 _scannerState = value;
@@ -43,6 +49,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             }
         }
         private state _scannerState = state.No_Scanable_Recognized;
+
 
         public string Greeting
         {
@@ -93,7 +100,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         //}
         //void aButton_Clicked(System.Object sender, System.EventArgs e)
         //{
-           
+
         //    Console.WriteLine("Hej jax fra VM");
         //}
     }

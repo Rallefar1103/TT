@@ -27,8 +27,10 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Views\Scanner.xaml" />
+    <EmbeddedResource Remove="Views\ScanPage.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Views\Scanner.xaml.cs" />
+    <Compile Remove="Views\ScanPage.xaml.cs" />
   </ItemGroup>
 </Project>
