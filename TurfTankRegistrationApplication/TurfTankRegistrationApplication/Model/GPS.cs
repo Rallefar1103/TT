@@ -23,6 +23,8 @@ namespace TurfTankRegistrationApplication.Model
 
         }
 
+        // Method returns serial number for controller.
+        // If the serial number (ID) is null it starts the process of retrieving the serial number
         public override string GetSerialNumber()
         {
             if (ID == null)

@@ -48,6 +48,7 @@ namespace TurfTankRegistrationApplication.Model
 
         #region Public functions
 
+        // Method sets the current robotItem as selected
         public void SetAsSelected()
         {
             IsSelected = true;
@@ -88,7 +89,6 @@ namespace TurfTankRegistrationApplication.Model
 
                     return oldBase;
                 }
-
 
             }
             else if (component is Tablet)
