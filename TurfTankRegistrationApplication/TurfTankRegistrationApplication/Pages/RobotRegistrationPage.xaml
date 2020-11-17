@@ -7,6 +7,5 @@
              NavigationPage.HasNavigationBar="True">
     
     <ContentPage.Content>
-      
     </ContentPage.Content>
 </ContentPage>

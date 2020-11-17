@@ -1,10 +1,9 @@
-﻿using System;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using TurfTankRegistrationApplication.Pages;
 
 namespace TurfTankRegistrationApplication
 {
-	public class App : Application
+    public class App : Application
 	{
 		public App()
 		{

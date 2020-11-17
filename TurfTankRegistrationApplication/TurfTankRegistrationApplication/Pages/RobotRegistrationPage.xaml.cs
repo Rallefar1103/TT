@@ -8,12 +8,13 @@ namespace TurfTankRegistrationApplication.Pages
 {
     public partial class RobotRegistrationPage : ContentPage
     {
+
         [Obsolete]
         public RobotRegistrationPage()
         {
             RobotRegistrationViewModel RobotRegVM = new RobotRegistrationViewModel(Navigation);
             BindingContext = RobotRegVM;
-            
+
 
             ComponentBtn Chassis = new ComponentBtn("Chassis", RobotRegVM.DidChangeChassisSN);
             ComponentBtn Controller = new ComponentBtn("Controller", RobotRegVM.DidChangeControllerSN);
@@ -21,11 +22,11 @@ namespace TurfTankRegistrationApplication.Pages
             ComponentBtn Base = new ComponentBtn("Base", RobotRegVM.DidChangeBaseSN);
             ComponentBtn Tablet = new ComponentBtn("Tablet", RobotRegVM.DidChangeTabletSN);
 
-            SNLabel ChassisSN = new SNLabel(RobotRegVM.ChassisSN);
-            SNLabel ControllerSN = new SNLabel(RobotRegVM.ControllerSN);
-            SNLabel RoverSN = new SNLabel(RobotRegVM.RoverSN);
-            SNLabel BaseSN = new SNLabel(RobotRegVM.BaseSN);
-            SNLabel TabletSN = new SNLabel(RobotRegVM.TabletSN);
+            SNLabel ChassisSN = new SNLabel();
+            SNLabel ControllerSN = new SNLabel();
+            SNLabel RoverSN = new SNLabel();
+            SNLabel BaseSN = new SNLabel();
+            SNLabel TabletSN = new SNLabel();
 
             ChassisSN.SetBinding<RobotRegistrationViewModel>(Label.TextProperty, vm => vm.ChassisSN);
             ControllerSN.SetBinding<RobotRegistrationViewModel>(Label.TextProperty, vm => vm.ControllerSN);
@@ -53,6 +54,8 @@ namespace TurfTankRegistrationApplication.Pages
                 TextColor = Color.White,
                 HeightRequest = 65,
             };
+
+            
 
             Content = new ScrollView
             {

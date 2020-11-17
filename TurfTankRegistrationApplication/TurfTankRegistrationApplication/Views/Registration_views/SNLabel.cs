@@ -6,9 +6,8 @@ namespace TurfTankRegistrationApplication.Views.Registration_views
 {
     public class SNLabel : Label
     {
-        public SNLabel(string ComponentSN)
+        public SNLabel()
         {
-            Text = ComponentSN;
             TextColor = Color.White;
             HorizontalOptions = LayoutOptions.Center;
         }

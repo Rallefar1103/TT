@@ -32,14 +32,23 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public RobotRegistrationViewModel(INavigation navigation)
         {
+            robotItem.Controller.ID = "123456";
+            robotItem.SerialNumber = "7891012";
+            robotItem.RoverGPS.ID = "13141516";
+            robotItem.BaseGPS.ID = "17181920";
+            robotItem.Tablet.ID = "212223345";
+
             this.Navigation = navigation;
             robotItem.SetAsSelected();
-            DidChangeChassisSN = new Command(RegistrateChassis);
+
+            DidChangeChassisSN = new Command(NavigateToScan);
             DidChangeControllerSN = new Command(RegistrateControllerAsync);
             DidChangeRoverSN = new Command(RegistrateRover);
             DidChangeBaseSN = new Command(RegistrateBase);
             DidChangeTabletSN = new Command(RegistrateTablet);    
         }
+
+        public RobotRegistrationViewModel() { }
 
         public Command DidChangeChassisSN { get; }
         public Command DidChangeControllerSN { get; }
@@ -54,25 +63,29 @@ namespace TurfTankRegistrationApplication.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public async void NavigateToScan()
+        {
+            await Navigation.PushAsync(new ScanPage());
+        }
+
         public async void RegistrateChassis()
         {
-            ChassisSN = "123456";
-            robotItem.SerialNumber = ChassisSN;
             ChassisSN = robotItem.SerialNumber;
+            
             if (ChassisSN.Length > 0)
             {
-                await Application.Current.MainPage.DisplayAlert("Success!", "Chassis Scanned", "Ok");
+                await Application.Current.MainPage.DisplayAlert("Success!", "Chassis Scanned", "OK");
                 OnPropertyChanged(nameof(ChassisSN));
+
             } else
             {
                 Console.WriteLine("Error retrieving chassis SN");
             }
+            Console.WriteLine("------------------------- ChassisSN: " + ChassisSN + "-----------------------__!!!!!!");
         }
 
         public async void RegistrateControllerAsync()
         {
-            ControllerSN = "123456";
-            robotItem.Controller.ID = ControllerSN;
             ControllerSN = robotItem.Controller.GetSerialNumber();
             if (ControllerSN.Length > 0)
             {
@@ -87,8 +100,6 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public async void RegistrateRover()
         {
-            RoverSN = "123456";
-            robotItem.RoverGPS.ID = RoverSN;
             RoverSN = robotItem.RoverGPS.GetSerialNumber();
             if (RoverSN.Length > 0)
             {
@@ -103,8 +114,6 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public async void RegistrateBase()
         {
-            BaseSN = "123456";
-            robotItem.BaseGPS.ID = BaseSN;
             BaseSN = robotItem.BaseGPS.GetSerialNumber();
             if (BaseSN.Length > 0)
             {
@@ -119,8 +128,6 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public async void RegistrateTablet()
         {
-            TabletSN = "123456";
-            robotItem.Tablet.ID = TabletSN;
             TabletSN = robotItem.Tablet.GetSerialNumber();
             if (TabletSN.Length > 0)
             {
