@@ -57,18 +57,30 @@ namespace TurfTankRegistrationApplication.ViewModel
         {
             if (data.Contains("Robot"))
             {
-                ChassisSN = data;
+                robotItem.SerialNumber = data;
+                ChassisSN = robotItem.SerialNumber;
                 OnPropertyChanged(nameof(ChassisSN));
 
             }
             else if (data.Contains("Controller"))
             {
-                ControllerSN = data;
+                robotItem.Controller.ID = data;
+                ControllerSN = robotItem.Controller.ID;
                 OnPropertyChanged(nameof(ControllerSN));
             }
             else if (data.Contains("Rover"))
             {
-                //robotItem.RoverGPS.SimCard.QrSticker
+                robotItem.RoverGPS.ofType = GPS.GPSType.Rover;
+                robotItem.RoverGPS.ID = data;
+                RoverSN = robotItem.RoverGPS.ID;
+                OnPropertyChanged(nameof(RoverSN));
+            }
+            else if (data.Contains("Base"))
+            {
+                robotItem.BaseGPS.ofType = GPS.GPSType.Base;
+                robotItem.BaseGPS.ID = data;
+                BaseSN = robotItem.BaseGPS.ID;
+                OnPropertyChanged(nameof(BaseSN));
             }
         }
 

@@ -8,9 +8,9 @@ namespace TurfTankRegistrationApplication.Model
 
     interface IComponent
     {
-        string ID { get; set; } 
+        string ID { get; set; }
         bool ConnectedToRobot { get; set; }
-        bool isBroken { get; set; }
+        bool IsBroken { get; set; }
         string GetSerialNumber();
         void FlagAsBroken();
     }
@@ -19,18 +19,16 @@ namespace TurfTankRegistrationApplication.Model
     {
         public string ID { get; set; }
         public bool ConnectedToRobot { get; set; }
-        public bool isBroken { get; set; } = false;
+        public bool IsBroken { get; set; }
 
         public void FlagAsBroken()
         {
-            isBroken = true;
+            IsBroken = true;
         }
 
-        // Method returns the serial number of the specific component
-        // if serial number is null it returns a string saying "null" else the actual serial number
         public virtual string GetSerialNumber()
         {
-            return ID ?? "null";      
+            return ID ?? "null";
         }
     }
 }

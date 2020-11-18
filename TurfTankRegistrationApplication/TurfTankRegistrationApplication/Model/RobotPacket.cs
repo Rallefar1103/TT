@@ -1,20 +1,20 @@
 ﻿using System;
 namespace TurfTankRegistrationApplication.Model
 {
-     public interface IRobotPackage
+    public interface IRobotPackage
     {
-         string SerialNumber { get; set; }
-         Controller Controller { get; set; }
-         Tablet Tablet { get; set; }
-         GPS RoverGPS { get; set; }
-         GPS BaseGPS { get; set; }
-         QRSticker QRSticker { get; set; }
-         bool IsSynchronized { get; set; }
-         bool IsSelected { get; set; }
+        string SerialNumber { get; set; }
+        QRSticker QR { get; set; }
+        Controller Controller { get; set; }
+        Tablet Tablet { get; set; }
+        GPS RoverGPS { get; set; }
+        GPS BaseGPS { get; set; }
 
-         Component SwapBrokenComponent(Component component);
-         void SetAsSelected();
-           
+        bool IsSynchronized { get; set; }
+        bool IsSelected { get; set; }
+
+        Component SwapBrokenComponent(Component component);
+        void SetAsSelected();
     }
 
     public class RobotPackage : IRobotPackage
@@ -22,40 +22,25 @@ namespace TurfTankRegistrationApplication.Model
         #region Public Attributes
 
         public string SerialNumber { get; set; }
+        public QRSticker QR { get; set; }
         public Controller Controller { get; set; }
         public Tablet Tablet { get; set; }
         public GPS RoverGPS { get; set; }
         public GPS BaseGPS { get; set; }
-        public QRSticker QRSticker { get; set; }
         public bool IsSynchronized { get; set; }
         public bool IsSelected { get; set; }
 
         #endregion Public Attributes
 
-        #region Constructor
-
-        public RobotPackage()
-        {
-            Controller = new Controller();
-            Tablet = new Tablet();
-            RoverGPS = new GPS();
-            BaseGPS = new GPS();
-            QRSticker = new QRSticker();
-        }
-
-
-        #endregion Constructor
 
         #region Public functions
 
-        // Method sets the current robotItem as selected
         public void SetAsSelected()
         {
             IsSelected = true;
         }
 
-        // Method overwrites existing and broken component with a new instance of the specific component type
-        // Method returns the old component with the isBroken attribute.
+
         public Component SwapBrokenComponent(Component component)
         {
 
@@ -71,7 +56,7 @@ namespace TurfTankRegistrationApplication.Model
             }
             else if (component is GPS)
             {
-                if (((GPS)component).ofType == GPS.Type.Rover)
+                if (((GPS)component).ofType == GPS.GPSType.Rover)
                 {
                     GPS oldRover = RoverGPS;
                     oldRover.FlagAsBroken();
@@ -106,10 +91,47 @@ namespace TurfTankRegistrationApplication.Model
                 Console.WriteLine("Invalid input");
                 return null;
             }
-
         }
 
         #endregion Public functions
+
+
+        #region Constructor
+        public void Initialize(Controller controller, Tablet tablet, GPS roverGPS, GPS baseGPS, QRSticker qr)
+        {
+            Controller = controller;
+            Tablet = tablet;
+            RoverGPS = roverGPS;
+            BaseGPS = baseGPS;
+            QR = qr;
+        }
+
+        public RobotPackage()
+        {
+            Initialize(
+                controller: new Controller(),
+                tablet: new Tablet(),
+                roverGPS: new GPS() { ofType = GPS.GPSType.Rover },
+                baseGPS: new GPS() { ofType = GPS.GPSType.Base },
+                qr: new QRSticker());
+        }
+
+        public RobotPackage(Controller controller, Tablet tablet, GPS roverGPS, GPS baseGPS, QRSticker qr)
+        {
+            Initialize(
+                controller: controller,
+                tablet: tablet,
+                roverGPS: roverGPS,
+                baseGPS: baseGPS,
+                qr: qr);
+        }
+
+
+
+        #endregion
+
+
+
 
     }
 

@@ -8,11 +8,11 @@ namespace TurfTankRegistrationApplication.Model
 
     }
 
-    public class ControllerQRSticker : ScanableSticker, IControllerQRSticker
+    public class ControllerQRSticker : QRSticker, IControllerQRSticker
     {
 
-        public string FinalSSID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string FinalPASSWORD { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string FinalSSID { get; set; }
+        public string FinalPASSWORD { get; set; }
     }
 
 }

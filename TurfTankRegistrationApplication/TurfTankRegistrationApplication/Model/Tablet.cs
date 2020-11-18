@@ -6,16 +6,34 @@ namespace TurfTankRegistrationApplication.Model
 {
     interface ITablet
     {
-        SimCard SimCard { get; set; }
+        SimCard Simcard { get; set; }
         void ActivateSimcard();
     }
     public class Tablet : Component, ITablet
     {
-        public SimCard SimCard { get; set; }
+        public SimCard Simcard { get; set; }
 
         public void ActivateSimcard()
         {
             throw new NotImplementedException();
         }
+
+        #region Constructor
+        public void Initialize(SimCard simcard)
+        {
+            Simcard = simcard;
+        }
+
+        public Tablet()
+        {
+            Initialize(simcard: new SimCard());
+        }
+
+        public Tablet(SimCard simcard)
+        {
+            Initialize(simcard: simcard);
+
+        }
+        #endregion
     }
 }

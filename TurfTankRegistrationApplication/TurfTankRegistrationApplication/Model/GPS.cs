@@ -6,33 +6,32 @@ namespace TurfTankRegistrationApplication.Model
 {
     interface IGPS
     {
-        SimCard SimCard { get; set; }
+        SimCard Simcard { get; set; }
     }
 
     public class GPS : Component, IGPS
     {
-        public enum Type
+        #region Public Attributes
+        public enum GPSType
         {
             Rover,
-            Base
+            Base,
+            NoType
         }
 
-        public Type ofType;
+        public GPSType ofType;
 
-        public SimCard SimCard { get; set; }
+        public SimCard Simcard { get; set; }
 
-        public GPS()
-        {
+        #endregion
 
-        }
+        #region Public Methods
 
-        // Method returns serial number for GPS.
-        // If the serial number (ID) is null it starts the process of retrieving the serial number
         public override string GetSerialNumber()
         {
             if (ID == null)
             {
-                if (ofType == Type.Rover)
+                if (ofType == GPSType.Rover)
                 {
                     // Connect to Controller
                     ID = "SerialNumberRover";
@@ -52,5 +51,33 @@ namespace TurfTankRegistrationApplication.Model
 
             }
         }
+
+        #endregion
+
+        #region Constructor
+        public void Initialize(GPSType type, SimCard simcard)
+        {
+            ofType = type;
+            Simcard = simcard;
+
+        }
+        public GPS()
+        {
+            Initialize(type: GPSType.NoType, simcard: new SimCard());
+        }
+        public GPS(GPSType type)
+        {
+            Initialize(type: type, simcard: new SimCard());
+
+        }
+        public GPS(GPSType type, SimCard simcard)
+        {
+            Initialize(type: type, simcard: simcard);
+
+        }
+
+        #endregion
     }
 }
+
+
