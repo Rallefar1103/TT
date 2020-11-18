@@ -77,11 +77,11 @@ namespace TurfTankRegistrationApplication.ViewModel
         private double _dimmValue = 0.0;
 
         #region Constructor
-        public ScanViewModel()
+        public ScanViewModel(string component)
         {
             //ScannerState = state.No_Scanable_Recognized;
             ////recieveScan = new Command(doSomething);
-            Title = "Scanner";
+            Title = "Scanning " + component;
             //ScanData = "XXX-XX-XXXX";
 
 

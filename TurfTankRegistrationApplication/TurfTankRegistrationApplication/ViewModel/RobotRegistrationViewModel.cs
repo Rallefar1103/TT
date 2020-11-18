@@ -10,10 +10,10 @@ namespace TurfTankRegistrationApplication.ViewModel
 {
     public interface IRegistrateRobot
     {
-        void RegistrateChassis();
-        void RegistrateController();
-        void RegistrateRover();
-        void RegistrateBase();
+        void RegistrateChassis(string result);
+        void RegistrateController(string result);
+        void RegistrateRover(string result);
+        void RegistrateBase(string result);
         void RegistrateTablet();
         void SaveRobot();
     }
@@ -35,52 +35,41 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public RobotRegistrationViewModel(INavigation navigation)
         {
-            robotItem.RoverGPS.ID = "13141516";
-            robotItem.BaseGPS.ID = "17181920";
-            robotItem.Tablet.ID = "212223345";
-
             this.Navigation = navigation;
             robotItem.SetAsSelected();
 
-            DidChangeChassisSN = new Command(RegistrateChassis);
-            DidChangeControllerSN = new Command(RegistrateController);
-            DidChangeRoverSN = new Command(RegistrateRover);
-            DidChangeBaseSN = new Command(RegistrateBase);
-            DidChangeTabletSN = new Command(RegistrateTablet);
+            DidChangeChassisSN = new Command(() => NavigateToScanPage("Chassis"));
+            DidChangeControllerSN = new Command(() => NavigateToScanPage("Controller"));
+            DidChangeRoverSN = new Command(() => NavigateToScanPage("Rover"));
+            DidChangeBaseSN = new Command(() => NavigateToScanPage("Base"));
+            DidChangeTabletSN = new Command(() => NavigateToScanPage("Tablet"));
             Callback = new Action<object, string>(OnDataReceived);
 
             MessagingCenter.Subscribe<ScanPage, string>(this, "Result", Callback);
 
         }
 
-        private void OnDataReceived(object sender, string data)
+        private async void OnDataReceived(object sender, string data)
         {
             if (data.Contains("Robot"))
             {
-                robotItem.SerialNumber = data;
-                ChassisSN = robotItem.SerialNumber;
-                OnPropertyChanged(nameof(ChassisSN));
-
+                RegistrateChassis(data);
             }
             else if (data.Contains("Controller"))
             {
-                robotItem.Controller.ID = data;
-                ControllerSN = robotItem.Controller.ID;
-                OnPropertyChanged(nameof(ControllerSN));
+                RegistrateController(data);
             }
             else if (data.Contains("Rover"))
             {
-                robotItem.RoverGPS.ofType = GPS.GPSType.Rover;
-                robotItem.RoverGPS.ID = data;
-                RoverSN = robotItem.RoverGPS.ID;
-                OnPropertyChanged(nameof(RoverSN));
+                RegistrateRover(data);
             }
             else if (data.Contains("Base"))
             {
-                robotItem.BaseGPS.ofType = GPS.GPSType.Base;
-                robotItem.BaseGPS.ID = data;
-                BaseSN = robotItem.BaseGPS.ID;
-                OnPropertyChanged(nameof(BaseSN));
+                RegistrateBase(data);
+
+            } else
+            {
+                await Application.Current.MainPage.DisplayAlert("OBS!", "Scan did not work as expected!", "Ok");
             }
         }
 
@@ -100,29 +89,60 @@ namespace TurfTankRegistrationApplication.ViewModel
         }
 
         #region helperfunctions
-        public void NavigateToScanPage()
+        public void NavigateToScanPage(string component)
         {
-            Navigation.PushAsync(new ScanPage());
+            Navigation.PushAsync(new ScanPage(component));
         }
+
+   
 
         #endregion
 
         #region public methods
-        public void RegistrateChassis()
+        public async void RegistrateChassis(string result)
         {
-            NavigateToScanPage();
+            if (string.IsNullOrEmpty(robotItem.SerialNumber))
+            {
+                robotItem.SerialNumber = result;
+                ChassisSN = robotItem.SerialNumber;
+                OnPropertyChanged(nameof(ChassisSN));
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("OBS!", "Chassis is already scanned", "Ok");
+            }
         }
 
-        public void RegistrateController()
+        public async void RegistrateController(string result)
         {
-            NavigateToScanPage();
+            if (string.IsNullOrEmpty(robotItem.Controller.ID))
+            {
+                robotItem.Controller.ID = result;
+                ControllerSN = robotItem.Controller.ID;
+                OnPropertyChanged(nameof(ControllerSN));
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("OBS!", "Controller is already scanned", "Ok");
+            }
         }
         
 
-        public void RegistrateRover()
+        public async void RegistrateRover(string result)
         {
-            // Scan label for SimCard information
-            NavigateToScanPage();
+            // Scan label for Simcard info
+            robotItem.RoverGPS.ofType = GPS.GPSType.Rover;
+
+            if (string.IsNullOrEmpty(robotItem.RoverGPS.Simcard.ID))
+            {
+                robotItem.RoverGPS.Simcard.ID = result;
+                RoverSIM = robotItem.RoverGPS.Simcard.ID;
+                OnPropertyChanged(nameof(RoverSIM));
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("OBS!", "Rover is already scanned", "Ok");
+            }
 
             // Retrieve SimCard SN from DB
 
@@ -130,34 +150,32 @@ namespace TurfTankRegistrationApplication.ViewModel
             robotItem.Controller.SetupWifi();
 
             // Retrieve Rover SN from Controller
+
         }
 
-        public async void RegistrateBase()
+        public async void RegistrateBase(string result)
         {
-            BaseSN = robotItem.BaseGPS.GetSerialNumber();
-            if (BaseSN.Length > 0)
+            // Scan label for Simcard info
+            robotItem.BaseGPS.ofType = GPS.GPSType.Base;
+
+            if (string.IsNullOrEmpty(robotItem.BaseGPS.Simcard.ID))
             {
-                await Application.Current.MainPage.DisplayAlert("Success!", "Base Scanned", "Ok");
-                OnPropertyChanged(nameof(BaseSN));
+                robotItem.BaseGPS.Simcard.ID = result;
+                BaseSIM = robotItem.BaseGPS.Simcard.ID;
+                OnPropertyChanged(nameof(BaseSIM));
             }
             else
             {
-                Console.WriteLine("Error retrieving Base SN");
+                await Application.Current.MainPage.DisplayAlert("OBS!", "Base is already scanned", "Ok");
             }
+
+            // Set up connection to Base through Bluetooth
+            // Retrieve Base SN 
         }
 
         public async void RegistrateTablet()
         {
-            TabletSN = robotItem.Tablet.GetSerialNumber();
-            if (TabletSN.Length > 0)
-            {
-                await Application.Current.MainPage.DisplayAlert("Success!", "Tablet Scanned", "Ok");
-                OnPropertyChanged(nameof(TabletSN));
-            }
-            else
-            {
-                Console.WriteLine("Error retrieving Tablet SN");
-            }
+            // To be implemented
         }
 
         public void SaveRobot()

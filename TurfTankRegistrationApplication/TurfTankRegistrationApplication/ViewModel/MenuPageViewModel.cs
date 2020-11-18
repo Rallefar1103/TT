@@ -24,6 +24,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         public Command NavigateToPreRegistration { get; }
         public Command NavigateToScanner { get; }
 
+        [Obsolete]
         public async Task GoToRobotRegistration()
         {
             await Navigation.PushAsync(new RobotRegistrationPage());
@@ -36,7 +37,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public async Task GoToScanner()
         {
-            await Navigation.PushAsync(new ScanPage());
+            //await Navigation.PushAsync(new ScanPage());
         }
     }
 }

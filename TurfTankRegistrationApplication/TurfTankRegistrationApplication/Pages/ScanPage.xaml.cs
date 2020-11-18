@@ -47,14 +47,16 @@ namespace TurfTankRegistrationApplication.Pages
         }
 
         public event EventHandler<string> ResultValueChanged;
-        
+
+        public string componentToBeScanned { get; set; }
 
         #region Constructor
-        public ScanPage()
+        public ScanPage(string componentGettingScanned)
         {
             InitializeComponent();
             //Binding to the viewmodel
-            BindingContext = vm = new ScanViewModel();
+            componentToBeScanned = componentGettingScanned;
+            BindingContext = vm = new ScanViewModel(componentToBeScanned);
 
 
             //Initializing the viewmodel
@@ -84,6 +86,11 @@ namespace TurfTankRegistrationApplication.Pages
             //View Stuff
             //Show/hide the QR sticker
             //QR.IsVisible = true;
+
+        }
+
+        public ScanPage()
+        {
 
         }
 
