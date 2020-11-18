@@ -254,7 +254,6 @@ namespace TurfTankRegistrationApplication.Pages
             SendResultBack();
             Navigation.PopAsync();
             
-
         }
 
         #endregion States

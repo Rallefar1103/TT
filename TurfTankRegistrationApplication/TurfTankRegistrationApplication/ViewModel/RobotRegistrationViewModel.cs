@@ -22,7 +22,6 @@ namespace TurfTankRegistrationApplication.ViewModel
     public class RobotRegistrationViewModel : INotifyPropertyChanged, IRegistrateRobot
     {
         public RobotPackage robotItem = new RobotPackage();
-        public ScanViewModel scanVM = new ScanViewModel();
 
         public string ChassisSN { get; set; } = "";
         public string ControllerSN { get; set; } = "";

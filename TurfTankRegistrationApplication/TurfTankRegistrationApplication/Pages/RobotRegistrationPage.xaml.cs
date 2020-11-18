@@ -9,7 +9,6 @@ namespace TurfTankRegistrationApplication.Pages
     public partial class RobotRegistrationPage : ContentPage
     {
         
-
         [Obsolete]
         public RobotRegistrationPage()
         {
