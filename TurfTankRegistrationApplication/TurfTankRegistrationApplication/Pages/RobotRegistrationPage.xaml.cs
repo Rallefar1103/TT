@@ -17,17 +17,20 @@ namespace TurfTankRegistrationApplication.Pages
             RobotRegistrationViewModel RobotRegVM = new RobotRegistrationViewModel(Navigation);
             BindingContext = RobotRegVM;
 
-            ComponentBtn Chassis = new ComponentBtn("Chassis", RobotRegVM.DidChangeChassisSN);
-            ComponentBtn Controller = new ComponentBtn("Controller", RobotRegVM.DidChangeControllerSN);
-            ComponentBtn Rover = new ComponentBtn("Rover", RobotRegVM.DidChangeRoverSN);
-            ComponentBtn Base = new ComponentBtn("Base", RobotRegVM.DidChangeBaseSN);
-            ComponentBtn Tablet = new ComponentBtn("Tablet", RobotRegVM.DidChangeTabletSN);
+            ComponentBtn ChassisBtn = new ComponentBtn("Chassis", RobotRegVM.DidChangeChassisSN);
+            ComponentBtn ControllerBtn = new ComponentBtn("Controller", RobotRegVM.DidChangeControllerSN);
+            ComponentBtn RoverBtn = new ComponentBtn("Rover", RobotRegVM.DidChangeRoverSN);
+            ComponentBtn BaseBtn = new ComponentBtn("Base", RobotRegVM.DidChangeBaseSN);
+            ComponentBtn TabletBtn = new ComponentBtn("Tablet", RobotRegVM.DidChangeTabletSN);
 
             SNLabel ChassisSN = new SNLabel();
             SNLabel ControllerSN = new SNLabel();
             SNLabel RoverSN = new SNLabel();
             SNLabel BaseSN = new SNLabel();
             SNLabel TabletSN = new SNLabel();
+            SNLabel RoverSIM = new SNLabel();
+            SNLabel BaseSIM = new SNLabel();
+            SNLabel TabletSIM = new SNLabel();
 
             ChassisSN.SetBinding<RobotRegistrationViewModel>(Label.TextProperty, vm => vm.ChassisSN);
             ControllerSN.SetBinding<RobotRegistrationViewModel>(Label.TextProperty, vm => vm.ControllerSN);
@@ -63,15 +66,15 @@ namespace TurfTankRegistrationApplication.Pages
                     Children =
                     {
                         SizedBoxTop,
-                        Chassis,
+                        ChassisBtn,
                         ChassisSN,
-                        Controller,
+                        ControllerBtn,
                         ControllerSN,
-                        Rover,
+                        RoverBtn,
                         RoverSN,
-                        Base,
+                        BaseBtn,
                         BaseSN,
-                        Tablet,
+                        TabletBtn,
                         TabletSN,
                         SizedBoxBottom,
                         SaveBtn,

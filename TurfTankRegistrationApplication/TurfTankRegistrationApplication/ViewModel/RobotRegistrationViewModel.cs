@@ -87,11 +87,15 @@ namespace TurfTankRegistrationApplication.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        #region helperfunctions
         public void NavigateToScanPage()
         {
             Navigation.PushAsync(new ScanPage());
         }
 
+        #endregion
+
+        #region public methods
         public void RegistrateChassis()
         {
             NavigateToScanPage();
@@ -101,14 +105,18 @@ namespace TurfTankRegistrationApplication.ViewModel
         {
             NavigateToScanPage();
         }
-
         
+
         public void RegistrateRover()
         {
-            NavigateToScanPage();
             // Scan label for SimCard information
+            NavigateToScanPage();
+
             // Retrieve SimCard SN from DB
+
             // Connect to Controller WiFi
+            robotItem.Controller.SetupWifi();
+
             // Retrieve Rover SN from Controller
         }
 
@@ -144,5 +152,6 @@ namespace TurfTankRegistrationApplication.ViewModel
         {
             // Not implemented, but will save every component on the robotPackage instance to the DB
         }
+        #endregion
     }
 }
