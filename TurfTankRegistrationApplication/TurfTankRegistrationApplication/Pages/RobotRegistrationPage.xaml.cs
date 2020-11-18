@@ -28,6 +28,7 @@ namespace TurfTankRegistrationApplication.Pages
             SNLabel RoverSN = new SNLabel();
             SNLabel BaseSN = new SNLabel();
             SNLabel TabletSN = new SNLabel();
+
             SNLabel RoverSIM = new SNLabel();
             SNLabel BaseSIM = new SNLabel();
             SNLabel TabletSIM = new SNLabel();
