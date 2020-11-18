@@ -15,9 +15,9 @@ namespace TurfTankRegistrationApplication.Model
 
     public abstract class ScanableSticker : IScanableSticker
     {
-        public string Data { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Component LinkedTo { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool IsDiscarded { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string Data { get; set; }
+        public Component LinkedTo { get; set; }
+        public bool IsDiscarded { get; set; }
 
         //public bool isDiscarded = false;
 

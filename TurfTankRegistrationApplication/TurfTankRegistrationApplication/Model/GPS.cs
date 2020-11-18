@@ -6,9 +6,10 @@ namespace TurfTankRegistrationApplication.Model
 {
     interface IGPS
     {
+        SimCard SimCard { get; set; }
     }
 
-    public class GPS : Component
+    public class GPS : Component, IGPS
     {
         public enum Type
         {
@@ -18,12 +19,14 @@ namespace TurfTankRegistrationApplication.Model
 
         public Type ofType;
 
+        public SimCard SimCard { get; set; }
+
         public GPS()
         {
 
         }
 
-        // Method returns serial number for controller.
+        // Method returns serial number for GPS.
         // If the serial number (ID) is null it starts the process of retrieving the serial number
         public override string GetSerialNumber()
         {

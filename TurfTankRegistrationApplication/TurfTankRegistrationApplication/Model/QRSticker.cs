@@ -4,7 +4,7 @@ namespace TurfTankRegistrationApplication.Model
     public interface IQRSticker
     {
 
-        int ID { get; set; }
+        string ID { get; set; }
         string ICCID { get; set; }
         bool ConfirmAssemblyAndLabeling();
 
@@ -13,8 +13,8 @@ namespace TurfTankRegistrationApplication.Model
     public class QRSticker : ScanableSticker, IQRSticker
     {
 
-        public int ID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string ICCID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string ID { get; set; }
+        public string ICCID { get; set; }
 
         public bool ConfirmAssemblyAndLabeling()
         {

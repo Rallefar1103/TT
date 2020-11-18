@@ -10,9 +10,8 @@ namespace TurfTankRegistrationApplication.ViewModel
 {
     public interface IRegistrateRobot
     {
-        void NavigateToScanPage();
         void RegistrateChassis();
-        void RegistrateControllerAsync();
+        void RegistrateController();
         void RegistrateRover();
         void RegistrateBase();
         void RegistrateTablet();
@@ -28,13 +27,14 @@ namespace TurfTankRegistrationApplication.ViewModel
         public string RoverSN { get; set; } = "";
         public string BaseSN { get; set; } = "";
         public string TabletSN { get; set; } = "";
+        public string RoverSIM { get; set; } = "";
+        public string BaseSIM { get; set; } = "";
+        public string TabletSIM { get; set; } = "";
 
         public INavigation Navigation { get; set; }
 
         public RobotRegistrationViewModel(INavigation navigation)
         {
-            robotItem.Controller.ID = "123456";
-            robotItem.SerialNumber = "7891012";
             robotItem.RoverGPS.ID = "13141516";
             robotItem.BaseGPS.ID = "17181920";
             robotItem.Tablet.ID = "212223345";
@@ -42,29 +42,37 @@ namespace TurfTankRegistrationApplication.ViewModel
             this.Navigation = navigation;
             robotItem.SetAsSelected();
 
-            DidChangeChassisSN = new Command(NavigateToScanPage);
-            DidChangeControllerSN = new Command(NavigateToScanPage);
+            DidChangeChassisSN = new Command(RegistrateChassis);
+            DidChangeControllerSN = new Command(RegistrateController);
             DidChangeRoverSN = new Command(RegistrateRover);
             DidChangeBaseSN = new Command(RegistrateBase);
             DidChangeTabletSN = new Command(RegistrateTablet);
+            Callback = new Action<object, string>(OnDataReceived);
 
-            MessagingCenter.Subscribe<ScanPage, string>(this, "Result", (sender, data) =>
-            {
-                if (data.Contains("https://"))
-                {
-                    ChassisSN = data;
-                    OnPropertyChanged(nameof(ChassisSN));
-
-                }
-                else if (data.Contains("SSID"))
-                {
-                    ControllerSN = data;
-                    OnPropertyChanged(nameof(ControllerSN));
-                }
-            });
+            MessagingCenter.Subscribe<ScanPage, string>(this, "Result", Callback);
 
         }
 
+        private void OnDataReceived(object sender, string data)
+        {
+            if (data.Contains("Robot"))
+            {
+                ChassisSN = data;
+                OnPropertyChanged(nameof(ChassisSN));
+
+            }
+            else if (data.Contains("Controller"))
+            {
+                ControllerSN = data;
+                OnPropertyChanged(nameof(ControllerSN));
+            }
+            else if (data.Contains("Rover"))
+            {
+                //robotItem.RoverGPS.SimCard.QrSticker
+            }
+        }
+
+        public Action<object, string> Callback { get; set; }
         public Command DidChangeChassisSN { get; }
         public Command DidChangeControllerSN { get; }
         public Command DidChangeRoverSN { get; }
@@ -72,6 +80,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         public Command DidChangeTabletSN { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -85,35 +94,22 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public void RegistrateChassis()
         {
-            
+            NavigateToScanPage();
         }
 
-        public async void RegistrateControllerAsync()
+        public void RegistrateController()
         {
-            ControllerSN = robotItem.Controller.GetSerialNumber();
-            if (ControllerSN.Length > 0)
-            {
-                await Application.Current.MainPage.DisplayAlert("Success!", "Controller Scanned", "Ok");
-                OnPropertyChanged(nameof(ControllerSN));
-            }
-            else
-            {
-                Console.WriteLine("Error retrieving Controller SN");
-            }
+            NavigateToScanPage();
         }
 
-        public async void RegistrateRover()
+        
+        public void RegistrateRover()
         {
-            RoverSN = robotItem.RoverGPS.GetSerialNumber();
-            if (RoverSN.Length > 0)
-            {
-                await Application.Current.MainPage.DisplayAlert("Success!", "Rover Scanned", "Ok");
-                OnPropertyChanged(nameof(RoverSN));
-            }
-            else
-            {
-                Console.WriteLine("Error retrieving Rover SN");
-            }
+            NavigateToScanPage();
+            // Scan label for SimCard information
+            // Retrieve SimCard SN from DB
+            // Connect to Controller WiFi
+            // Retrieve Rover SN from Controller
         }
 
         public async void RegistrateBase()
@@ -146,7 +142,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public void SaveRobot()
         {
-            // Not implemented
+            // Not implemented, but will save every component on the robotPackage instance to the DB
         }
     }
 }

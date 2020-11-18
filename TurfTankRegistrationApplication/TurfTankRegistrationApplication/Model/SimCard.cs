@@ -11,10 +11,10 @@ namespace TurfTankRegistrationApplication.Model
 
     public class SimCard : ISimCard
     {
-        public string ID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public QRSticker QrSticker { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public BarcodeSticker BarcodeSticker { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool Activated { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string ID { get; set; }
+        public QRSticker QrSticker { get; set; }
+        public BarcodeSticker BarcodeSticker { get; set; }
+        public bool Activated { get; set; }
     }
 
 }
