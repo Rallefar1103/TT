@@ -20,7 +20,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 
     public class RobotRegistrationViewModel : INotifyPropertyChanged, IRegistrateRobot
     {
-        public RobotPackage robotItem = new RobotPackage();
+        public RobotPackage robotItem { get; set; }
 
         public string ChassisSN { get; set; } = "";
         public string ControllerSN { get; set; } = "";
@@ -33,8 +33,9 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public INavigation Navigation { get; set; }
 
-        public RobotRegistrationViewModel(INavigation navigation)
+        public RobotRegistrationViewModel(INavigation navigation, RobotPackage robot)
         {
+            this.robotItem = robot;
             this.Navigation = navigation;
             robotItem.SetAsSelected();
             DidChangeChassisSN = new Command(() => NavigateToScanPage("Chassis"));
@@ -92,9 +93,6 @@ namespace TurfTankRegistrationApplication.ViewModel
         {
             Navigation.PushAsync(new ScanPage(component));
         }
-
-   
-
         #endregion
 
         #region public methods

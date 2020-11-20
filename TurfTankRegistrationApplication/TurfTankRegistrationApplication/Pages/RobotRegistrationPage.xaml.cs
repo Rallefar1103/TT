@@ -2,19 +2,21 @@
 using System.Collections.Generic;
 using TurfTankRegistrationApplication.ViewModel;
 using TurfTankRegistrationApplication.Views.Registration_views;
+using TurfTankRegistrationApplication.Model;
 using Xamarin.Forms;
 
 namespace TurfTankRegistrationApplication.Pages
 {
     public partial class RobotRegistrationPage : ContentPage
     {
-        
+        readonly RobotPackage robot = new RobotPackage();
+
         [Obsolete]
         public RobotRegistrationPage()
         {
             InitializeComponent();
             
-            RobotRegistrationViewModel RobotRegVM = new RobotRegistrationViewModel(Navigation);
+            RobotRegistrationViewModel RobotRegVM = new RobotRegistrationViewModel(Navigation, robot);
             BindingContext = RobotRegVM;
 
             ComponentBtn ChassisBtn = new ComponentBtn("Chassis", RobotRegVM.DidChangeChassisSN);
