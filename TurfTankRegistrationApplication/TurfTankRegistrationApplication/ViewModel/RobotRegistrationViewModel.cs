@@ -46,7 +46,6 @@ namespace TurfTankRegistrationApplication.ViewModel
             Callback = new Action<object, string>(OnDataReceived);
 
             MessagingCenter.Subscribe<ScanPage, string>(this, "Result", Callback);
-
         }
 
         private async void OnDataReceived(object sender, string data)
@@ -81,7 +80,6 @@ namespace TurfTankRegistrationApplication.ViewModel
         public Command DidChangeTabletSN { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
