@@ -18,8 +18,6 @@ namespace TurfTankRegistrationApplication.Pages
             RobotRegistrationViewModel RobotRegVM = new RobotRegistrationViewModel(Navigation, robot);
             BindingContext = RobotRegVM;
 
-            
-
             // View Components
             ComponentBtn ChassisBtn = new ComponentBtn("Chassis", RobotRegVM.DidChangeChassisSN);
             ComponentBtn ControllerBtn = new ComponentBtn("Controller", RobotRegVM.DidChangeControllerSN);

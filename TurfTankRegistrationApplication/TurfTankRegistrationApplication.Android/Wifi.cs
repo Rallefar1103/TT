@@ -35,8 +35,6 @@ namespace TurfTankRegistrationApplication.Droid
 
             };
 
-            Console.WriteLine("!!!!!! ------ WifiConfig: " + wifiConfig.ToString());
-
             wifiManager.AddNetwork(wifiConfig);
             IList<WifiConfiguration> myWifi = wifiManager.ConfiguredNetworks;
             //myWifi.FirstOrDefault(n => n.Ssid == SSID);
