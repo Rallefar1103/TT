@@ -30,14 +30,15 @@
                     CornerRadius="25"
                     Text="Rover SN"
                     BackgroundColor="White"
-                    Command="{Binding DidChangeRoverSN}"/>
+                    />
             
             <Button Grid.Column="1" Grid.Row="2"
                     HeightRequest="60"
                     WidthRequest="150"
                     CornerRadius="25"
                     Text="Rover Simcard"
-                    Background="White"/>
+                    Background="White"
+                    Command="{Binding DidChangeRoverSimcard}"/>
 
         </Grid>
     </ContentPage.Content>

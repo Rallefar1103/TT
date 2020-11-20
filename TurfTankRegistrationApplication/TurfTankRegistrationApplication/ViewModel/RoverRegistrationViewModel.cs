@@ -11,14 +11,14 @@ namespace TurfTankRegistrationApplication.ViewModel
     {
         public INavigation Navigation { get; set; }
 
-        public Command DidChangeRoverSN { get; }
+        public Command DidChangeRoverSimcard { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public RoverRegistrationViewModel(INavigation navigation)
         {
             this.Navigation = navigation;
-            DidChangeRoverSN = new Command(() => NavigateToScanPage("Rover"));
+            DidChangeRoverSimcard = new Command(() => NavigateToScanPage("Rover"));
         }
 
 
@@ -28,6 +28,11 @@ namespace TurfTankRegistrationApplication.ViewModel
             scanPage.vm.Title = "Scanning " + component;
             scanPage.QRMustContain = component;
             Navigation.PushAsync(scanPage);
+        }
+
+        public void GetRoverSerialNumber()
+        {
+            Console.WriteLine("Start connecting to wifi");
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
