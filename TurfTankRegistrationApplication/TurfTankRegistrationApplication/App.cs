@@ -3,8 +3,14 @@ using TurfTankRegistrationApplication.Pages;
 
 namespace TurfTankRegistrationApplication
 {
-    public class App : Application
+	public interface IWifiConnector
 	{
+		void ConnectToWifi();
+	};
+
+	public class App : Application
+	{
+		
 		public App()
 		{
 			// dette skal med fordi at Markup stadig er experimental.

@@ -13,7 +13,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         public MenuPageViewModel(INavigation navigation)
         {
             this.Navigation = navigation;
-            NavigateToRobotRegistration = new Command(async () => await GoToRobotRegistration());
+            NavigateToRobotRegistration = new Command(TryConnecting);
             NavigateToPreRegistration = new Command(async () => await GoToPreRegistration());
             NavigateToScanner = new Command(async () => await GoToScanner());
         }
@@ -24,7 +24,12 @@ namespace TurfTankRegistrationApplication.ViewModel
         public Command NavigateToPreRegistration { get; }
         public Command NavigateToScanner { get; }
 
-        [Obsolete]
+        public void TryConnecting()
+        {
+            DependencyService.Get<IWifiConnector>().ConnectToWifi();
+        }
+
+        
         public async Task GoToRobotRegistration()
         {
             await Navigation.PushAsync(new RobotRegistrationPage());
