@@ -69,7 +69,7 @@ namespace TurfTankRegistrationApplication.Pages
 
             // View Bindings
             ChassisSN.SetBinding(Label.TextProperty, new Binding("ChassisSN"));
-            ControllerSN.SetBinding(Label.TextProperty, new Binding("Controller"));
+            ControllerSN.SetBinding(Label.TextProperty, new Binding("ControllerSN"));
             RoverSN.SetBinding(Label.TextProperty, new Binding("RoverSN"));
             BaseSN.SetBinding(Label.TextProperty, new Binding("BaseSN"));
             RoverSIM.SetBinding(Label.TextProperty, new Binding("RoverSIM"));

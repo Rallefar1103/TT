@@ -48,7 +48,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             this.robotItem = robot;
             this.Navigation = navigation;
             robotItem.SetAsSelected();
-            DidChangeChassisSN = new Command(() => NavigateToScanPage("Chassis"));
+            DidChangeChassisSN = new Command(() => NavigateToScanPage("Robot"));
             DidChangeControllerSN = new Command(() => NavigateToScanPage("Controller"));
             DidChangeTabletSN = new Command(() => NavigateToScanPage("Tablet"));
             DidChangeRoverSN = new Command(() => NavigateToRoverPage());
