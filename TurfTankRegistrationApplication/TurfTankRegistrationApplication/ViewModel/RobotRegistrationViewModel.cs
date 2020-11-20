@@ -12,8 +12,8 @@ namespace TurfTankRegistrationApplication.ViewModel
     {
         void RegistrateChassis(string result);
         void RegistrateController(string result);
-        void RegistrateRover(string result);
-        void RegistrateBase(string result);
+        void RegistrateRoverSimcard(string result);
+        void RegistrateBaseSimcard(string result);
         void RegistrateTablet();
         void SaveRobot();
     }
@@ -36,6 +36,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         public Command DidChangeRoverSN { get; }
         public Command DidChangeBaseSN { get; }
         public Command DidChangeTabletSN { get; }
+        public Command DidSaveRobot { get;  }
 
         public Action<object, string> Callback { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -52,6 +53,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             DidChangeTabletSN = new Command(() => NavigateToScanPage("Tablet"));
             DidChangeRoverSN = new Command(() => NavigateToRoverPage());
             DidChangeBaseSN = new Command(() => NavigateToBasePage());
+            DidSaveRobot = new Command(() => SaveRobot());
             Callback = new Action<object, string>(OnDataReceived);
 
             MessagingCenter.Subscribe<ScanPage, string>(this, "Result", Callback);
@@ -69,11 +71,11 @@ namespace TurfTankRegistrationApplication.ViewModel
             }
             else if (data.Contains("Rover"))
             {
-                RegistrateRover(data);
+                RegistrateRoverSimcard(data);
             }
             else if (data.Contains("Base"))
             {
-                RegistrateBase(data);
+                RegistrateBaseSimcard(data);
 
             } else
             {
@@ -138,7 +140,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         }
         
 
-        public async void RegistrateRover(string result)
+        public async void RegistrateRoverSimcard(string result)
         {
             // Scan label for Simcard info
             robotItem.RoverGPS.ofType = GPS.GPSType.Rover;
@@ -163,7 +165,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         }
 
-        public async void RegistrateBase(string result)
+        public async void RegistrateBaseSimcard(string result)
         {
             // Scan label for Simcard info
             robotItem.BaseGPS.ofType = GPS.GPSType.Base;
@@ -188,9 +190,10 @@ namespace TurfTankRegistrationApplication.ViewModel
             // To be implemented
         }
 
-        public void SaveRobot()
+        public async void SaveRobot()
         {
             // Not implemented, but will save every component on the robotPackage instance to the DB
+            await Application.Current.MainPage.DisplayAlert("Success!", "Robot saved", "OK");
         }
         #endregion
     }

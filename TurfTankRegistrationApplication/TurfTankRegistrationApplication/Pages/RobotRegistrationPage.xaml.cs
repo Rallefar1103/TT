@@ -11,7 +11,6 @@ namespace TurfTankRegistrationApplication.Pages
     {
         readonly RobotPackage robot = new RobotPackage();
 
-        [Obsolete]
         public RobotRegistrationPage()
         {
             InitializeComponent();
@@ -47,6 +46,15 @@ namespace TurfTankRegistrationApplication.Pages
                 HeightRequest = 20,
             };
 
+            Label SpacerLabelOne = new Label
+            {
+                HorizontalOptions = LayoutOptions.Center,
+            };
+
+            Label SpacerLabelTwo = new Label
+            {
+                HorizontalOptions = LayoutOptions.Center,
+            };
 
             Button SaveBtn = new Button
             {
@@ -60,16 +68,16 @@ namespace TurfTankRegistrationApplication.Pages
 
 
             // View Bindings
-            ChassisSN.SetBinding<RobotRegistrationViewModel>(Label.TextProperty, vm => vm.ChassisSN);
-            ControllerSN.SetBinding<RobotRegistrationViewModel>(Label.TextProperty, vm => vm.ControllerSN);
-            RoverSN.SetBinding<RobotRegistrationViewModel>(Label.TextProperty, vm => vm.RoverSN);
-            BaseSN.SetBinding<RobotRegistrationViewModel>(Label.TextProperty, vm => vm.BaseSN);
-            TabletSN.SetBinding<RobotRegistrationViewModel>(Label.TextProperty, vm => vm.TabletSN);
+            ChassisSN.SetBinding(Label.TextProperty, new Binding("ChassisSN"));
+            ControllerSN.SetBinding(Label.TextProperty, new Binding("Controller"));
+            RoverSN.SetBinding(Label.TextProperty, new Binding("RoverSN"));
+            BaseSN.SetBinding(Label.TextProperty, new Binding("BaseSN"));
+            RoverSIM.SetBinding(Label.TextProperty, new Binding("RoverSIM"));
+            BaseSIM.SetBinding(Label.TextProperty, new Binding("BaseSIM"));
 
-            RoverSIM.SetBinding<RobotRegistrationViewModel>(Label.TextProperty, vm => vm.RoverSIM);
-            BaseSIM.SetBinding<RobotRegistrationViewModel>(Label.TextProperty, vm => vm.BaseSIM);
+            SaveBtn.SetBinding(Button.CommandProperty, new Binding("DidSaveRobot"));
 
-
+            
             // View Component Attributes
             ChassisSN.TextColor = Color.DarkGreen;
             ChassisSN.FontSize = 18;
@@ -83,7 +91,7 @@ namespace TurfTankRegistrationApplication.Pages
             RoverSN.FontSize = 18;
             RoverSN.FontAttributes = FontAttributes.Bold;
 
-            RoverSIM.TextColor = Color.DarkBlue;
+            RoverSIM.TextColor = Color.Blue;
             RoverSIM.FontSize = 18;
             RoverSIM.FontAttributes = FontAttributes.Bold;
 
@@ -91,7 +99,7 @@ namespace TurfTankRegistrationApplication.Pages
             BaseSN.FontSize = 18;
             BaseSN.FontAttributes = FontAttributes.Bold;
 
-            BaseSIM.TextColor = Color.DarkBlue;
+            BaseSIM.TextColor = Color.Blue;
             BaseSIM.FontSize = 18;
             BaseSIM.FontAttributes = FontAttributes.Bold;
 
@@ -106,8 +114,10 @@ namespace TurfTankRegistrationApplication.Pages
                         SizedBoxTop,
                         ChassisBtn,
                         ChassisSN,
+                        SpacerLabelOne,
                         ControllerBtn,
                         ControllerSN,
+                        SpacerLabelTwo,
                         RoverBtn,
                         RoverSN,
                         RoverSIM,
