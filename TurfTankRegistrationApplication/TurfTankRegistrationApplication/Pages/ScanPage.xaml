@@ -9,7 +9,7 @@
     <!--The Title of this view is gained from its ViewModel-->
 
   <ContentPage.Content>
-        <Grid>
+        <Grid x:Name="PageGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="20" />
                 <RowDefinition Height="Auto" />
@@ -35,7 +35,26 @@
             <ContentView x:Name="TheScanner"
                          Grid.RowSpan="11" Grid.ColumnSpan="4"
                      BackgroundColor="Teal"
+                         IsVisible= "true"
+
                          />
+            <!--overlay for the camera, gets visible when a QR is analysed, could show the scanned QR-->
+            <StackLayout x:Name="ManualInputView" BackgroundColor="Black" IsVisible="false"
+                        Grid.Row="0" Grid.RowSpan="11" Grid.ColumnSpan="4">
+                <BoxView Color="Black"  IsVisible="true" HeightRequest="200"/>
+                <Label x:Name="ManualLabel" Text="Fill in " HorizontalOptions="Center" TextColor="White"/>
+                <Entry x:Name="ManualInputField"
+                       HorizontalOptions="FillAndExpand"
+                       HorizontalTextAlignment="Center"
+                       Placeholder="Place serial here"
+                       TextColor="White"
+                       PlaceholderColor="WhiteSmoke"
+                       BackgroundColor="DarkGray"
+                       Text  = "{Binding ManualInputText}"                       
+                       />
+                <BoxView Color="Black"  IsVisible="true" HeightRequest="200"/>
+
+             </StackLayout>
            
             
 <!--Greeting-->
@@ -45,7 +64,7 @@
 <!--State-information-->
             <Label x:Name="scanner_State" 
                  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"
-                   Text ="WWW" TextColor="Orange" FontSize="Medium" />
+                   Text ="{Binding ScannerStateString}" TextColor="Orange" FontSize="Medium" />
 
 
 
@@ -57,7 +76,7 @@
                                             BarcodeFormat="QR_CODE"
                                             IsVisible="true"
                                             Opacity="1"
-                                            BarcodeValue="{Binding Result}">
+                                            BarcodeValue="{Binding ScanResult}">
                                 <zxing:ZXingBarcodeImageView.BarcodeOptions>
                                     <zxcm:EncodingOptions Width="200" Height="200"/>
                                 </zxing:ZXingBarcodeImageView.BarcodeOptions>
@@ -69,13 +88,13 @@
 <!--overlay for the camera, gets visible when a QR is analysed, could show the scanned QR-->
             <BoxView x:Name="Dimmer"
                  Grid.Row="4" Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="2"
-                     Color="Yellow" Opacity="{Binding DimmValue}" />
+                     Color="{Binding DimmColor}" Opacity="{Binding DimmValue}" />
 
 
 <!--The Resulting string of the Scan -->
             <Label x:Name="Camera_Data"
                  Grid.Row="4" Grid.Column="1" Grid.RowSpan="3" Grid.ColumnSpan="1" 
-                   Text ="{Binding Result}" HorizontalTextAlignment="Start" FontSize="Medium" FontAttributes="Bold" VerticalTextAlignment="Start" TextColor="DarkRed" 
+                   Text ="{Binding ScanResult}" HorizontalTextAlignment="Start" FontSize="Medium" FontAttributes="Bold" VerticalTextAlignment="Start" TextColor="DarkRed" 
                    />
 
             
