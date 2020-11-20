@@ -89,7 +89,9 @@ namespace TurfTankRegistrationApplication.ViewModel
         #region helperfunctions
         public void NavigateToScanPage(string component)
         {
-            Navigation.PushAsync(new ScanPage(component));
+            ScanPage scanPage = new ScanPage();
+            scanPage.vm.Title = "Scanning " + component;
+            Navigation.PushAsync(scanPage);
         }
         #endregion
 

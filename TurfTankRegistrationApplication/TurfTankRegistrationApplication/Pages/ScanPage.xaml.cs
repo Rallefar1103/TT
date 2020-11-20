@@ -30,7 +30,7 @@ namespace TurfTankRegistrationApplication.Pages
     /// </summary>
     public partial class ScanPage : ContentPage
     {
-        ScanViewModel vm;
+        public ScanViewModel vm;
 
         //Create a ZXing Scanner for displaying and analyzins QR-codes
         ZXingScannerView Scanner = new ZXingScannerView();
@@ -48,15 +48,12 @@ namespace TurfTankRegistrationApplication.Pages
 
         public event EventHandler<string> ResultValueChanged;
 
-        public string componentToBeScanned { get; set; }
-
         #region Constructor
-        public ScanPage(string componentGettingScanned)
+        public ScanPage()
         {
             InitializeComponent();
             //Binding to the viewmodel
-            componentToBeScanned = componentGettingScanned;
-            BindingContext = vm = new ScanViewModel(componentToBeScanned);
+            BindingContext = vm = new ScanViewModel();
 
 
             //Initializing the viewmodel
@@ -86,11 +83,6 @@ namespace TurfTankRegistrationApplication.Pages
             //View Stuff
             //Show/hide the QR sticker
             //QR.IsVisible = true;
-
-        }
-
-        public ScanPage()
-        {
 
         }
 
