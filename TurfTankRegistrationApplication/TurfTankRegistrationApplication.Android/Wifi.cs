@@ -21,7 +21,7 @@ namespace TurfTankRegistrationApplication.Droid
         {
         }
 
-        public void ConnectToWifi()
+        public bool ConnectToWifi()
         {
             var formattedSSID = $"\"{SSID}\"";
             var formattedPassword = $"\"{PASS}\"";
@@ -37,13 +37,20 @@ namespace TurfTankRegistrationApplication.Droid
 
             wifiManager.AddNetwork(wifiConfig);
             IList<WifiConfiguration> myWifi = wifiManager.ConfiguredNetworks;
-            //myWifi.FirstOrDefault(n => n.Ssid == SSID);
-            //int networkID = wifiConfig.NetworkId;
 
             wifiManager.Disconnect();
             wifiManager.EnableNetwork(myWifi.FirstOrDefault(x => x.Ssid.Contains(SSID)).NetworkId, true);
+
             Console.WriteLine($"!!!!!! -----------------------   Connecting to {SSID} ------------------------- !!!!!!!!!");
-            wifiManager.Reconnect();
+
+            if (wifiManager.Reconnect())
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
+            
                 
         }
     }

@@ -5,7 +5,7 @@ namespace TurfTankRegistrationApplication
 {
 	public interface IWifiConnector
 	{
-		void ConnectToWifi();
+		bool ConnectToWifi();
 	};
 
 	public class App : Application

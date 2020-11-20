@@ -12,6 +12,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         public INavigation Navigation { get; set; }
 
         public Command DidChangeRoverSimcard { get; }
+        public Command DidChangeRoverSN { get;  }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -19,6 +20,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         {
             this.Navigation = navigation;
             DidChangeRoverSimcard = new Command(() => NavigateToScanPage("Rover"));
+            DidChangeRoverSN = new Command(() => GetRoverSerialNumber());
         }
 
 
@@ -30,9 +32,27 @@ namespace TurfTankRegistrationApplication.ViewModel
             Navigation.PushAsync(scanPage);
         }
 
+        public bool TryConnecting()
+        {
+            bool result = false;
+            result = DependencyService.Get<IWifiConnector>().ConnectToWifi();
+            return result;
+        }
+
+        // We might need to move this logic to the Model
         public void GetRoverSerialNumber()
         {
+            bool gotConnected = false;
             Console.WriteLine("Start connecting to wifi");
+            gotConnected = TryConnecting();
+            if (gotConnected)
+            {
+                Console.WriteLine("WE ARE CONNECTED!");
+            } else
+            {
+                Console.WriteLine("OOPS WE END UP HERE!");
+            }
+            // Use Connectivity to check if we are online or not 
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
