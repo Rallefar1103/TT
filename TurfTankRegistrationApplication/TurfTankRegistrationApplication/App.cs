@@ -1,11 +1,14 @@
 ﻿using Xamarin.Forms;
 using TurfTankRegistrationApplication.Pages;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace TurfTankRegistrationApplication
 {
 	public interface IWifiConnector
 	{
 		bool ConnectToWifi();
+		List<string> GetAvailableNetworks();
 	};
 
 	public class App : Application
