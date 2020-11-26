@@ -1,4 +1,6 @@
 ﻿using System;
+
+using TurfTankRegistrationApplication.Connection;
 namespace TurfTankRegistrationApplication.Model
 {
     public interface IRobotPackage
@@ -124,6 +126,15 @@ namespace TurfTankRegistrationApplication.Model
                 roverGPS: roverGPS,
                 baseGPS: baseGPS,
                 qr: qr);
+        }
+
+        public RobotPackage(RobotItem schema)
+        {
+            SerialNumber = schema.Id ?? "";
+            Controller = new Controller();
+            Controller.ID = schema.Controller.SerialNumber ?? "";
+            Controller.ActiveSSID = schema.Controller.Ssid ?? "";
+            Controller.ActivePassword = schema.Controller.SsidPassword ?? "";
         }
 
 
