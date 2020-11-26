@@ -13,9 +13,10 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public enum state
         {
-            No_Scanable_Recognized,
+            Ready_To_Scan,
             Scannable_discovered,
             Analyzing,
+            ScanResultDoesNotMatchQRMustContainString,
             ScanResult_Ready,
             Saving_Data,
             Saved,
@@ -23,7 +24,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         }
         public bool ResultIsLocked = false;
 
-        public string Result
+        public string ScanResult
         {
             get => _result;
             set
@@ -31,12 +32,25 @@ namespace TurfTankRegistrationApplication.ViewModel
                 if (!ResultIsLocked)
                 {
                     _result = value;
-                    OnPropertyChanged(nameof(Result));
+                    OnPropertyChanged(nameof(ScanResult));
                 }
             }
         }
         private string _result = "";
 
+
+        public string ManualInputText
+        {
+            get => _manualInputText;
+            set
+            {
+                _result = value;
+                _manualInputText = value;
+                OnPropertyChanged(nameof(ScanResult));
+                OnPropertyChanged(nameof(ManualInputText));
+            }
+        }
+        private string _manualInputText = "";
 
         public string ScannerStateString { get => $"{ScannerState}"; }
         public state ScannerState
@@ -45,10 +59,10 @@ namespace TurfTankRegistrationApplication.ViewModel
             set
             {
                 _scannerState = value;
-                OnPropertyChanged(nameof(ScannerState));
+                OnPropertyChanged(nameof(ScannerStateString));
             }
         }
-        private state _scannerState = state.No_Scanable_Recognized;
+        private state _scannerState = state.Ready_To_Scan;
 
 
         public string Greeting
@@ -74,6 +88,18 @@ namespace TurfTankRegistrationApplication.ViewModel
         }
 
         private double _dimmValue = 0.0;
+
+        public Color DimmColor
+        {
+            get => _dimmColor;
+            set
+            {
+                _dimmColor = value;
+                OnPropertyChanged(nameof(DimmColor));
+            }
+        }
+
+        private Color _dimmColor = Color.Yellow;
 
 
         #region Constructor

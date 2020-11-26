@@ -1,33 +1,34 @@
 ﻿using System;
 namespace TurfTankRegistrationApplication.Model
 {
-     public interface IRobotPackage
+    public interface IRobotPackage
     {
-         string SerialnumberFromChassi { get; set; }
-         Controller Controller { get; set; }
-         Tablet Tablet { get; set; }
-         GPS RoverGps { get; set; }
-         GPS BaseGps { get; set; }
-         QRSticker QrSticker { get; set; }
-         bool IsSynchronized { get; set; }
-         bool IsSelected { get; set; }
+        string SerialNumber { get; set; }
+        QRSticker QR { get; set; }
+        Controller Controller { get; set; }
+        Tablet Tablet { get; set; }
+        GPS RoverGPS { get; set; }
+        GPS BaseGPS { get; set; }
 
-         void SwapComponent(Component component);
-         void SetAsSelected();
+        bool IsSynchronized { get; set; }
+        bool IsSelected { get; set; }
+
+        Component SwapBrokenComponent(Component component);
+        void SetAsSelected();
     }
 
     public class RobotPackage : IRobotPackage
     {
         #region Public Attributes
 
-        public string SerialnumberFromChassi { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Controller Controller { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Tablet Tablet { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public GPS RoverGps { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public GPS BaseGps { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public QRSticker QrSticker { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool IsSynchronized { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool IsSelected { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string SerialNumber { get; set; }
+        public QRSticker QR { get; set; }
+        public Controller Controller { get; set; }
+        public Tablet Tablet { get; set; }
+        public GPS RoverGPS { get; set; }
+        public GPS BaseGPS { get; set; }
+        public bool IsSynchronized { get; set; }
+        public bool IsSelected { get; set; }
 
         #endregion Public Attributes
 
@@ -36,26 +37,98 @@ namespace TurfTankRegistrationApplication.Model
 
         public void SetAsSelected()
         {
-            throw new NotImplementedException();
+            IsSelected = true;
         }
 
-        public void SwapComponent(Component component)
+
+        public Component SwapBrokenComponent(Component component)
         {
-            throw new NotImplementedException();
+
+            if (component is Controller)
+            {
+                Controller oldController = Controller;
+                oldController.FlagAsBroken();
+                Console.WriteLine("Swapping Controller");
+                Controller = (Controller)component;
+
+                return oldController;
+
+            }
+            else if (component is GPS)
+            {
+                if (((GPS)component).ofType == GPS.GPSType.Rover)
+                {
+                    GPS oldRover = RoverGPS;
+                    oldRover.FlagAsBroken();
+                    Console.WriteLine("Swapping Rover");
+                    RoverGPS = (GPS)component;
+
+                    return oldRover;
+                }
+                else
+                {
+                    GPS oldBase = BaseGPS;
+                    oldBase.FlagAsBroken();
+                    Console.WriteLine("Swapping Base");
+                    BaseGPS = (GPS)component;
+
+                    return oldBase;
+                }
+
+            }
+            else if (component is Tablet)
+            {
+                Tablet oldTablet = Tablet;
+                oldTablet.FlagAsBroken();
+                Console.WriteLine("Swapping Tablet");
+                Tablet = (Tablet)component;
+
+                return oldTablet;
+
+            }
+            else
+            {
+                Console.WriteLine("Invalid input");
+                return null;
+            }
         }
 
         #endregion Public functions
 
 
         #region Constructor
+        public void Initialize(Controller controller, Tablet tablet, GPS roverGPS, GPS baseGPS, QRSticker qr)
+        {
+            Controller = controller;
+            Tablet = tablet;
+            RoverGPS = roverGPS;
+            BaseGPS = baseGPS;
+            QR = qr;
+        }
 
         public RobotPackage()
         {
-           
+            Initialize(
+                controller: new Controller(),
+                tablet: new Tablet(),
+                roverGPS: new GPS() { ofType = GPS.GPSType.Rover },
+                baseGPS: new GPS() { ofType = GPS.GPSType.Base },
+                qr: new QRSticker());
+        }
+
+        public RobotPackage(Controller controller, Tablet tablet, GPS roverGPS, GPS baseGPS, QRSticker qr)
+        {
+            Initialize(
+                controller: controller,
+                tablet: tablet,
+                roverGPS: roverGPS,
+                baseGPS: baseGPS,
+                qr: qr);
         }
 
 
-        #endregion Constructor
+
+        #endregion
 
 
 

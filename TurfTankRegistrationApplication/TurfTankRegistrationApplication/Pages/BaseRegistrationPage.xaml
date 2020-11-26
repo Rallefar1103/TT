@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TurfTankRegistrationApplication.Pages.BaseRegistrationPage"
+             BackgroundColor="Black">
+    <ContentPage.Content>
+        <Grid HorizontalOptions="Center"
+              VerticalOptions="Center"
+              Padding="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                 <RowDefinition Height="*"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Text="Registrate Base"
+                   Grid.ColumnSpan="2"
+                   TextColor="White"
+                   FontSize="35"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
+
+            <Button Grid.Column="0" Grid.Row="2"
+                    HeightRequest="60"
+                    WidthRequest="150"
+                    CornerRadius="25"
+                    Text="Base SN"
+                    BackgroundColor="White"/>
+            
+            <Button Grid.Column="1" Grid.Row="2"
+                    HeightRequest="60"
+                    WidthRequest="150"
+                    CornerRadius="25"
+                    Text="Base Simcard"
+                    Background="White"/>
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,11 +1,16 @@
-﻿using System;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using TurfTankRegistrationApplication.Pages;
 
 namespace TurfTankRegistrationApplication
 {
+	public interface IWifiConnector
+	{
+		bool ConnectToWifi();
+	};
+
 	public class App : Application
 	{
+		
 		public App()
 		{
 			// dette skal med fordi at Markup stadig er experimental.

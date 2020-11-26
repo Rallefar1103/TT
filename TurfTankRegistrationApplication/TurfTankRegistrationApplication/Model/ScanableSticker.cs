@@ -4,7 +4,7 @@ namespace TurfTankRegistrationApplication.Model
 
     public interface IScanableSticker
     {
-        
+
         string Scan();
         string ManualInput();
         string Data { get; set; }
@@ -15,11 +15,15 @@ namespace TurfTankRegistrationApplication.Model
 
     public abstract class ScanableSticker : IScanableSticker
     {
-        public string Data { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Component LinkedTo { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool IsDiscarded { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        #region Public Attributes
 
-        //public bool isDiscarded = false;
+        public string Data { get; set; }
+        public Component LinkedTo { get; set; }
+        public bool IsDiscarded { get; set; }
+
+        #endregion
+
+        #region Public Methods
 
         public string Scan()
         {
@@ -30,5 +34,8 @@ namespace TurfTankRegistrationApplication.Model
         {
             throw new NotImplementedException();
         }
+
+        #endregion
+
     }
 }
