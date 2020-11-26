@@ -33,7 +33,7 @@ namespace TurfTankRegistrationApplication.Model
         {
             if (ID == null)
             {
-                SetupWifi();
+                // Connect to wifi and let that method return the serial number
                 ID = "ControllerSerialNumber";
                 return ID;
             }
