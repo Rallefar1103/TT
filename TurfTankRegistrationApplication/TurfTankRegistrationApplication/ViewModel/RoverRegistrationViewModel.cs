@@ -12,19 +12,23 @@ namespace TurfTankRegistrationApplication.ViewModel
     public class RoverRegistrationViewModel : INotifyPropertyChanged
     {
         public INavigation Navigation { get; set; }
-
+        public List<string> wifiResults { get; set; }
         public Command DidChangeRoverSimcard { get; }
         public Command DidChangeRoverSN { get;  }
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public Action<IWifiConnector, List<string>> Callback { get; set; }
 
         public RoverRegistrationViewModel(INavigation navigation)
         {
             this.Navigation = navigation;
             DidChangeRoverSimcard = new Command(() => NavigateToScanPage("Rover"));
-            DidChangeRoverSN = new Command(() => TryConnecting());
+            DidChangeRoverSN = new Command(() => Scanner());
+            
+            
         }
 
+        
 
         public void NavigateToScanPage(string component)
         {
@@ -41,20 +45,31 @@ namespace TurfTankRegistrationApplication.ViewModel
             return result;
         }
 
+        // Needs to wait for the result to finish
         public void Scanner()
         {
-            List<string> results = DependencyService.Get<IWifiConnector>().GetAvailableNetworks();
-            if (results != null)
+            Task<List<string>> wifiTask = DependencyService.Get<IWifiConnector>().GetAvailableNetworks();
+            Task continuation = wifiTask.ContinueWith(t =>
             {
-                Console.WriteLine("!!!!! ---------------------  RESULTS: \n");
-                foreach (var result in results)
-                {
-                    Console.WriteLine(result);
-                }
-            } else
+                wifiResults = t.Result;
+            });
+            
+            foreach (var ssid in wifiResults)
             {
-                Console.WriteLine("Uhm.... something wrong went!");
+                Console.WriteLine(ssid);
             }
+
+            //if (await Task.WhenAny(task, Task.Delay(timeout)) == task)
+            //{
+            //    List<string> results = task.Result;
+            //    foreach (var result in results)
+            //    {
+            //        Console.WriteLine("Result: " + result);
+
+            //    }
+            //}
+
+
         }
 
         // We might need to move this logic to the Model

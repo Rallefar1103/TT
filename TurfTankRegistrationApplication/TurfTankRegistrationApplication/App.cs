@@ -8,7 +8,7 @@ namespace TurfTankRegistrationApplication
 	public interface IWifiConnector
 	{
 		bool ConnectToWifi();
-		List<string> GetAvailableNetworks();
+		Task<List<string>> GetAvailableNetworks();
 	};
 
 	public class App : Application
@@ -16,8 +16,6 @@ namespace TurfTankRegistrationApplication
 		
 		public App()
 		{
-			// dette skal med fordi at Markup stadig er experimental.
-			Device.SetFlags(new string[] { "Markup_Experimental" });
 			MainPage = new NavigationPage (new SignInPage());
 		}
 

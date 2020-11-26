@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Android;
 using Android.Content;
 using Android.Net.Wifi;
+using Android.Support.V4.App;
 using TurfTankRegistrationApplication;
 using TurfTankRegistrationApplication.Droid;
 using Xamarin.Forms;
@@ -18,14 +19,16 @@ namespace TurfTankRegistrationApplication.Droid
     {
         public string SSID = "Interwebs";
         public string PASS = "blaapostkasse";
-        public List<string> availableNetworks = new List<string>();
-        public WifiManager wifiMgr;
+        public List<string> availableNetworks { get; set; }
+        public WifiManager wifiMgr { get; set; }
+        
 
         private Context context = null;
 
         public Wifi()
         {
             this.context = Android.App.Application.Context;
+            this.availableNetworks = new List<string>();
         }
 
         public bool ConnectToWifi()
@@ -58,121 +61,94 @@ namespace TurfTankRegistrationApplication.Droid
             {
                 return false;
             }
-
-
         }
 
-        [Obsolete]
-        public void ScanWifi()
-        {
-            wifiMgr = (WifiManager)(context.GetSystemService(Context.WifiService));
-            WifiReceiver wifiReceiver = new WifiReceiver(wifiMgr);
-            context.RegisterReceiver(wifiReceiver, new IntentFilter(WifiManager.ScanResultsAvailableAction));
-            wifiMgr.StartScan();
-
-            availableNetworks = wifiReceiver.networks;
-        }
 
         [Obsolete]
-        public List<string> GetAvailableNetworks()
+        public async Task<List<string>> GetAvailableNetworks()
         {
-            ScanWifi();
+
+            var wifiMgr = (WifiManager)context.GetSystemService(Context.WifiService);
+            var wifiReceiver = new WifiReceiver(wifiMgr);
+
+            await Task.Run(() =>
+            {
+                context.RegisterReceiver(wifiReceiver, new IntentFilter(WifiManager.ScanResultsAvailableAction));
+                availableNetworks = wifiReceiver.Scan();
+            });
+
             return availableNetworks;
         }
 
-        
+
+        //[Obsolete]
+        //public async Task<List<string>> GetAvailableNetworks()
+        //{
+        //    wifiMgr = (WifiManager)(context.GetSystemService(Context.WifiService));
+        //    if (!wifiMgr.IsWifiEnabled)
+        //    {
+        //        Console.WriteLine("Wifi must be enabled!");
+        //        wifiMgr.SetWifiEnabled(true);
+        //    }
+
+        //    WifiReceiver wifiReceiver = new WifiReceiver(wifiMgr);
+        //    context.RegisterReceiver(wifiReceiver, new IntentFilter(WifiManager.ScanResultsAvailableAction));
+        //    await Task.Run(() =>
+        //        {
+        //            wifiMgr.StartScan();
+        //            availableNetworks = wifiReceiver.wifis;
+        //            return availableNetworks;
+        //        });
+
+        //    return availableNetworks;
+        //}
+
     }
 
-
-
-
-
-    class WifiReceiver : BroadcastReceiver
-    {
-        private WifiManager wifiManager;
-        public List<string> networks = new List<string>();
-
-        public WifiReceiver(WifiManager mgr)
-        {
-            wifiManager = mgr;
-        }
-
-        public override void OnReceive(Context context, Intent intent)
-        {
-            var results = wifiManager.ScanResults;
-            if (results != null)
-            {
-                foreach (var result in results)
-                {
-                    networks.Add(result.Ssid);
-                }
-            } else
-            {
-                Console.WriteLine("Error in OnReceive");
-            }
-        }
-    }
 }
 
 
 
 
-//    [Obsolete]
-//    public async Task<IEnumerable<string>> GetAvailableNetworksAsync()
-//    {
-//        IEnumerable<string> availableNetworks = null;
 
-//        var wifiMgr = (WifiManager)context.GetSystemService(Context.WifiService);
-//        var wifiReceiver = new WifiReceiver(wifiMgr);
+//class WifiReceiver : BroadcastReceiver
+//{
+//    private WifiManager wifi;
+//    private List<string> wifiNetworks;
+    //private AutoResetEvent receiverARE;
+    //private Timer tmr;
+    //private const int TIMEOUT_MILLIS = 20000;
 
-//        await Task.Run(() =>
-//        {
-//            context.RegisterReceiver(wifiReceiver, new IntentFilter(WifiManager.ScanResultsAvailableAction));
-//            availableNetworks = wifiReceiver.Scan();
-//        });
+    //public WifiReceiver(WifiManager wifiM)
+    //{
+    //    wifi = wifiM;
+    //    wifiNetworks = new List<string>();
+        //receiverARE = new AutoResetEvent(false);
+    //}
 
-//        return availableNetworks;
-//    }
+    //[Obsolete]
+    //public IEnumerable<string> Scan()
+    //{
+        //tmr = new Timer(Timeout, null, TIMEOUT_MILLIS, System.Threading.Timeout.Infinite);
+        //wifi.StartScan();
+        //receiverARE.WaitOne();
+    //    return wifiNetworks;
+    //}
 
-//    class WifiReceiver : BroadcastReceiver
-//    {
-//        private WifiManager wifi;
-//        private List<string> wifiNetworks;
-//        private AutoResetEvent receiverARE;
-//        private Timer tmr;
-//        private const int TIMEOUT_MILLIS = 20000;
-//        private readonly Action _callback;
+    //public override void OnReceive(Context context, Intent intent)
+    //{
+    //    IList<ScanResult> scanWifiNetworks = wifi.ScanResults;
+    //    foreach (ScanResult wifiNetwork in scanWifiNetworks)
+    //    {
+    //        wifiNetworks.Add(wifiNetwork.Ssid);
+    //    }
 
-//        public WifiReceiver(WifiManager wifiM)
-//        {
-//            wifi = wifiM;
-//            wifiNetworks = new List<string>();
-//            receiverARE = new AutoResetEvent(false);
-//        }
+        //receiverARE.Set();
+    //}
 
-//        [Obsolete]
-//        public IEnumerable<string> Scan()
-//        {
-//            tmr = new Timer(Timeout, null, TIMEOUT_MILLIS, System.Threading.Timeout.Infinite);
-//            wifi.StartScan();
-//            receiverARE.WaitOne();
-//            return wifiNetworks;
-//        }
+    //private void Timeout(object sender)
+    //{
+    //    receiverARE.Set();
+    //}
 
-//        public override void OnReceive(Context context, Intent intent)
-//        {
-//            IList<ScanResult> scanWifiNetworks = wifi.ScanResults;
-//            foreach (ScanResult wifiNetwork in scanWifiNetworks)
-//            {
-//                wifiNetworks.Add(wifiNetwork.Ssid);
-//            }
-
-//            receiverARE.Set();
-//        }
-
-//        private void Timeout(object sender)
-//        {
-//            receiverARE.Set();
-//        }
-
-//    }
+//}
