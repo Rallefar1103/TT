@@ -58,23 +58,27 @@ namespace TurfTankRegistrationApplication.ViewModel
         public async void Scanner()
         {
             Task<List<string>> wifiTask = DependencyService.Get<IWifiConnector>().GetAvailableNetworks();
+
             IsDoneLoading = true;
             OnPropertyChanged(nameof(IsDoneLoading));
+
             await Task.Delay(8000);
             if (wifiTask.Status == TaskStatus.RanToCompletion)
             {
                 Console.WriteLine("DONE");
                 IsDoneLoading = false;
                 OnPropertyChanged(nameof(IsDoneLoading));
+
                 wifiResults = wifiTask.Result;
                 OnPropertyChanged(nameof(wifiResults));
+
                 foreach (var network in wifiResults)
                 {
                     Console.WriteLine("Result: " + network);
                 }
+
                 WifiListIsReady = true;
                 OnPropertyChanged(nameof(WifiListIsReady));
-                //MessagingCenter.Send(this, "wifiScanResults", IsDoneLoading);
 
             } else if (wifiTask.Status == TaskStatus.Running)
             {
