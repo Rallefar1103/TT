@@ -20,6 +20,7 @@ namespace TurfTankRegistrationApplication.Pages
                 FontSize = 30,
                 TextColor = Color.Black,
                 HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center,
 
             };
 

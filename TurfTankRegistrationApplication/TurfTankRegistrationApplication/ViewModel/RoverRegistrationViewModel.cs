@@ -116,26 +116,18 @@ namespace TurfTankRegistrationApplication.ViewModel
             if (gotConnected)
             {
                 Console.WriteLine("WE ARE CONNECTED!");
-                await Application.Current.MainPage.DisplayAlert("Success!", "You are connected to: " + ssid, "OK");
-                RemovePreviousPage();
+                await Application.Current.MainPage.DisplayAlert("Success!", "You are connected to: " + ssid, "Add Serial Number");
+                
 
             } else
             {
                 Console.WriteLine("OOPS WE END UP HERE!");
             }
             MessagingCenter.Send(this, "RoverSerialNumber", "Rover1234");
-            
-        }
-
-        private async void RemovePreviousPage()
-        {
-            var listWifiPage = Navigation.NavigationStack.FirstOrDefault(p => p is ListWifiPage);
-            if (listWifiPage != null)
-            {
-                Navigation.RemovePage(listWifiPage);
-            }
+            await Navigation.PopAsync();
             await Navigation.PopAsync();
         }
+
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
