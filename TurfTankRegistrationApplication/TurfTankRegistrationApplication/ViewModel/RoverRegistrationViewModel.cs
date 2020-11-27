@@ -46,28 +46,45 @@ namespace TurfTankRegistrationApplication.ViewModel
         }
 
         // Needs to wait for the result to finish
-        public void Scanner()
+        public async void Scanner()
         {
+
+            //List<string> results = await DependencyService.Get<IWifiConnector>().GetAvailableNetworks();
+            //if (results.Count != 0)
+            //{
+            //    foreach (var network in results)
+            //    {
+            //        Console.WriteLine("Result: " + network);
+            //    }
+
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Give it a sec....");
+            //}
+
             Task<List<string>> wifiTask = DependencyService.Get<IWifiConnector>().GetAvailableNetworks();
-            Task continuation = wifiTask.ContinueWith(t =>
+            await Task.Delay(8000);
+            if (wifiTask.Status == TaskStatus.RanToCompletion)
             {
-                wifiResults = t.Result;
-            });
-            
-            foreach (var ssid in wifiResults)
+                Console.WriteLine("DONE");
+                wifiResults = wifiTask.Result;
+                foreach (var network in wifiResults)
+                {
+                    Console.WriteLine("Result: " + network);
+                }
+
+            } else if (wifiTask.Status == TaskStatus.Running)
             {
-                Console.WriteLine(ssid);
+
+                Console.WriteLine("RUNNING");
+
+            } else if (wifiTask.Status == TaskStatus.WaitingToRun)
+            {
+                Console.WriteLine("WAITING");
             }
 
-            //if (await Task.WhenAny(task, Task.Delay(timeout)) == task)
-            //{
-            //    List<string> results = task.Result;
-            //    foreach (var result in results)
-            //    {
-            //        Console.WriteLine("Result: " + result);
-
-            //    }
-            //}
+            
 
 
         }
