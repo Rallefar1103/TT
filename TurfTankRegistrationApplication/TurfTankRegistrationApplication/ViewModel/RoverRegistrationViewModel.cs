@@ -48,21 +48,6 @@ namespace TurfTankRegistrationApplication.ViewModel
         // Needs to wait for the result to finish
         public async void Scanner()
         {
-
-            //List<string> results = await DependencyService.Get<IWifiConnector>().GetAvailableNetworks();
-            //if (results.Count != 0)
-            //{
-            //    foreach (var network in results)
-            //    {
-            //        Console.WriteLine("Result: " + network);
-            //    }
-
-            //}
-            //else
-            //{
-            //    Console.WriteLine("Give it a sec....");
-            //}
-
             Task<List<string>> wifiTask = DependencyService.Get<IWifiConnector>().GetAvailableNetworks();
             await Task.Delay(8000);
             if (wifiTask.Status == TaskStatus.RanToCompletion)
@@ -83,9 +68,6 @@ namespace TurfTankRegistrationApplication.ViewModel
             {
                 Console.WriteLine("WAITING");
             }
-
-            
-
 
         }
 
