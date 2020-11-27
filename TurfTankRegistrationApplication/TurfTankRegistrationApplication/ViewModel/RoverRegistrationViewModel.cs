@@ -118,10 +118,10 @@ namespace TurfTankRegistrationApplication.ViewModel
                 Console.WriteLine("WE ARE CONNECTED!");
                 await Application.Current.MainPage.DisplayAlert("Success!", "You are connected to: " + ssid, "Add Serial Number");
                 
-
             } else
             {
                 Console.WriteLine("OOPS WE END UP HERE!");
+                await Application.Current.MainPage.DisplayAlert("OOPS!", "You did not connect to: " + ssid, "OK");
             }
             MessagingCenter.Send(this, "RoverSerialNumber", "Rover1234");
             await Navigation.PopAsync();
