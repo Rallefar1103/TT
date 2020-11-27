@@ -15,7 +15,9 @@ namespace TurfTankRegistrationApplication.ViewModel
         public List<string> wifiResults { get; set; }
         public Command DidChangeRoverSimcard { get; }
         public Command DidChangeRoverSN { get;  }
+        public Command ScanForWifi { get; }
         public bool IsDoneLoading { get; set; }
+        public bool WifiListIsReady { get; set; } = false;
 
         public event PropertyChangedEventHandler PropertyChanged;
         public Action<IWifiConnector, List<string>> Callback { get; set; }
@@ -24,13 +26,19 @@ namespace TurfTankRegistrationApplication.ViewModel
         {
             this.Navigation = navigation;
             DidChangeRoverSimcard = new Command(() => NavigateToScanPage("Rover"));
-            DidChangeRoverSN = new Command(() => Scanner());
+            DidChangeRoverSN = new Command(() => NavigateToWifiPage());
+            ScanForWifi = new Command(() => Scanner());
             
             
         }
 
-        
+        public void NavigateToWifiPage()
+        {
+            ListWifiPage wifiListPage = new ListWifiPage();
+            Navigation.PushAsync(wifiListPage);
+        }
 
+        
         public void NavigateToScanPage(string component)
         {
             ScanPage scanPage = new ScanPage();
@@ -50,17 +58,23 @@ namespace TurfTankRegistrationApplication.ViewModel
         public async void Scanner()
         {
             Task<List<string>> wifiTask = DependencyService.Get<IWifiConnector>().GetAvailableNetworks();
+            IsDoneLoading = true;
+            OnPropertyChanged(nameof(IsDoneLoading));
             await Task.Delay(8000);
             if (wifiTask.Status == TaskStatus.RanToCompletion)
             {
                 Console.WriteLine("DONE");
-                IsDoneLoading = true;
+                IsDoneLoading = false;
+                OnPropertyChanged(nameof(IsDoneLoading));
                 wifiResults = wifiTask.Result;
+                OnPropertyChanged(nameof(wifiResults));
                 foreach (var network in wifiResults)
                 {
                     Console.WriteLine("Result: " + network);
                 }
-                //MessagingCenter.Send(this, "wifiLoaded", IsDoneLoading);
+                WifiListIsReady = true;
+                OnPropertyChanged(nameof(WifiListIsReady));
+                //MessagingCenter.Send(this, "wifiScanResults", IsDoneLoading);
 
             } else if (wifiTask.Status == TaskStatus.Running)
             {
