@@ -16,7 +16,8 @@ namespace TurfTankRegistrationApplication.Pages
 
             Label LoadingText = new Label
             {
-                Text = "Loading....",
+                Text = "Scanning....",
+                FontSize = 30,
                 TextColor = Color.Black,
                 HorizontalOptions = LayoutOptions.Center,
 
@@ -28,18 +29,33 @@ namespace TurfTankRegistrationApplication.Pages
                 BackgroundColor = Color.Green,
             };
 
+            Button Connect = new Button
+            {
+                Text = "Connect",
+                BackgroundColor = Color.Green,
+            };
+
             ListView wifiList = new ListView();
             StackLayout stackLayout = new StackLayout();
 
             StartLoading.SetBinding(Button.CommandProperty, "ScanForWifi");
+            StartLoading.SetBinding(Button.IsVisibleProperty, "HasNotStartedLoading");
+
+            Connect.SetBinding(Button.IsVisibleProperty, "WifiListIsReady");
+            Connect.SetBinding(Button.CommandProperty, "ConnectToSelectedWifi");
+
+
             LoadingText.SetBinding(IsVisibleProperty, "IsDoneLoading");
+
             wifiList.SetBinding(IsVisibleProperty, "WifiListIsReady");
             wifiList.SetBinding(ListView.ItemsSourceProperty, "wifiResults");
-            
+            wifiList.SetBinding(ListView.SelectedItemProperty, "SelectedNetwork");
+
            
             stackLayout.Children.Add(StartLoading);
             stackLayout.Children.Add(LoadingText);
             stackLayout.Children.Add(wifiList);
+            stackLayout.Children.Add(Connect);
 
 
             Content = stackLayout;

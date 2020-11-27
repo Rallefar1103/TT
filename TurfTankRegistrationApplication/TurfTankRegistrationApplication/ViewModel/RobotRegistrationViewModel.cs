@@ -38,7 +38,8 @@ namespace TurfTankRegistrationApplication.ViewModel
         public Command DidChangeTabletSN { get; }
         public Command DidSaveRobot { get;  }
 
-        public Action<object, string> Callback { get; set; }
+        public Action<object, string> ScanCallback { get; set; }
+        public Action<object, string> RoverCallback { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
         public INavigation Navigation { get; set; }
@@ -54,12 +55,20 @@ namespace TurfTankRegistrationApplication.ViewModel
             DidChangeRoverSN = new Command(() => NavigateToRoverPage());
             DidChangeBaseSN = new Command(() => NavigateToBasePage());
             DidSaveRobot = new Command(() => SaveRobot());
-            Callback = new Action<object, string>(OnDataReceived);
+            ScanCallback = new Action<object, string>(OnScanDataReceived);
+            RoverCallback = new Action<object, string>(OnRoverDataReceived);
 
-            MessagingCenter.Subscribe<ScanPage, string>(this, "Result", Callback);
+            MessagingCenter.Subscribe<ScanPage, string>(this, "Result", ScanCallback);
+            MessagingCenter.Subscribe<RoverRegistrationViewModel, string>(this, "RoverSerialNumber", RoverCallback);
         }
 
-        private async void OnDataReceived(object sender, string data)
+        private void OnRoverDataReceived(object sender, string data)
+        {
+            RoverSN = "Rover SN: " + data;
+            OnPropertyChanged(nameof(RoverSN));
+        }
+
+        private async void OnScanDataReceived(object sender, string data)
         {
             if (data.Contains("Robot"))
             {
@@ -155,13 +164,6 @@ namespace TurfTankRegistrationApplication.ViewModel
             {
                 await Application.Current.MainPage.DisplayAlert("OBS!", "Rover is already scanned", "Ok");
             }
-
-            // Retrieve SimCard SN from DB
-
-            // Connect to Controller WiFi
-            robotItem.Controller.SetupWifi();
-
-            // Retrieve Rover SN from Controller
 
         }
 

@@ -6,6 +6,7 @@ using TurfTankRegistrationApplication.Model;
 using Xamarin.Forms;
 using TurfTankRegistrationApplication.Pages;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TurfTankRegistrationApplication.ViewModel
 {
@@ -16,8 +17,11 @@ namespace TurfTankRegistrationApplication.ViewModel
         public Command DidChangeRoverSimcard { get; }
         public Command DidChangeRoverSN { get;  }
         public Command ScanForWifi { get; }
+        public Command ConnectToSelectedWifi { get; }
+        public bool HasNotStartedLoading { get; set; } = true;
         public bool IsDoneLoading { get; set; }
         public bool WifiListIsReady { get; set; } = false;
+        public string SelectedNetwork { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public Action<IWifiConnector, List<string>> Callback { get; set; }
@@ -28,7 +32,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             DidChangeRoverSimcard = new Command(() => NavigateToScanPage("Rover"));
             DidChangeRoverSN = new Command(() => NavigateToWifiPage());
             ScanForWifi = new Command(() => Scanner());
-            
+            ConnectToSelectedWifi = new Command(() => GetRoverSerialNumber());
             
         }
 
@@ -58,6 +62,8 @@ namespace TurfTankRegistrationApplication.ViewModel
         public async void Scanner()
         {
             Task<List<string>> wifiTask = DependencyService.Get<IWifiConnector>().GetAvailableNetworks();
+            HasNotStartedLoading = false;
+            OnPropertyChanged(nameof(HasNotStartedLoading));
 
             IsDoneLoading = true;
             OnPropertyChanged(nameof(IsDoneLoading));
@@ -92,20 +98,43 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         }
 
-        // We might need to move this logic to the Model
-        public void GetRoverSerialNumber()
+        public string GetCorrectWifi(string ssid)
         {
+            ssid.Trim();
+            SelectedNetwork = wifiResults.Find(wifi => wifi == ssid);
+            OnPropertyChanged(nameof(SelectedNetwork));
+            return SelectedNetwork;
+        }
+
+        // We might need to move this logic to the Model
+        public async void GetRoverSerialNumber()
+        {
+            string ssid = GetCorrectWifi(SelectedNetwork);
             bool gotConnected = false;
-            Console.WriteLine("Start connecting to wifi");
+            Console.WriteLine("Start connecting to wifi: " + ssid);
             gotConnected = TryConnecting();
             if (gotConnected)
             {
                 Console.WriteLine("WE ARE CONNECTED!");
+                await Application.Current.MainPage.DisplayAlert("Success!", "You are connected to: " + ssid, "OK");
+                RemovePreviousPage();
+
             } else
             {
                 Console.WriteLine("OOPS WE END UP HERE!");
             }
-            // Use Connectivity to check if we are online or not 
+            MessagingCenter.Send(this, "RoverSerialNumber", "Rover1234");
+            
+        }
+
+        private async void RemovePreviousPage()
+        {
+            var listWifiPage = Navigation.NavigationStack.FirstOrDefault(p => p is ListWifiPage);
+            if (listWifiPage != null)
+            {
+                Navigation.RemovePage(listWifiPage);
+            }
+            await Navigation.PopAsync();
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
