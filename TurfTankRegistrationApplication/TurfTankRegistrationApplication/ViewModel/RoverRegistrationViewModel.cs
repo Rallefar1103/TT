@@ -15,6 +15,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         public List<string> wifiResults { get; set; }
         public Command DidChangeRoverSimcard { get; }
         public Command DidChangeRoverSN { get;  }
+        public bool IsDoneLoading { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public Action<IWifiConnector, List<string>> Callback { get; set; }
@@ -53,11 +54,13 @@ namespace TurfTankRegistrationApplication.ViewModel
             if (wifiTask.Status == TaskStatus.RanToCompletion)
             {
                 Console.WriteLine("DONE");
+                IsDoneLoading = true;
                 wifiResults = wifiTask.Result;
                 foreach (var network in wifiResults)
                 {
                     Console.WriteLine("Result: " + network);
                 }
+                //MessagingCenter.Send(this, "wifiLoaded", IsDoneLoading);
 
             } else if (wifiTask.Status == TaskStatus.Running)
             {

@@ -32,5 +32,6 @@
   <ItemGroup>
     <Compile Remove="Views\Scanner.xaml.cs" />
     <Compile Remove="Views\ScanPage.xaml.cs" />
+    <Compile Remove="Pages\ListWifiPage.xaml.cs" />
   </ItemGroup>
 </Project>
