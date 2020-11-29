@@ -77,7 +77,7 @@ namespace TurfTankRegistrationApplication.ViewModel
                 ShowLoadingLabel = false;
                 OnPropertyChanged(nameof(ShowLoadingLabel));
 
-                wifiResults = wifiTask.Result;
+                wifiResults = wifiTask.Result.Where(element => !string.IsNullOrEmpty(element)).ToList();
                 OnPropertyChanged(nameof(wifiResults));
 
                 foreach (var network in wifiResults)
@@ -90,7 +90,6 @@ namespace TurfTankRegistrationApplication.ViewModel
 
             } else if (wifiTask.Status == TaskStatus.Running)
             {
-
                 Console.WriteLine("RUNNING");
 
             } else if (wifiTask.Status == TaskStatus.WaitingToRun)
