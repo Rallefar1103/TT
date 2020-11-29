@@ -24,23 +24,40 @@ namespace TurfTankRegistrationApplication.Pages
 
             };
 
-            Button StartLoading = new Button
+            Button StartScanning = new Button
             {
                 Text = "Start Scanning",
                 BackgroundColor = Color.Green,
-            };
+                TextColor = Color.Black,
+                Margin = 10,
+                CornerRadius = 25,
+                HeightRequest = 70,
+                WidthRequest = 275,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center,
+        };
 
             Button Connect = new Button
             {
                 Text = "Connect",
                 BackgroundColor = Color.Green,
+                VerticalOptions = LayoutOptions.EndAndExpand,
+                HeightRequest = 70,
             };
 
-            ListView wifiList = new ListView();
-            StackLayout stackLayout = new StackLayout();
+            ListView wifiList = new ListView()
+            {
+                VerticalOptions = LayoutOptions.Start,
+            };
 
-            StartLoading.SetBinding(Button.CommandProperty, "ScanForWifi");
-            StartLoading.SetBinding(Button.IsVisibleProperty, "HasNotStartedWifiLoading");
+            StackLayout stackLayout = new StackLayout()
+            {
+                VerticalOptions = LayoutOptions.Center,
+            };
+
+
+            StartScanning.SetBinding(Button.CommandProperty, "ScanForWifi");
+            StartScanning.SetBinding(Button.IsVisibleProperty, "HasNotStartedWifiLoading");
 
             Connect.SetBinding(Button.IsVisibleProperty, "WifiListIsReady");
             Connect.SetBinding(Button.CommandProperty, "ConnectToSelectedWifi");
@@ -52,8 +69,8 @@ namespace TurfTankRegistrationApplication.Pages
             wifiList.SetBinding(ListView.ItemsSourceProperty, "wifiResults");
             wifiList.SetBinding(ListView.SelectedItemProperty, "SelectedNetwork");
 
-           
-            stackLayout.Children.Add(StartLoading);
+
+            stackLayout.Children.Add(StartScanning);
             stackLayout.Children.Add(LoadingText);
             stackLayout.Children.Add(wifiList);
             stackLayout.Children.Add(Connect);
