@@ -40,13 +40,13 @@ namespace TurfTankRegistrationApplication.Pages
             StackLayout stackLayout = new StackLayout();
 
             StartLoading.SetBinding(Button.CommandProperty, "ScanForWifi");
-            StartLoading.SetBinding(Button.IsVisibleProperty, "HasNotStartedLoading");
+            StartLoading.SetBinding(Button.IsVisibleProperty, "HasNotStartedWifiLoading");
 
             Connect.SetBinding(Button.IsVisibleProperty, "WifiListIsReady");
             Connect.SetBinding(Button.CommandProperty, "ConnectToSelectedWifi");
 
 
-            LoadingText.SetBinding(IsVisibleProperty, "IsDoneLoading");
+            LoadingText.SetBinding(IsVisibleProperty, "ShowLoadingLabel");
 
             wifiList.SetBinding(IsVisibleProperty, "WifiListIsReady");
             wifiList.SetBinding(ListView.ItemsSourceProperty, "wifiResults");

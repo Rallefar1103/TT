@@ -13,24 +13,26 @@ namespace TurfTankRegistrationApplication.ViewModel
     public class RoverRegistrationViewModel : INotifyPropertyChanged
     {
         public INavigation Navigation { get; set; }
-        public List<string> wifiResults { get; set; }
-        public Command DidChangeRoverSimcard { get; }
-        public Command DidChangeRoverSN { get;  }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public Command ChangeRoverSimcard { get; }
+        public Command ChangeRoverSN { get; }
         public Command ScanForWifi { get; }
         public Command ConnectToSelectedWifi { get; }
-        public bool HasNotStartedLoading { get; set; } = true;
-        public bool IsDoneLoading { get; set; }
-        public bool WifiListIsReady { get; set; } = false;
+
+        public List<string> wifiResults { get; set; }
         public string SelectedNetwork { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public Action<IWifiConnector, List<string>> Callback { get; set; }
+        public bool HasNotStartedWifiLoading { get; set; } = true;
+        public bool ShowLoadingLabel { get; set; }
+        public bool WifiListIsReady { get; set; } = false;
+        
 
         public RoverRegistrationViewModel(INavigation navigation)
         {
             this.Navigation = navigation;
-            DidChangeRoverSimcard = new Command(() => NavigateToScanPage("Rover"));
-            DidChangeRoverSN = new Command(() => NavigateToWifiPage());
+            ChangeRoverSimcard = new Command(() => NavigateToScanPage("Rover"));
+            ChangeRoverSN = new Command(() => NavigateToWifiPage());
             ScanForWifi = new Command(() => Scanner());
             ConnectToSelectedWifi = new Command(() => GetRoverSerialNumber());
             
@@ -62,18 +64,18 @@ namespace TurfTankRegistrationApplication.ViewModel
         public async void Scanner()
         {
             Task<List<string>> wifiTask = DependencyService.Get<IWifiConnector>().GetAvailableNetworks();
-            HasNotStartedLoading = false;
-            OnPropertyChanged(nameof(HasNotStartedLoading));
+            HasNotStartedWifiLoading = false;
+            OnPropertyChanged(nameof(HasNotStartedWifiLoading));
 
-            IsDoneLoading = true;
-            OnPropertyChanged(nameof(IsDoneLoading));
+            ShowLoadingLabel = true;
+            OnPropertyChanged(nameof(ShowLoadingLabel));
 
             await Task.Delay(8000);
             if (wifiTask.Status == TaskStatus.RanToCompletion)
             {
                 Console.WriteLine("DONE");
-                IsDoneLoading = false;
-                OnPropertyChanged(nameof(IsDoneLoading));
+                ShowLoadingLabel = false;
+                OnPropertyChanged(nameof(ShowLoadingLabel));
 
                 wifiResults = wifiTask.Result;
                 OnPropertyChanged(nameof(wifiResults));
@@ -101,9 +103,8 @@ namespace TurfTankRegistrationApplication.ViewModel
         public string GetCorrectWifi(string ssid)
         {
             ssid.Trim();
-            SelectedNetwork = wifiResults.Find(wifi => wifi == ssid);
-            OnPropertyChanged(nameof(SelectedNetwork));
-            return SelectedNetwork;
+            string foundNetwork = wifiResults.Find(wifi => wifi == ssid);
+            return foundNetwork;
         }
 
         // We might need to move this logic to the Model
