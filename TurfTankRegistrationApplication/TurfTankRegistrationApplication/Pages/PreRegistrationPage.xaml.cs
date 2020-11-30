@@ -46,20 +46,20 @@ namespace TurfTankRegistrationApplication.Pages
             {
                 Text = "Choose Component to Preregister",
                 TextColor = Color.White,
-                FontSize = 26,
+                FontSize = 16,
                 FontAttributes = FontAttributes.Bold,
                 HorizontalOptions = LayoutOptions.Center,
-                HeightRequest = 50,
+                HeightRequest = 40,
             };
 
             Label ScanHeader = new Label
             {
                 Text = "Scan QR Sticker and Simcard Barcode",
                 TextColor = Color.White,
-                FontSize = 26,
+                FontSize = 16,
                 FontAttributes = FontAttributes.Bold,
                 HorizontalOptions = LayoutOptions.Center,
-                HeightRequest = 50,
+                HeightRequest = 40,
             };
 
             // grid.Children.Add(Button/Label, Column, Row);

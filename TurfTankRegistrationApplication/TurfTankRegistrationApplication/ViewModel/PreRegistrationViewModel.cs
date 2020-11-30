@@ -4,6 +4,7 @@ using Xamarin.Forms;
 using System.Windows.Input;
 
 using TurfTankRegistrationApplication.Model;
+using TurfTankRegistrationApplication.Pages;
 
 namespace TurfTankRegistrationApplication.ViewModel
 {
@@ -28,6 +29,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         public Command ScanBarcodeCommand { get; }
         public Command ConfirmAssemblyAndLabellingCommand { get; }
         public Command PreregisterComponentCommand { get; }
+        public Action<object, string> Callback { get; set; }
 
         public string UserMessage { get => _userMessage; set => SetProperty(ref _userMessage, value); }
         private string _userMessage;
@@ -40,10 +42,13 @@ namespace TurfTankRegistrationApplication.ViewModel
             ChooseToPreregisterRoverCommand = new Command(execute: () => chosenComponent = QRType.Rover, canExecute: () => true);
             ChooseToPreregisterBaseCommand = new Command(execute: () => chosenComponent = QRType.Base, canExecute: () => true);
             ChooseToPreregisterTabletCommand = new Command(execute: () => chosenComponent = QRType.Tablet, canExecute: () => true);
-            ScanQRCommand = new Command(execute: () => Console.WriteLine("scanQR"), canExecute: () => true);
-            ScanBarcodeCommand = new Command(execute: () => Console.WriteLine("scanBarcode"), canExecute: () => chosenComponent != QRType.Controller);
+            ScanQRCommand = new Command(execute: () => new ScanPage(), canExecute: () => true);
+            ScanBarcodeCommand = new Command(execute: () => new ScanPage(), canExecute: () => chosenComponent != QRType.Controller);
             ConfirmAssemblyAndLabellingCommand = new Command(execute: () => qr.ConfirmedLabelled=true, canExecute: () => true);
             PreregisterComponentCommand = new Command(execute: () => PreregisterComponent(),canExecute: () => qr.ConfirmedLabelled);
+            Callback = new Action<object, string>(OnDataReceived);
+
+            MessagingCenter.Subscribe<ScanPage, string>(this, "Result", Callback);
             this.Navigation = navigation;
         }
 
@@ -58,6 +63,16 @@ namespace TurfTankRegistrationApplication.ViewModel
             {
                 throw new NotImplementedException("Other Components haven't been made yet for preregistration");
             }
+        }
+
+        /// <summary>
+        /// The method being called from the Callback which uses the scan function
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="data"></param>
+        private async void OnDataReceived(object sender, string data)
+        {
+            Console.WriteLine("Data Received!! Received received!");
         }
     }
 }
