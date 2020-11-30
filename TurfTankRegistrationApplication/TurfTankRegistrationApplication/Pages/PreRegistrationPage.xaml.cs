@@ -29,7 +29,7 @@ namespace TurfTankRegistrationApplication.Pages
                 FontSize = 26,
                 FontAttributes = FontAttributes.Bold,
                 HorizontalOptions = LayoutOptions.Center,
-                HeightRequest = 50,
+                HeightRequest = 70,
                 WidthRequest = 1000,
             };
 
@@ -40,8 +40,28 @@ namespace TurfTankRegistrationApplication.Pages
                 FontSize = 26,
                 FontAttributes = FontAttributes.Bold,
                 HorizontalOptions = LayoutOptions.Center,
-                HeightRequest = 50,
+                HeightRequest = 70,
                 WidthRequest = 1000,
+            };
+            Label QRScanResult = new Label
+            {
+                Text = "Havent scanned QR",
+                TextColor = Color.White,
+                FontSize = 14,
+                FontAttributes = FontAttributes.Bold,
+                HorizontalOptions = LayoutOptions.Center,
+                HeightRequest = 70,
+                WidthRequest = 275,
+            };
+            Label BarcodeScanResult = new Label
+            {
+                Text = "Havent Scanned Barcode",
+                TextColor = Color.White,
+                FontSize = 14,
+                FontAttributes = FontAttributes.Bold,
+                HorizontalOptions = LayoutOptions.Center,
+                HeightRequest = 70,
+                WidthRequest = 275,
             };
 
             Grid grid = new Grid
@@ -64,9 +84,13 @@ namespace TurfTankRegistrationApplication.Pages
                 {
                     new ColumnDefinition(),
                     new ColumnDefinition(),
+                    new ColumnDefinition(),
                     new ColumnDefinition()
                 }
             };
+
+            // View Bindings
+            ComponentChoiceHeader.SetBinding(Label.TextProperty, new Binding("ChosenComponentString"));
 
             // grid.Children.Add(Button/Label, Column, Row);
             grid.Children.Add(ComponentChoiceHeader, 1, 0);
@@ -75,7 +99,9 @@ namespace TurfTankRegistrationApplication.Pages
             grid.Children.Add(ChooseTablet, 2, 1);
             grid.Children.Add(ScanHeader, 1, 2);
             grid.Children.Add(ScanQRBtn, 0, 3);
-            grid.Children.Add(ScanBarcodeBtn, 1, 3);
+            grid.Children.Add(QRScanResult, 1, 3);
+            grid.Children.Add(ScanBarcodeBtn, 2, 3);
+            grid.Children.Add(BarcodeScanResult, 3, 3);
             grid.Children.Add(ConfirmLabellingBtn, 1, 4);
             grid.Children.Add(PreregisterBtn, 1, 5);
 

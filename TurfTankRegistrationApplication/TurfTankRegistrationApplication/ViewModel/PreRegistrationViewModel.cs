@@ -12,8 +12,10 @@ namespace TurfTankRegistrationApplication.ViewModel
     {
         public INavigation Navigation { get; set; }
 
-        public QRType ChosenComponent { get => chosenComponent; set => SetProperty(ref chosenComponent, value); }
+        public QRType ChosenComponent { get => chosenComponent; set { SetProperty(ref chosenComponent, value); ChosenComponentString = chosenComponent.ToString("g"); } }
         private QRType chosenComponent;
+        public string ChosenComponentString { get => chosenComponentString; set => SetProperty(ref chosenComponentString, value); }
+        private string chosenComponentString;
         /// <summary>
         /// TODO: Should create a QR Sticker when it has been scanned
         /// </summary>
@@ -41,19 +43,32 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public PreRegistrationViewModel(INavigation navigation)
         {
+            ChosenComponent = QRType.NoType;
             QR = new QRSticker();
             QRScanData = "";
             Barcode = new BarcodeSticker();
             BarcodeScanData = "";
-            
-            ChooseToPreregisterRoverCommand = new Command(execute: () => ChosenComponent = QRType.Rover, canExecute: () => true);
-            ChooseToPreregisterBaseCommand = new Command(execute: () => ChosenComponent = QRType.Base, canExecute: () => true);
-            ChooseToPreregisterTabletCommand = new Command(execute: () => ChosenComponent = QRType.Tablet, canExecute: () => true);
-            ScanQRCommand = new Command(execute: () => NavigateToScanPage("QR"), canExecute: () => QRScanData == "");
-            ScanBarcodeCommand = new Command(execute: () => NavigateToScanPage("Barcode"), canExecute: () => BarcodeScanData == "" && ChosenComponent != QRType.Controller);
-            ConfirmAssemblyAndLabellingCommand = new Command(
-                execute: () => { QR.ConfirmedLabelled = true; PreregisterComponentCommand.ChangeCanExecute(); }, 
+
+            // The following commands follow a linear flow, which is that first you choose a component, then you scan, then you confirm, then you save.
+            // ChangeCanScan is just a way to force the given command to reevaluate and rerender the options to the view. There is probably a smarter way, but this works.
+            ChooseToPreregisterRoverCommand = new Command(
+                execute: () => { ChosenComponent = QRType.Rover; ScanQRCommand.ChangeCanExecute(); ScanBarcodeCommand.ChangeCanExecute(); },
                 canExecute: () => true);
+            ChooseToPreregisterBaseCommand = new Command(
+                execute: () => { ChosenComponent = QRType.Base; ScanQRCommand.ChangeCanExecute(); ScanBarcodeCommand.ChangeCanExecute(); }, 
+                canExecute: () => true);
+            ChooseToPreregisterTabletCommand = new Command(
+                execute: () => { ChosenComponent = QRType.Tablet; ScanQRCommand.ChangeCanExecute(); ScanBarcodeCommand.ChangeCanExecute(); }, 
+                canExecute: () => true);
+            ScanQRCommand = new Command(
+                execute: () => NavigateToScanPage("QR"),
+                canExecute: () => ChosenComponent != QRType.NoType);
+            ScanBarcodeCommand = new Command(
+                execute: () => NavigateToScanPage("Barcode"),
+                canExecute: () => ChosenComponent != QRType.NoType && ChosenComponent != QRType.Controller);
+            ConfirmAssemblyAndLabellingCommand = new Command(
+                execute: () => { QR.ConfirmedLabelled = true; PreregisterComponentCommand.ChangeCanExecute(); },
+                canExecute: () => QRScanData != "" && BarcodeScanData != ""); // Should be able to press when all scans are done.
             PreregisterComponentCommand = new Command(execute: () => PreregisterComponent(), canExecute: () => QR.ConfirmedLabelled);
             Callback = new Action<object, string>(OnDataReceived);
 
@@ -102,10 +117,12 @@ namespace TurfTankRegistrationApplication.ViewModel
         {
             if (data.Contains(ChosenComponent.ToString("g")))
             {
+                QRScanData = data;
                 QR = new QRSticker(data);
             }
             else if(data != "") // Should have better validation such as data.Length == 10 or something depending on the standards of the Simcard
             {
+                BarcodeScanData = "";
                 Barcode = new BarcodeSticker(data);
             }
             else
@@ -113,6 +130,8 @@ namespace TurfTankRegistrationApplication.ViewModel
                 // await Application.Current.MainPage.DisplayAlert("OBS!", "Scan did not work as expected!", "Ok");
                 throw new NotImplementedException("The other QR types isnt implemented yet in PreRegistrationViewModel.OnDataReceived");
             }
+
+            ConfirmAssemblyAndLabellingCommand.ChangeCanExecute();
         }
     }
 }
