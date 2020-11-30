@@ -47,6 +47,10 @@ namespace TurfTankRegistrationApplication.Model
         {
             Initialize(type: QRType.NoType, id: "");
         }
+        public QRSticker(string scannedData) //WRONG METHOD! Just used to make the PreRegistration not fail. Marco is working on making it correct :)
+        {
+            Initialize(type: QRType.NoType, id: scannedData);
+        }
 
         public QRSticker(string id, QRType type)
         {

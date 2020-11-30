@@ -12,19 +12,24 @@ namespace TurfTankRegistrationApplication.ViewModel
     {
         public INavigation Navigation { get; set; }
 
-        public QRType chosenComponent { get; set; }
+        public QRType ChosenComponent { get => chosenComponent; set => SetProperty(ref chosenComponent, value); }
+        private QRType chosenComponent;
         /// <summary>
         /// TODO: Should create a QR Sticker when it has been scanned
         /// </summary>
-        public string QRScanData { get; set; }
-        public QRSticker qr { get; set; }
+        public string QRScanData { get => qrScanData; set => SetProperty(ref qrScanData, value); }
+        private string qrScanData;
+        public QRSticker QR { get => qr; set => SetProperty(ref qr, value); }
+        private QRSticker qr;
         // TODO: Should create a Barcode when it has been scanned
-        public string BarcodeScanData { get; set; }
-        public BarcodeSticker Barcode { get; set; }
+        public string BarcodeScanData { get => barcodeScanData; set => SetProperty(ref barcodeScanData, value); }
+        private string barcodeScanData;
+        public BarcodeSticker Barcode { get => barcode; set => SetProperty(ref barcode, value); }
+        private BarcodeSticker barcode;
 
-        public Command ChooseToPreregisterRoverCommand { get; set; }
-        public Command ChooseToPreregisterBaseCommand { get; set; }
-        public Command ChooseToPreregisterTabletCommand { get; set; }
+        public Command ChooseToPreregisterRoverCommand { get; }
+        public Command ChooseToPreregisterBaseCommand { get; }
+        public Command ChooseToPreregisterTabletCommand { get; }
         public Command ScanQRCommand { get; }
         public Command ScanBarcodeCommand { get; }
         public Command ConfirmAssemblyAndLabellingCommand { get; }
@@ -36,28 +41,36 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public PreRegistrationViewModel(INavigation navigation)
         {
-            qr = new QRSticker();
+            QR = new QRSticker();
+            QRScanData = "";
             Barcode = new BarcodeSticker();
-
-            ChooseToPreregisterRoverCommand = new Command(execute: () => chosenComponent = QRType.Rover, canExecute: () => true);
-            ChooseToPreregisterBaseCommand = new Command(execute: () => chosenComponent = QRType.Base, canExecute: () => true);
-            ChooseToPreregisterTabletCommand = new Command(execute: () => chosenComponent = QRType.Tablet, canExecute: () => true);
-            ScanQRCommand = new Command(execute: () => new ScanPage(), canExecute: () => true);
-            ScanBarcodeCommand = new Command(execute: () => new ScanPage(), canExecute: () => chosenComponent != QRType.Controller);
-            ConfirmAssemblyAndLabellingCommand = new Command(execute: () => qr.ConfirmedLabelled=true, canExecute: () => true);
-            PreregisterComponentCommand = new Command(execute: () => PreregisterComponent(),canExecute: () => qr.ConfirmedLabelled);
+            BarcodeScanData = "";
+            
+            ChooseToPreregisterRoverCommand = new Command(execute: () => ChosenComponent = QRType.Rover, canExecute: () => true);
+            ChooseToPreregisterBaseCommand = new Command(execute: () => ChosenComponent = QRType.Base, canExecute: () => true);
+            ChooseToPreregisterTabletCommand = new Command(execute: () => ChosenComponent = QRType.Tablet, canExecute: () => true);
+            ScanQRCommand = new Command(execute: () => NavigateToScanPage("QR"), canExecute: () => QRScanData == "");
+            ScanBarcodeCommand = new Command(execute: () => NavigateToScanPage("Barcode"), canExecute: () => BarcodeScanData == "" && ChosenComponent != QRType.Controller);
+            ConfirmAssemblyAndLabellingCommand = new Command(
+                execute: () => { QR.ConfirmedLabelled = true; PreregisterComponentCommand.ChangeCanExecute(); }, 
+                canExecute: () => true);
+            PreregisterComponentCommand = new Command(execute: () => PreregisterComponent(), canExecute: () => QR.ConfirmedLabelled);
             Callback = new Action<object, string>(OnDataReceived);
 
             MessagingCenter.Subscribe<ScanPage, string>(this, "Result", Callback);
             this.Navigation = navigation;
         }
 
-        async void PreregisterComponent()
+        /// <summary>
+        /// The QR code creates and Preregisters the chosen component.
+        /// The Preregistration makes sure all validation is taken care of.
+        /// </summary>
+        public async void PreregisterComponent()
         {
-            if(chosenComponent == QRType.Rover || chosenComponent == QRType.Base)
+            if(ChosenComponent == QRType.Rover || ChosenComponent == QRType.Base)
             {
                 SimCard sim = new SimCard(Barcode);
-                await qr.Preregister(sim);
+                await QR.Preregister(sim);
             }
             else
             {
@@ -66,13 +79,40 @@ namespace TurfTankRegistrationApplication.ViewModel
         }
 
         /// <summary>
+        /// Goes to the scan page, and makes sure that the scanned item contains the chosen component.
+        /// </summary>
+        /// <param name="scanChoice">The choice of scan. Just to verify to the user that they indeed chose QR or Barcode</param>
+        public void NavigateToScanPage(string scanChoice)
+        {
+            ScanPage scanPage = new ScanPage();
+            scanPage.vm.Title = "Scanning " + scanChoice;
+            if(scanChoice == "QR")
+            {
+                scanPage.QRMustContain = ChosenComponent.ToString("g");
+            }
+            Navigation.PushAsync(scanPage);
+        }
+
+        /// <summary>
         /// The method being called from the Callback which uses the scan function
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="data"></param>
+        /// <param name="data">The data received from the ScanPage</param>
         private async void OnDataReceived(object sender, string data)
         {
-            Console.WriteLine("Data Received!! Received received!");
+            if (data.Contains(ChosenComponent.ToString("g")))
+            {
+                QR = new QRSticker(data);
+            }
+            else if(data != "") // Should have better validation such as data.Length == 10 or something depending on the standards of the Simcard
+            {
+                Barcode = new BarcodeSticker(data);
+            }
+            else
+            {
+                // await Application.Current.MainPage.DisplayAlert("OBS!", "Scan did not work as expected!", "Ok");
+                throw new NotImplementedException("The other QR types isnt implemented yet in PreRegistrationViewModel.OnDataReceived");
+            }
         }
     }
 }

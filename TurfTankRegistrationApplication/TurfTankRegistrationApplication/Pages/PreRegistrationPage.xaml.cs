@@ -20,7 +20,29 @@ namespace TurfTankRegistrationApplication.Pages
             ComponentBtn ScanQRBtn = new ComponentBtn("Scan QR", PreRegVM.ScanQRCommand);
             ComponentBtn ScanBarcodeBtn = new ComponentBtn("Scan Barcode", PreRegVM.ScanBarcodeCommand);
             ComponentBtn ConfirmLabellingBtn = new ComponentBtn("Confirm the QR label is on the component", PreRegVM.ConfirmAssemblyAndLabellingCommand);
-            ComponentBtn PreregisterBtn = new ComponentBtn("Preregister", PreRegVM.ScanBarcodeCommand);
+            ComponentBtn PreregisterBtn = new ComponentBtn("Preregister", PreRegVM.PreregisterComponentCommand);
+
+            Label ComponentChoiceHeader = new Label
+            {
+                Text = $"Choose component to Preregister",
+                TextColor = Color.White,
+                FontSize = 26,
+                FontAttributes = FontAttributes.Bold,
+                HorizontalOptions = LayoutOptions.Center,
+                HeightRequest = 50,
+                WidthRequest = 1000,
+            };
+
+            Label ScanHeader = new Label
+            {
+                Text = "Scan QR Sticker and Simcard Barcode",
+                TextColor = Color.White,
+                FontSize = 26,
+                FontAttributes = FontAttributes.Bold,
+                HorizontalOptions = LayoutOptions.Center,
+                HeightRequest = 50,
+                WidthRequest = 1000,
+            };
 
             Grid grid = new Grid
             {
@@ -31,47 +53,31 @@ namespace TurfTankRegistrationApplication.Pages
                 Padding = 20,
                 RowDefinitions =
                 {
-                    new RowDefinition { Height = new GridLength(6, GridUnitType.Star) },
                     new RowDefinition(),
-                    new RowDefinition { Height = new GridLength(75) }
+                    new RowDefinition(),
+                    new RowDefinition(),
+                    new RowDefinition(),
+                    new RowDefinition(),
+                    new RowDefinition()
                 },
                 ColumnDefinitions =
                 {
+                    new ColumnDefinition(),
                     new ColumnDefinition(),
                     new ColumnDefinition()
                 }
             };
 
-            Label ComponentChoiceHeader = new Label
-            {
-                Text = "Choose Component to Preregister",
-                TextColor = Color.White,
-                FontSize = 16,
-                FontAttributes = FontAttributes.Bold,
-                HorizontalOptions = LayoutOptions.Center,
-                HeightRequest = 40,
-            };
-
-            Label ScanHeader = new Label
-            {
-                Text = "Scan QR Sticker and Simcard Barcode",
-                TextColor = Color.White,
-                FontSize = 16,
-                FontAttributes = FontAttributes.Bold,
-                HorizontalOptions = LayoutOptions.Center,
-                HeightRequest = 40,
-            };
-
             // grid.Children.Add(Button/Label, Column, Row);
-            grid.Children.Add(ComponentChoiceHeader, 0, 0);
+            grid.Children.Add(ComponentChoiceHeader, 1, 0);
             grid.Children.Add(ChooseRover, 0, 1);
             grid.Children.Add(ChooseBase, 1, 1);
             grid.Children.Add(ChooseTablet, 2, 1);
-            grid.Children.Add(ScanHeader, 0, 2);
+            grid.Children.Add(ScanHeader, 1, 2);
             grid.Children.Add(ScanQRBtn, 0, 3);
             grid.Children.Add(ScanBarcodeBtn, 1, 3);
-            grid.Children.Add(ConfirmLabellingBtn, 0, 4);
-            grid.Children.Add(PreregisterBtn, 0, 5);
+            grid.Children.Add(ConfirmLabellingBtn, 1, 4);
+            grid.Children.Add(PreregisterBtn, 1, 5);
 
             Content = grid;
             InitializeComponent();
