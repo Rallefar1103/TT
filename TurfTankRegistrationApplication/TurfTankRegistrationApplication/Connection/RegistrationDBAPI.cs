@@ -18,9 +18,9 @@ namespace TurfTankRegistrationApplication.Connection
     /// </summary>
     /// <typeparam name="T">The Type which will be retrieved/saved</typeparam>
     /// <typeparam name="S">The Schema which matches the Type on the Database side</typeparam>
-    interface IRegistrationDBAPI<T>
+    public interface IRegistrationDBAPI<T> : IDBAPI<T> where T : new()
     {
-        Task<bool> Save(T someObject);
+        Task<bool> Save(IValidateable someObject);
     }
 
     public class RegistrationDBAPI<T> : DBAPI<T>, IRegistrationDBAPI<T> 
@@ -37,16 +37,11 @@ namespace TurfTankRegistrationApplication.Connection
 
         #region Constructors
 
-        public void Initialize(Client client)
+        public void Initialize(Client client) 
         {
-            GetByIdURI = "https://api.turftank.cloud/v1/robot";
-            GetListOfObjectsURI = "";
-            SaveURI = "";
-
-            // DBAPI initializations
             ApiClientRef = client;
         }
-        public RegistrationDBAPI()
+        public RegistrationDBAPI() 
         {
             Initialize(App.ApiClient);
         }
@@ -59,10 +54,11 @@ namespace TurfTankRegistrationApplication.Connection
 
         #region Public Methods
 
-        public async Task<bool> Save(T someObject)
+        public async Task<bool> Save(IValidateable someObject)
         {
             await Task.Delay(1);
-            throw new NotImplementedException();
+            Console.WriteLine("Save run, but not implemented yet!");
+            return false;
         }
 
         #endregion Public Methods

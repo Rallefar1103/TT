@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 
+using TurfTankRegistrationApplication.Connection;
+using TurfTankRegistrationApplication.Exceptions;
+
 namespace TurfTankRegistrationApplication.Model
 {
 
@@ -15,7 +18,7 @@ namespace TurfTankRegistrationApplication.Model
         void FlagAsBroken();
     }
 
-    public abstract class Component : IComponent
+    public abstract class Component : IComponent, IValidateable
     {
         public string ID { get; set; }
         public bool ConnectedToRobot { get; set; }
@@ -29,6 +32,24 @@ namespace TurfTankRegistrationApplication.Model
         public virtual string GetSerialNumber()
         {
             return ID ?? "null";
+        }
+
+        public virtual void ValidateSelf(SerialOrQR idRestriction = SerialOrQR.AnyId)
+        {
+            if (IsBroken) throw new ValidationException("The Component has previously been registered as broken");
+            
+            if(idRestriction == SerialOrQR.AnyId || idRestriction == SerialOrQR.OnlySerialId || idRestriction == SerialOrQR.BothSerialAndQRId)
+            {
+                if (ID != "") throw new ValidationException("The Component doesn't have its ID set");
+            }
+            else if(idRestriction == SerialOrQR.OnlyQRId || idRestriction == SerialOrQR.NoId)
+            {
+                if (ID == "") throw new ValidationException("The Component has its ID set, which it shouldn't have");
+            }
+            else
+            {
+                throw new NotImplementedException("The requested SerialOrQr restriction havent been implemented on GPS.ValidateSelf");
+            }
         }
     }
 }

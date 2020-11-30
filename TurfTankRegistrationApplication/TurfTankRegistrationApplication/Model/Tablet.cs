@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
+using TurfTankRegistrationApplication.Connection;
+using TurfTankRegistrationApplication.Exceptions;
+
 namespace TurfTankRegistrationApplication.Model
 {
     interface ITablet
@@ -9,16 +12,14 @@ namespace TurfTankRegistrationApplication.Model
         SimCard Simcard { get; set; }
         void ActivateSimcard();
     }
-    public class Tablet : Component, ITablet
+    public class Tablet : Component, ITablet, IValidateable
     {
         public SimCard Simcard { get; set; }
 
-        public void ActivateSimcard()
-        {
-            throw new NotImplementedException();
-        }
+        public static IRegistrationDBAPI<Tablet> API { get; set; }
+        public IRegistrationDBAPI<Tablet> SelfAPI { get => API; }
 
-        #region Constructor
+        #region Constructors
         public void Initialize(SimCard simcard)
         {
             Simcard = simcard;
@@ -34,6 +35,20 @@ namespace TurfTankRegistrationApplication.Model
             Initialize(simcard: simcard);
 
         }
-        #endregion
+        #endregion Constructors
+
+        #region Public Methods
+
+        public void ActivateSimcard()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void ValidateSelf(SerialOrQR idRestriction = SerialOrQR.AnyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion Public Methods
     }
 }

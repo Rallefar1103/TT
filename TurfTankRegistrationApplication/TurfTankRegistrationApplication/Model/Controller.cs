@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using TurfTankRegistrationApplication.Connection;
+using TurfTankRegistrationApplication.Exceptions;
 
 namespace TurfTankRegistrationApplication.Model
 {
@@ -16,7 +17,7 @@ namespace TurfTankRegistrationApplication.Model
         void SetupWifi();
 
     }
-    public class Controller : Component, IController
+    public class Controller : Component, IController, IValidateable
     {
         public string SerialNumber { get; set; }
         public string ActiveSSID { get; set; }
@@ -25,7 +26,9 @@ namespace TurfTankRegistrationApplication.Model
         public string EtherMac { get; set; }
         public string WifiMac { get; set; }
 
-        public void Initialize(string serial, string ssid, string pw, ControllerQRSticker qr, string ether, string wifi)
+        public static IRegistrationDBAPI<Controller> API { get; set; }
+
+        public void Initialize(string serial, string ssid, string pw, ControllerQRSticker qr, string ether, string wifi, RegistrationDBAPI<Controller> api)
         {
             SerialNumber = serial;
             ActiveSSID = ssid;
@@ -33,6 +36,7 @@ namespace TurfTankRegistrationApplication.Model
             QR = qr;
             EtherMac = ether;
             WifiMac = wifi;
+            API = api;
         }
         public Controller()
         {
@@ -42,7 +46,8 @@ namespace TurfTankRegistrationApplication.Model
                 pw: $"",
                 qr: new ControllerQRSticker(),
                 ether: $"",
-                wifi: $""
+                wifi: $"",
+                api: new RegistrationDBAPI<Controller>()
             );
         }
         public Controller(RobotController schema)
@@ -51,9 +56,10 @@ namespace TurfTankRegistrationApplication.Model
                 serial: $"{schema.SerialNumber}",
                 ssid: $"{schema.Ssid}",
                 pw: $"{schema.SsidPassword}",
-                qr: new ControllerQRSticker(), // TODO: NEED IMPLEMENTATION HERE!
+                qr: new ControllerQRSticker(),
                 ether: $"{schema.MacEth}",
-                wifi: $"{schema.MacWifi}"
+                wifi: $"{schema.MacWifi}",
+                api: new RegistrationDBAPI<Controller>()
             );
         }
 
@@ -75,6 +81,11 @@ namespace TurfTankRegistrationApplication.Model
                 return ID;
             }
 
+        }
+
+        public override void ValidateSelf(SerialOrQR idRestriction = SerialOrQR.AnyId)
+        {
+            throw new NotImplementedException();
         }
 
     }
