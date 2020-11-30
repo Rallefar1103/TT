@@ -4,10 +4,11 @@ using TurfTankRegistrationApplication.Exceptions;
 
 namespace TurfTankRegistrationApplication.Model
 {
-    public interface IQRSticker
+    public interface IQRSticker : IScanableSticker
     {
 
         string ID { get; set; }
+        QRType ofType { get; set; }
         bool ConfirmedLabelled { get; set; }
         Task<bool> Preregister(IValidateable component);
     }
@@ -30,7 +31,7 @@ namespace TurfTankRegistrationApplication.Model
 
         public bool ConfirmedLabelled { get; set; }
         
-        public QRType ofType;
+        public QRType ofType { get; set; }
 
         #endregion Public Attributes
 

@@ -21,13 +21,13 @@ namespace TurfTankRegistrationApplication.ViewModel
         /// </summary>
         public string QRScanData { get => qrScanData; set => SetProperty(ref qrScanData, value); }
         private string qrScanData;
-        public QRSticker QR { get => qr; set => SetProperty(ref qr, value); }
-        private QRSticker qr;
+        public IQRSticker QR { get => qr; set => SetProperty(ref qr, value); }
+        private IQRSticker qr;
         // TODO: Should create a Barcode when it has been scanned
         public string BarcodeScanData { get => barcodeScanData; set => SetProperty(ref barcodeScanData, value); }
         private string barcodeScanData;
-        public BarcodeSticker Barcode { get => barcode; set => SetProperty(ref barcode, value); }
-        private BarcodeSticker barcode;
+        public IBarcodeSticker Barcode { get => barcode; set => SetProperty(ref barcode, value); }
+        private IBarcodeSticker barcode;
 
         public Command ChooseToPreregisterRoverCommand { get; }
         public Command ChooseToPreregisterBaseCommand { get; }
@@ -86,6 +86,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             {
                 SimCard sim = new SimCard(Barcode);
                 await QR.Preregister(sim);
+                await Navigation.PopAsync();
             }
             else
             {
