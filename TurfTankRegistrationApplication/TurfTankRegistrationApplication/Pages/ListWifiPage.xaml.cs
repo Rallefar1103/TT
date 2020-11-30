@@ -35,7 +35,7 @@ namespace TurfTankRegistrationApplication.Pages
                 WidthRequest = 275,
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center,
-        };
+            };
 
             Button Connect = new Button
             {
