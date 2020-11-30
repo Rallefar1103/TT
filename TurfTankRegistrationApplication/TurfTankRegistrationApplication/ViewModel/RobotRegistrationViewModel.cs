@@ -6,6 +6,7 @@ using TurfTankRegistrationApplication.Model;
 using Xamarin.Forms;
 using TurfTankRegistrationApplication.Pages;
 
+
 namespace TurfTankRegistrationApplication.ViewModel
 {
     public interface IRegistrateRobot
@@ -61,6 +62,15 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         private async void OnDataReceived(object sender, string data)
         {
+            //try
+            //{
+            //    QRSticker = new QRSticker(ScanResult);
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine(e.Message);
+            //}
+
             if (data.Contains("Robot"))
             {
                 RegistrateChassis(data);

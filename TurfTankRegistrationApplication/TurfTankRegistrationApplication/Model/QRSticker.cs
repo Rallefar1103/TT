@@ -34,6 +34,11 @@ namespace TurfTankRegistrationApplication.Model
             throw new NotImplementedException();
         }
 
+        private bool ValidateScannedQR(string id, string type)
+        {
+            return true;
+        }
+
         #region Constructor
 
         public void Initialize(QRType type, string id)
@@ -60,6 +65,7 @@ namespace TurfTankRegistrationApplication.Model
             {            
                 string id = results[1];
                 QRType type;
+
 
                 if (Enum.TryParse(results[0], out type))
                 {
