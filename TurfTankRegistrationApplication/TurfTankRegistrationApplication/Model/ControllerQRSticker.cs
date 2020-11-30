@@ -1,4 +1,7 @@
 ﻿using System;
+
+using TurfTankRegistrationApplication.Model;
+
 namespace TurfTankRegistrationApplication.Model
 {
     public interface IControllerQRSticker
