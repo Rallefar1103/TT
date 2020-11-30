@@ -80,7 +80,6 @@ namespace TurfTankRegistrationApplication.Model
             }
 
         }
-        #endregion
         #endregion Constructors
 
         #region Public Methods
