@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using TurfTankRegistrationApplication.Model;
 using ZXing;
 using ZXing.Mobile;
 using ZXing.Net.Mobile.Forms;
@@ -10,7 +11,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 {
     public class ScanViewModel : BaseViewModel
     {
-
+        
         public enum state
         {
             Ready_To_Scan,
@@ -24,6 +25,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         }
         public bool ResultIsLocked = false;
 
+        QRSticker QRSticker { get; set; }
         public string ScanResult
         {
             get => _result;
@@ -32,6 +34,14 @@ namespace TurfTankRegistrationApplication.ViewModel
                 if (!ResultIsLocked)
                 {
                     _result = value;
+                    try
+                    {
+                        QRSticker = new QRSticker(ScanResult);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
                     OnPropertyChanged(nameof(ScanResult));
                 }
             }
