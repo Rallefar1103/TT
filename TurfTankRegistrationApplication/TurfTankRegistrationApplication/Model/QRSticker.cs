@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using TurfTankRegistrationApplication.Exceptions;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace TurfTankRegistrationApplication.Model
 {
@@ -36,9 +37,20 @@ namespace TurfTankRegistrationApplication.Model
 
         #endregion Public Attributes
 
-        private bool ValidateScannedQR(string id, string type)
+        private bool ValidateScannedQR(List<string> results, out QRType type)
         {
-            return true;
+
+
+            if (Enum.TryParse(results[0], out type) && Regex.IsMatch(results[1], "[1-9]"))
+            {
+                return true;
+            }
+            else
+            {
+                type = QRType.NoType;
+                return false;
+
+            }
         }
 
         #region Constructor
@@ -63,20 +75,16 @@ namespace TurfTankRegistrationApplication.Model
         public QRSticker(string scanResult)
         {
             List<string> results = scanResult.Split(';').ToList();
-
-            if (results.Count == 2)
-            {            
+            
+            if (ValidateScannedQR(results, out QRType type))
+            {
                 string id = results[1];
-                QRType type;
-
-
-                if (Enum.TryParse(results[0], out type))
-                {
-                    Initialize(type, id);
-                    Console.WriteLine("------------------The QR sticker was successfully scanned------------------");
-                }
-                else
-                    throw new FormatException("------------------The scan result could not be parsed------------------");
+                Initialize(type, id);
+                Console.WriteLine("------------------The QR sticker was successfully scanned------------------");
+            }
+            else
+            {
+                throw new ValidationException("The scanned QR code is not in a valid format");
             }
 
         }
