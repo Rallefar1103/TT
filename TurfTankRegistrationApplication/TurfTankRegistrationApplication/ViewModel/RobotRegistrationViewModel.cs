@@ -153,7 +153,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         public async void RegistrateRoverSimcard(string result)
         {
             // Scan label for Simcard info
-            robotItem.RoverGPS.ofType = GPS.GPSType.Rover;
+            robotItem.RoverGPS.ofType = GPSType.Rover;
 
             if (string.IsNullOrEmpty(robotItem.RoverGPS.Simcard.ID))
             {
@@ -171,7 +171,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         public async void RegistrateBaseSimcard(string result)
         {
             // Scan label for Simcard info
-            robotItem.BaseGPS.ofType = GPS.GPSType.Base;
+            robotItem.BaseGPS.ofType = GPSType.Base;
 
             if (string.IsNullOrEmpty(robotItem.BaseGPS.Simcard.ID))
             {
