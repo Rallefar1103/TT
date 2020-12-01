@@ -24,6 +24,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         public List<string> wifiResults { get; set; }
         public string SelectedNetwork { get; set; }
 
+        // UI bools
         public bool HasNotStartedWifiLoading { get; set; } = true;
         public bool ShowLoadingLabel { get; set; }
         public bool WifiListIsReady { get; set; } = false;
@@ -55,7 +56,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             Navigation.PushAsync(scanPage);
         }
 
-        // Needs to wait for the result to finish
+        
         public async void Scanner()
         {
             Task<List<string>> wifiTask = DependencyService.Get<IWifiConnector>().GetAvailableNetworks();
@@ -65,6 +66,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             ShowLoadingLabel = true;
             OnPropertyChanged(nameof(ShowLoadingLabel));
 
+            // Needs to wait for the result to finish
             await Task.Delay(8000);
             if (wifiTask.Status == TaskStatus.RanToCompletion)
             {
@@ -117,6 +119,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             StartedConnecting = true;
             OnPropertyChanged(nameof(StartedConnecting));
 
+            // Wait for the connection to be established
             await Task.Delay(5000);
 
             StartedConnecting = false;
@@ -133,13 +136,14 @@ namespace TurfTankRegistrationApplication.ViewModel
             {
                 Console.WriteLine("WE ARE CONNECTED!");
                 await Application.Current.MainPage.DisplayAlert("Success!", "You are connected to: " + ssid, "Add Serial Number");
-                
+                MessagingCenter.Send(this, "RoverSerialNumber", "Rover1234");
+
             } else
             {
                 Console.WriteLine("OOPS WE END UP HERE!");
                 await Application.Current.MainPage.DisplayAlert("OOPS!", "You did not connect to: " + ssid, "OK");
             }
-            MessagingCenter.Send(this, "RoverSerialNumber", "Rover1234");
+            
             await Navigation.PopAsync();
             await Navigation.PopAsync();
         }
