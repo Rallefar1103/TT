@@ -47,7 +47,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             Navigation.PushAsync(wifiListPage);
         }
 
-        
+
         public void NavigateToScanPage(string component)
         {
             ScanPage scanPage = new ScanPage();
@@ -126,7 +126,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             OnPropertyChanged(nameof(StartedConnecting));
 
             if (DependencyService.Get<IWifiConnector>().CheckWifiStatus())
-            {
+        {
                 ConnectedSSID = DependencyService.Get<IWifiConnector>().GetSSID();
             }
 

@@ -52,7 +52,7 @@ namespace TurfTankRegistrationApplication.Droid
 
             wifiMgr.Disconnect();
             wifiMgr.EnableNetwork(myWifi.FirstOrDefault(x => x.Ssid.Contains(ssid)).NetworkId, true);
-            
+
             Console.WriteLine($"!!!!!! -----------------------   Connecting to {ssid} ------------------------- !!!!!!!!!");
 
             wifiMgr.Reconnect();
@@ -85,7 +85,7 @@ namespace TurfTankRegistrationApplication.Droid
                 return "WiFiManager is NULL";
             }
         }
-
+            
 
         [Obsolete]
         public async Task<List<string>> GetAvailableNetworks()
@@ -99,7 +99,7 @@ namespace TurfTankRegistrationApplication.Droid
                 context.RegisterReceiver(wifiReceiver, new IntentFilter(WifiManager.ScanResultsAvailableAction));
                 availableNetworks = wifiReceiver.Scan();
             });
-
+                
             return availableNetworks;
         }
 

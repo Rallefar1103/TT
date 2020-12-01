@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
+using TurfTankRegistrationApplication.Connection;
+using TurfTankRegistrationApplication.Exceptions;
+
 namespace TurfTankRegistrationApplication.Model
 {
     interface IController
@@ -14,15 +17,51 @@ namespace TurfTankRegistrationApplication.Model
         void SetupWifi();
 
     }
-    public class Controller : Component, IController
+    public class Controller : Component, IController, IValidateable
     {
-        public string ControllerQRSticker { get; set; }
-        public string OCRSticker { get; set; }
+        public string SerialNumber { get; set; }
         public string ActiveSSID { get; set; }
         public string ActivePassword { get; set; }
         public ControllerQRSticker QR { get; set; }
         public string EtherMac { get; set; }
         public string WifiMac { get; set; }
+
+        public static IRegistrationDBAPI<Controller> API { get; set; }
+
+        public void Initialize(string serial, string ssid, string pw, ControllerQRSticker qr, string ether, string wifi, RegistrationDBAPI<Controller> api)
+        {
+            SerialNumber = serial;
+            ActiveSSID = ssid;
+            ActivePassword = pw;
+            QR = qr;
+            EtherMac = ether;
+            WifiMac = wifi;
+            API = api;
+        }
+        public Controller()
+        {
+            Initialize(
+                serial: $"",
+                ssid: $"",
+                pw: $"",
+                qr: new ControllerQRSticker(),
+                ether: $"",
+                wifi: $"",
+                api: new RegistrationDBAPI<Controller>()
+            );
+        }
+        public Controller(RobotController schema)
+        {
+            Initialize(
+                serial: $"{schema.SerialNumber}",
+                ssid: $"{schema.Ssid}",
+                pw: $"{schema.SsidPassword}",
+                qr: new ControllerQRSticker(),
+                ether: $"{schema.MacEth}",
+                wifi: $"{schema.MacWifi}",
+                api: new RegistrationDBAPI<Controller>()
+            );
+        }
 
         public void SetupWifi()
         {
@@ -33,7 +72,7 @@ namespace TurfTankRegistrationApplication.Model
         {
             if (ID == null)
             {
-                // Connect to wifi and let that method return the serial number
+                SetupWifi();
                 ID = "ControllerSerialNumber";
                 return ID;
             }
@@ -42,6 +81,11 @@ namespace TurfTankRegistrationApplication.Model
                 return ID;
             }
 
+        }
+
+        public override void ValidateSelf(SerialOrQR idRestriction = SerialOrQR.AnyId)
+        {
+            throw new NotImplementedException();
         }
 
     }

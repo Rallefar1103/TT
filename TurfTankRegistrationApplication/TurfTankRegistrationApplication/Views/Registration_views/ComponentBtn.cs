@@ -6,10 +6,10 @@ namespace TurfTankRegistrationApplication.Views.Registration_views
 {
     public class ComponentBtn : Button
     {
-        public ComponentBtn(string ComponentType, Command RegistrateComponent)
+        public ComponentBtn(string ComponentType, Command PreregisterComponent)
         {
             Text = ComponentType;
-            Command = RegistrateComponent;
+            Command = PreregisterComponent;
             FontAttributes = FontAttributes.Bold;
             BackgroundColor = Color.White;
             TextColor = Color.Black;

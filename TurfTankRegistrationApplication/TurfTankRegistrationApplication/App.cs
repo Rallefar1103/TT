@@ -1,5 +1,10 @@
 ﻿using Xamarin.Forms;
+
+using System.Net;
+using System.Net.Http;
+
 using TurfTankRegistrationApplication.Pages;
+using TurfTankRegistrationApplication.Connection;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,9 +20,16 @@ namespace TurfTankRegistrationApplication
 
 	public class App : Application
 	{
-		
+		/// <summary>
+		/// HttpClient is the client which handles all web based interaction.
+		/// It must only be initialized ones, and all references to it is to App.ApiClient
+		/// </summary>
+		public static Client ApiClient { get; private set; }
 		public App()
 		{
+			// dette skal med fordi at Markup stadig er experimental.
+			Device.SetFlags(new string[] { "Markup_Experimental" });
+			ApiClient = new Client(new HttpClient());
 			MainPage = new NavigationPage (new SignInPage());
 		}
 
