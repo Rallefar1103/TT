@@ -53,13 +53,13 @@ namespace TurfTankRegistrationApplication.Model
         #region Public Methods
 
         public void ValidateSelf(SerialOrQR idRestriction = SerialOrQR.AnyId)
-        {            
-            if(idRestriction == SerialOrQR.BothSerialAndQRId)
+        {
+            if (idRestriction == SerialOrQR.BothSerialAndQRId)
             {
-                if(ID == "")            throw new ValidationException("Simcard doesn't have an ID!");
-                if(QR.ID == "")         throw new ValidationException("Simcard doesn't have a QR with an ID!");
-                if(Barcode.ICCID == "") throw new ValidationException("Simcards barcode doesn't have an ICCID!");
-                if(ID != Barcode.ICCID) throw new ValidationException("Simcards barcode ICCID isn't equal to Simcards ID!");
+                if (ID == "") throw new ValidationException("Simcard doesn't have an ID!");
+                if (QR.ID == "") throw new ValidationException("Simcard doesn't have a QR with an ID!");
+                if (Barcode.ICCID == "") throw new ValidationException("Simcards barcode doesn't have an ICCID!");
+                if (ID != Barcode.ICCID) throw new ValidationException("Simcards barcode ICCID isn't equal to Simcards ID!");
             }
             else
             {

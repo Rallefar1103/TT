@@ -13,7 +13,6 @@ namespace TurfTankRegistrationApplication.Model
 
     public class ControllerQRSticker : QRSticker, IControllerQRSticker
     {
-
         public string FinalSSID { get; set; }
         public string FinalPASSWORD { get; set; }
 

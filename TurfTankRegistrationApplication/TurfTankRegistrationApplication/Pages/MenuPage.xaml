@@ -42,13 +42,13 @@
                     Text="Component"
                     Background="White"/>
 
-            <Button Grid.Column="2" Grid.Row="2"
+            <!--<Button Grid.Column="2" Grid.Row="2"
                     Command="{Binding NavigateToScanner}"
                     HeightRequest="60"
                     WidthRequest="150"
                     CornerRadius="25"
                     Text="Scanner"
-                    Background="White"/>
+                    Background="White"/>-->
 
         </Grid>
     </ContentPage.Content>

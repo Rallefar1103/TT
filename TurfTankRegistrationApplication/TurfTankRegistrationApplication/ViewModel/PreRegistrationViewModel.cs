@@ -184,7 +184,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             ChooseBaseColor = chosen == QRType.Base ? _successOrChooseColor : _failureOrNotChooseColor;
             ChooseTabletColor = chosen == QRType.Tablet ? _successOrChooseColor : _failureOrNotChooseColor;
 
-            ScanQRCommand.ChangeCanExecute(); 
+            ScanQRCommand.ChangeCanExecute();
             ScanBarcodeCommand.ChangeCanExecute();
         }
 

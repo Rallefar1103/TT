@@ -30,7 +30,6 @@ namespace TurfTankRegistrationApplication.Model
         public string ID { get; set; }
 
         public bool ConfirmedLabelled { get; set; }
-        
         public QRType ofType { get; set; }
 
         #endregion Public Attributes
@@ -70,7 +69,7 @@ namespace TurfTankRegistrationApplication.Model
         {
             if (!ConfirmedLabelled) throw new Exception("The QR code hasn't been confirmed labelled to the component set for preregistration!");
 
-            if(obj is SimCard)
+            if (obj is SimCard)
             {
                 SimCard sim = obj as SimCard;
                 sim.QR = this;

@@ -15,32 +15,33 @@ namespace TurfTankRegistrationApplication.ViewModel
         void RegistrateRoverSimcard(string result);
         void RegistrateBaseSimcard(string result);
         void RegistrateTablet();
-        void SaveRobot();
+        void SaveRobotToDB();
     }
 
     public class RobotRegistrationViewModel : INotifyPropertyChanged, IRegistrateRobot
     {
         public RobotPackage robotItem { get; set; }
 
-        public string ChassisSN { get; set; } = "";
-        public string ControllerSN { get; set; } = "";
-        public string RoverSN { get; set; } = "";
-        public string BaseSN { get; set; } = "";
-        public string TabletSN { get; set; } = "";
-        public string RoverSIM { get; set; } = "";
-        public string BaseSIM { get; set; } = "";
-        public string TabletSIM { get; set; } = "";
+        public string ChassisSN { get; set; } 
+        public string ControllerSN { get; set; } 
+        public string RoverSN { get; set; } 
+        public string BaseSN { get; set; }
+        public string TabletSN { get; set; } 
+        public string RoverSIM { get; set; } 
+        public string BaseSIM { get; set; } 
+        public string TabletSIM { get; set; } 
 
-        public Command DidChangeChassisSN { get; }
-        public Command DidChangeControllerSN { get; }
-        public Command DidChangeRoverSN { get; }
-        public Command DidChangeBaseSN { get; }
-        public Command DidChangeTabletSN { get; }
-        public Command DidSaveRobot { get;  }
+        public Command ChangeChassisSN { get; }
+        public Command ChangeControllerSN { get; }
+        public Command ChangeRoverSN { get; }
+        public Command ChangeBaseSN { get; }
+        public Command ChangeTabletSN { get; }
+        public Command SaveRobot { get;  }
 
-        public Action<object, string> Callback { get; set; }
+        public Action<object, string> ScanCallback { get; set; }
+        public Action<object, string> RoverCallback { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
-
         public INavigation Navigation { get; set; }
 
         public RobotRegistrationViewModel(INavigation navigation, RobotPackage robot)
@@ -48,18 +49,27 @@ namespace TurfTankRegistrationApplication.ViewModel
             this.robotItem = robot;
             this.Navigation = navigation;
             robotItem.SetAsSelected();
-            DidChangeChassisSN = new Command(() => NavigateToScanPage("Robot"));
-            DidChangeControllerSN = new Command(() => NavigateToScanPage("Controller"));
-            DidChangeTabletSN = new Command(() => NavigateToScanPage("Tablet"));
-            DidChangeRoverSN = new Command(() => NavigateToRoverPage());
-            DidChangeBaseSN = new Command(() => NavigateToBasePage());
-            DidSaveRobot = new Command(() => SaveRobot());
-            Callback = new Action<object, string>(OnDataReceived);
+            ChangeChassisSN = new Command(() => NavigateToScanPage("Robot"));
+            ChangeControllerSN = new Command(() => NavigateToScanPage("Controller"));
+            ChangeTabletSN = new Command(() => NavigateToScanPage("Tablet"));
+            ChangeRoverSN = new Command(() => NavigateToRoverPage());
+            ChangeBaseSN = new Command(() => NavigateToBasePage());
+            SaveRobot = new Command(() => SaveRobotToDB());
+            ScanCallback = new Action<object, string>(OnScanDataReceived);
+            RoverCallback = new Action<object, string>(OnRoverDataReceived);
 
-            MessagingCenter.Subscribe<ScanPage, string>(this, "Result", Callback);
+            MessagingCenter.Subscribe<ScanPage, string>(this, "Result", ScanCallback);
+            MessagingCenter.Subscribe<RoverRegistrationViewModel, string>(this, "RoverSerialNumber", RoverCallback);
         }
 
-        private async void OnDataReceived(object sender, string data)
+        private void OnRoverDataReceived(object sender, string data)
+        {
+            robotItem.RoverGPS.ID = data;
+            RoverSN = "Rover SN: " + robotItem.RoverGPS.ID;
+            OnPropertyChanged(nameof(RoverSN));
+        }
+
+        private async void OnScanDataReceived(object sender, string data)
         {
             if (data.Contains("Robot"))
             {
@@ -156,13 +166,6 @@ namespace TurfTankRegistrationApplication.ViewModel
                 await Application.Current.MainPage.DisplayAlert("OBS!", "Rover is already scanned", "Ok");
             }
 
-            // Retrieve SimCard SN from DB
-
-            // Connect to Controller WiFi
-            robotItem.Controller.SetupWifi();
-
-            // Retrieve Rover SN from Controller
-
         }
 
         public async void RegistrateBaseSimcard(string result)
@@ -190,7 +193,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             // To be implemented
         }
 
-        public async void SaveRobot()
+        public async void SaveRobotToDB()
         {
             // Not implemented, but will save every component on the robotPackage instance to the DB
             await Application.Current.MainPage.DisplayAlert("Success!", "Robot saved", "OK");

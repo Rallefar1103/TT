@@ -19,11 +19,11 @@ namespace TurfTankRegistrationApplication.Pages
             BindingContext = RobotRegVM;
 
             // View Components
-            ComponentBtn ChassisBtn = new ComponentBtn("Chassis", RobotRegVM.DidChangeChassisSN);
-            ComponentBtn ControllerBtn = new ComponentBtn("Controller", RobotRegVM.DidChangeControllerSN);
-            ComponentBtn RoverBtn = new ComponentBtn("Rover", RobotRegVM.DidChangeRoverSN);
-            ComponentBtn BaseBtn = new ComponentBtn("Base", RobotRegVM.DidChangeBaseSN);
-            ComponentBtn TabletBtn = new ComponentBtn("Tablet", RobotRegVM.DidChangeTabletSN);
+            ComponentBtn ChassisBtn = new ComponentBtn("Chassis", RobotRegVM.ChangeChassisSN);
+            ComponentBtn ControllerBtn = new ComponentBtn("Controller", RobotRegVM.ChangeControllerSN);
+            ComponentBtn RoverBtn = new ComponentBtn("Rover", RobotRegVM.ChangeRoverSN);
+            ComponentBtn BaseBtn = new ComponentBtn("Base", RobotRegVM.ChangeBaseSN);
+            ComponentBtn TabletBtn = new ComponentBtn("Tablet", RobotRegVM.ChangeTabletSN);
 
             SNLabel ChassisSN = new SNLabel();
             SNLabel ControllerSN = new SNLabel();
