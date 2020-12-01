@@ -4,10 +4,11 @@ using TurfTankRegistrationApplication.Exceptions;
 
 namespace TurfTankRegistrationApplication.Model
 {
-    public interface IQRSticker
+    public interface IQRSticker : IScanableSticker
     {
 
         string ID { get; set; }
+        QRType ofType { get; set; }
         bool ConfirmedLabelled { get; set; }
         Task<bool> Preregister(IValidateable component);
     }
@@ -30,7 +31,7 @@ namespace TurfTankRegistrationApplication.Model
 
         public bool ConfirmedLabelled { get; set; }
         
-        public QRType ofType;
+        public QRType ofType { get; set; }
 
         #endregion Public Attributes
 
@@ -46,6 +47,10 @@ namespace TurfTankRegistrationApplication.Model
         public QRSticker()
         {
             Initialize(type: QRType.NoType, id: "");
+        }
+        public QRSticker(string scannedData) //WRONG METHOD! Just used to make the PreRegistration not fail. Marco is working on making it correct :)
+        {
+            Initialize(type: QRType.NoType, id: scannedData);
         }
 
         public QRSticker(string id, QRType type)

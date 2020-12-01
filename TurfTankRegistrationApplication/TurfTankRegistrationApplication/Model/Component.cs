@@ -9,7 +9,7 @@ using TurfTankRegistrationApplication.Exceptions;
 namespace TurfTankRegistrationApplication.Model
 {
 
-    interface IComponent
+    public interface IComponent
     {
         string ID { get; set; }
         bool ConnectedToRobot { get; set; }
