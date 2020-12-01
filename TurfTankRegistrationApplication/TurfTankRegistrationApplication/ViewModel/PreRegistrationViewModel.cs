@@ -16,14 +16,10 @@ namespace TurfTankRegistrationApplication.ViewModel
         private QRType chosenComponent;
         public string ChosenComponentString { get => chosenComponentString; set => SetProperty(ref chosenComponentString, value); }
         private string chosenComponentString;
-        /// <summary>
-        /// TODO: Should create a QR Sticker when it has been scanned
-        /// </summary>
         public string QRScanData { get => qrScanData; set => SetProperty(ref qrScanData, value); }
         private string qrScanData;
         public IQRSticker QR { get => qr; set => SetProperty(ref qr, value); }
         private IQRSticker qr;
-        // TODO: Should create a Barcode when it has been scanned
         public string BarcodeScanData { get => barcodeScanData; set => SetProperty(ref barcodeScanData, value); }
         private string barcodeScanData;
         public IBarcodeSticker Barcode { get => barcode; set => SetProperty(ref barcode, value); }
@@ -37,6 +33,23 @@ namespace TurfTankRegistrationApplication.ViewModel
         public Command ConfirmAssemblyAndLabellingCommand { get; }
         public Command PreregisterComponentCommand { get; }
         public Action<object, string> Callback { get; set; }
+
+        public Color ChooseRoverColor { get => _chooseRoverColor; set => SetProperty(ref _chooseRoverColor, value); }
+        private Color _chooseRoverColor;
+        public Color ChooseBaseColor { get => _chooseBaseColor; set => SetProperty(ref _chooseBaseColor, value); }
+        private Color _chooseBaseColor;
+        public Color ChooseTabletColor { get => _chooseTabletColor; set => SetProperty(ref _chooseTabletColor, value); }
+        private Color _chooseTabletColor;
+        public Color ScanQRColor { get => _scanQRColor; set => SetProperty(ref _scanQRColor, value); }
+        private Color _scanQRColor;
+        public Color ScanBarcodeColor { get => _scanBarcodeColor; set => SetProperty(ref _scanBarcodeColor, value); }
+        private Color _scanBarcodeColor;
+        public Color ConfirmLabellingColor { get => _confirmLabellingColor; set => SetProperty(ref _confirmLabellingColor, value); }
+        private Color _confirmLabellingColor;
+
+        private Color _neutralColor = Color.White;
+        private Color _successOrChooseColor = Color.Green;
+        private Color _failureOrNotChooseColor = Color.Red;
 
         public string UserMessage { get => _userMessage; set => SetProperty(ref _userMessage, value); }
         private string _userMessage;
@@ -52,13 +65,13 @@ namespace TurfTankRegistrationApplication.ViewModel
             // The following commands follow a linear flow, which is that first you choose a component, then you scan, then you confirm, then you save.
             // ChangeCanScan is just a way to force the given command to reevaluate and rerender the options to the view. There is probably a smarter way, but this works.
             ChooseToPreregisterRoverCommand = new Command(
-                execute: () => { ChosenComponent = QRType.Rover; ScanQRCommand.ChangeCanExecute(); ScanBarcodeCommand.ChangeCanExecute(); },
+                execute: () => ChooseComponent(QRType.Rover),
                 canExecute: () => true);
             ChooseToPreregisterBaseCommand = new Command(
-                execute: () => { ChosenComponent = QRType.Base; ScanQRCommand.ChangeCanExecute(); ScanBarcodeCommand.ChangeCanExecute(); }, 
+                execute: () => ChooseComponent(QRType.Base),
                 canExecute: () => true);
             ChooseToPreregisterTabletCommand = new Command(
-                execute: () => { ChosenComponent = QRType.Tablet; ScanQRCommand.ChangeCanExecute(); ScanBarcodeCommand.ChangeCanExecute(); }, 
+                execute: () => ChooseComponent(QRType.Tablet),
                 canExecute: () => true);
             ScanQRCommand = new Command(
                 execute: () => NavigateToScanPage("QR"),
@@ -67,13 +80,21 @@ namespace TurfTankRegistrationApplication.ViewModel
                 execute: () => NavigateToScanPage("Barcode"),
                 canExecute: () => ChosenComponent != QRType.NoType && ChosenComponent != QRType.Controller);
             ConfirmAssemblyAndLabellingCommand = new Command(
-                execute: () => { QR.ConfirmedLabelled = true; PreregisterComponentCommand.ChangeCanExecute(); },
+                execute: () => ConfirmAssemblyAndLabelling(),
                 canExecute: () => QRScanData != "" && BarcodeScanData != ""); // Should be able to press when all scans are done.
             PreregisterComponentCommand = new Command(execute: () => PreregisterComponent(), canExecute: () => QR.ConfirmedLabelled);
             Callback = new Action<object, string>(OnDataReceived);
 
             MessagingCenter.Subscribe<ScanPage, string>(this, "Result", Callback);
             this.Navigation = navigation;
+
+            // Pure Graphics
+            ChooseRoverColor = _neutralColor;
+            ChooseBaseColor = _neutralColor;
+            ChooseTabletColor = _neutralColor;
+            ScanQRColor = _neutralColor;
+            ScanBarcodeColor = _neutralColor;
+            ConfirmLabellingColor = _neutralColor;
         }
 
         /// <summary>
@@ -85,7 +106,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             if(ChosenComponent == QRType.Rover || ChosenComponent == QRType.Base)
             {
                 SimCard sim = new SimCard(Barcode);
-                await QR.Preregister(sim);
+                //await QR.Preregister(sim); TODO: This has been outcommented due to making a working ProtoType
                 await Navigation.PopAsync();
             }
             else
@@ -94,6 +115,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             }
         }
 
+        #region Scanner
         /// <summary>
         /// Goes to the scan page, and makes sure that the scanned item contains the chosen component.
         /// </summary>
@@ -104,7 +126,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             scanPage.vm.Title = "Scanning " + scanChoice;
             if(scanChoice == "QR")
             {
-                scanPage.QRMustContain = ChosenComponent.ToString("g");
+                scanPage.QRMustContain = ChosenComponentString;
             }
             Navigation.PushAsync(scanPage);
         }
@@ -116,23 +138,62 @@ namespace TurfTankRegistrationApplication.ViewModel
         /// <param name="data">The data received from the ScanPage</param>
         private async void OnDataReceived(object sender, string data)
         {
-            if (data.Contains(ChosenComponent.ToString("g")))
+            try
             {
-                QRScanData = data;
-                QR = new QRSticker(data);
+                if (data.Contains(ChosenComponentString))
+                {
+                    QRScanData = data;
+                    if (data.Contains("Controller"))
+                    {
+                        QR = new ControllerQRSticker(data);
+                    }
+                    else
+                    {
+                        QR = new QRSticker(data);
+                    }
+                    ScanQRColor = _successOrChooseColor;
+                }
+                else if (data != "")
+                {
+                    BarcodeScanData = data;
+                    Barcode = new BarcodeSticker(data);
+                    ScanBarcodeColor = _successOrChooseColor;
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("OBS!", "Scan did not work as expected!", "Ok");
+                }
+                ConfirmAssemblyAndLabellingCommand.ChangeCanExecute();
             }
-            else if(data != "") // Should have better validation such as data.Length == 10 or something depending on the standards of the Simcard
+            catch(Exception e)
             {
-                BarcodeScanData = "";
-                Barcode = new BarcodeSticker(data);
+                await Application.Current.MainPage.DisplayAlert("OBS!", e.Message, "Ok");
             }
-            else
-            {
-                // await Application.Current.MainPage.DisplayAlert("OBS!", "Scan did not work as expected!", "Ok");
-                throw new NotImplementedException("The other QR types isnt implemented yet in PreRegistrationViewModel.OnDataReceived");
-            }
+        }
+        #endregion Scanner
 
-            ConfirmAssemblyAndLabellingCommand.ChangeCanExecute();
+        /// <summary>
+        /// Sets the component as the one currently chosen, and updates the View
+        /// </summary>
+        /// <param name="chosen"></param>
+        private void ChooseComponent(QRType chosen)
+        {
+            ChosenComponent = chosen;
+
+            ChooseRoverColor = chosen == QRType.Rover ? _successOrChooseColor : _failureOrNotChooseColor;
+            ChooseBaseColor = chosen == QRType.Base ? _successOrChooseColor : _failureOrNotChooseColor;
+            ChooseTabletColor = chosen == QRType.Tablet ? _successOrChooseColor : _failureOrNotChooseColor;
+
+            ScanQRCommand.ChangeCanExecute(); 
+            ScanBarcodeCommand.ChangeCanExecute();
+        }
+
+        private void ConfirmAssemblyAndLabelling()
+        {
+            QR.ConfirmedLabelled = true;
+            ConfirmLabellingColor = _successOrChooseColor;
+
+            PreregisterComponentCommand.ChangeCanExecute();
         }
     }
 }

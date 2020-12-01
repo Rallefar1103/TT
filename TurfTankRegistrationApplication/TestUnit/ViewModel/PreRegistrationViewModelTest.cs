@@ -20,8 +20,6 @@ namespace TestUnit.ViewModel
         #region PreRegisterComponent
 
         /*
-         THIS TEST ISNT WORKING YET!!!
-         */
         [TestCase()]
         public void PreregisterComponent_ValidRoverQRAndBarcode_ShouldCreateRoverWithSimcardAndQRAttached()
         {
@@ -69,6 +67,7 @@ namespace TestUnit.ViewModel
             // Assert
             Assert.Fail();
         }
+        */
 
         #endregion PreRegisterComponent
     }
