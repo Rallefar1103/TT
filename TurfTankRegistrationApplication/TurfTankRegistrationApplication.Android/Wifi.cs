@@ -2,9 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Android;
 using Android.Content;
 using Android.Net.Wifi;
+using Android.Support.V4.App;
 using TurfTankRegistrationApplication;
 using TurfTankRegistrationApplication.Droid;
 using Xamarin.Forms;
@@ -14,19 +17,28 @@ namespace TurfTankRegistrationApplication.Droid
 {
     public class Wifi : IWifiConnector
     {
-        public string SSID = "Interwebs";
-        public string PASS = "blaapostkasse";
+        //public string SSID = "Interwebs";
+        //public string PASS = "blaapostkasse";
+
+        public List<string> availableNetworks { get; set; }
+        public WifiManager wifiMgr { get; set; }
+        
+
+        private Context context = null;
 
         public Wifi()
         {
+            this.context = Android.App.Application.Context;
+            this.availableNetworks = new List<string>();
         }
 
-        public bool ConnectToWifi()
+        public void ConnectToWifi(string ssid)
         {
-            var formattedSSID = $"\"{SSID}\"";
-            var formattedPassword = $"\"{PASS}\"";
+            string password = "unknown";
+            var formattedSSID = $"\"{ssid}\"";
+            var formattedPassword = $"\"{password}\"";
 
-            WifiManager wifiManager = (WifiManager)(Android.App.Application.Context.GetSystemService(Context.WifiService));
+            wifiMgr = (WifiManager)(context.GetSystemService(Context.WifiService));
 
             var wifiConfig = new WifiConfiguration
             {
@@ -35,23 +47,131 @@ namespace TurfTankRegistrationApplication.Droid
 
             };
 
-            wifiManager.AddNetwork(wifiConfig);
-            IList<WifiConfiguration> myWifi = wifiManager.ConfiguredNetworks;
+            wifiMgr.AddNetwork(wifiConfig);
+            IList<WifiConfiguration> myWifi = wifiMgr.ConfiguredNetworks;
 
-            wifiManager.Disconnect();
-            wifiManager.EnableNetwork(myWifi.FirstOrDefault(x => x.Ssid.Contains(SSID)).NetworkId, true);
+            wifiMgr.Disconnect();
+            wifiMgr.EnableNetwork(myWifi.FirstOrDefault(x => x.Ssid.Contains(ssid)).NetworkId, true);
 
-            Console.WriteLine($"!!!!!! -----------------------   Connecting to {SSID} ------------------------- !!!!!!!!!");
+            Console.WriteLine($"!!!!!! -----------------------   Connecting to {ssid} ------------------------- !!!!!!!!!");
 
-            if (wifiManager.Reconnect())
+            wifiMgr.Reconnect();
+           
+        }
+
+        public bool CheckWifiStatus()
+        {
+            WifiManager wifiManager = (WifiManager)(Android.App.Application.Context.GetSystemService(Context.WifiService));
+            if (wifiManager.ConnectionInfo.SupplicantState == SupplicantState.Completed)
             {
                 return true;
+
             } else
             {
                 return false;
             }
-            
-                
         }
+
+        public string GetSSID()
+        {
+            WifiManager wifiManager = (WifiManager)(Android.App.Application.Context.GetSystemService(Context.WifiService));
+
+            if (wifiManager != null && !string.IsNullOrEmpty(wifiManager.ConnectionInfo.SSID))
+            {
+                return wifiManager.ConnectionInfo.SSID;
+            }
+            else
+            {
+                return "WiFiManager is NULL";
+            }
+        }
+            
+
+        [Obsolete]
+        public async Task<List<string>> GetAvailableNetworks()
+        {
+
+            var wifiMgr = (WifiManager)context.GetSystemService(Context.WifiService);
+            var wifiReceiver = new WifiReceiver(wifiMgr);
+
+            await Task.Run(() =>
+            {
+                context.RegisterReceiver(wifiReceiver, new IntentFilter(WifiManager.ScanResultsAvailableAction));
+                availableNetworks = wifiReceiver.Scan();
+            });
+                
+            return availableNetworks;
+        }
+
+
+        
     }
+
 }
+
+//[Obsolete]
+//public async Task<List<string>> GetAvailableNetworks()
+//{
+//    wifiMgr = (WifiManager)(context.GetSystemService(Context.WifiService));
+//    if (!wifiMgr.IsWifiEnabled)
+//    {
+//        Console.WriteLine("Wifi must be enabled!");
+//        wifiMgr.SetWifiEnabled(true);
+//    }
+
+//    WifiReceiver wifiReceiver = new WifiReceiver(wifiMgr);
+//    context.RegisterReceiver(wifiReceiver, new IntentFilter(WifiManager.ScanResultsAvailableAction));
+//    await Task.Run(() =>
+//        {
+//            wifiMgr.StartScan();
+//            availableNetworks = wifiReceiver.wifis;
+//            return availableNetworks;
+//        });
+
+//    return availableNetworks;
+//}
+
+
+
+
+//class WifiReceiver : BroadcastReceiver
+//{
+//    private WifiManager wifi;
+//    private List<string> wifiNetworks;
+//private AutoResetEvent receiverARE;
+//private Timer tmr;
+//private const int TIMEOUT_MILLIS = 20000;
+
+//public WifiReceiver(WifiManager wifiM)
+//{
+//    wifi = wifiM;
+//    wifiNetworks = new List<string>();
+//receiverARE = new AutoResetEvent(false);
+//}
+
+//[Obsolete]
+//public IEnumerable<string> Scan()
+//{
+//tmr = new Timer(Timeout, null, TIMEOUT_MILLIS, System.Threading.Timeout.Infinite);
+//wifi.StartScan();
+//receiverARE.WaitOne();
+//    return wifiNetworks;
+//}
+
+//public override void OnReceive(Context context, Intent intent)
+//{
+//    IList<ScanResult> scanWifiNetworks = wifi.ScanResults;
+//    foreach (ScanResult wifiNetwork in scanWifiNetworks)
+//    {
+//        wifiNetworks.Add(wifiNetwork.Ssid);
+//    }
+
+//receiverARE.Set();
+//}
+
+//private void Timeout(object sender)
+//{
+//    receiverARE.Set();
+//}
+
+//}

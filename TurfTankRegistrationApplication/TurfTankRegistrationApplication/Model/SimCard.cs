@@ -9,7 +9,7 @@ namespace TurfTankRegistrationApplication.Model
     {
         string ID { get; set; }
         QRSticker QR { get; set; }
-        BarcodeSticker Barcode { get; set; }
+        IBarcodeSticker Barcode { get; set; }
         bool Activated { get; set; }
     }
 
@@ -19,7 +19,7 @@ namespace TurfTankRegistrationApplication.Model
 
         public string ID { get; set; }
         public QRSticker QR { get; set; }
-        public BarcodeSticker Barcode { get; set; }
+        public IBarcodeSticker Barcode { get; set; }
         public bool Activated { get; set; }
 
         public static IRegistrationDBAPI<SimCard> API { get; set; } = new RegistrationDBAPI<SimCard>();
@@ -27,7 +27,7 @@ namespace TurfTankRegistrationApplication.Model
         #endregion Public Attributes
 
         #region Constructors
-        public void Initialize(string id, QRSticker qr, BarcodeSticker barcode, bool activated)
+        public void Initialize(string id, QRSticker qr, IBarcodeSticker barcode, bool activated)
         {
             ID = id;
             QR = qr;
@@ -39,11 +39,11 @@ namespace TurfTankRegistrationApplication.Model
         {
             Initialize(id: "", qr: new QRSticker(), barcode: new BarcodeSticker(), activated: false);
         }
-        public SimCard(BarcodeSticker barsticker)
+        public SimCard(IBarcodeSticker barsticker)
         {
             Initialize(id: barsticker.ICCID, qr: new QRSticker(), barcode: barsticker, activated: false);
         }
-        public SimCard(string serial, BarcodeSticker barsticker)
+        public SimCard(string serial, IBarcodeSticker barsticker)
         {
             Initialize(id: serial, qr: new QRSticker(), barcode: barsticker, activated: false);
         }
@@ -53,13 +53,13 @@ namespace TurfTankRegistrationApplication.Model
         #region Public Methods
 
         public void ValidateSelf(SerialOrQR idRestriction = SerialOrQR.AnyId)
-        {            
-            if(idRestriction == SerialOrQR.BothSerialAndQRId)
+        {
+            if (idRestriction == SerialOrQR.BothSerialAndQRId)
             {
-                if(ID == "")            throw new ValidationException("Simcard doesn't have an ID!");
-                if(QR.ID == "")         throw new ValidationException("Simcard doesn't have a QR with an ID!");
-                if(Barcode.ICCID == "") throw new ValidationException("Simcards barcode doesn't have an ICCID!");
-                if(ID != Barcode.ICCID) throw new ValidationException("Simcards barcode ICCID isn't equal to Simcards ID!");
+                if (ID == "") throw new ValidationException("Simcard doesn't have an ID!");
+                if (QR.ID == "") throw new ValidationException("Simcard doesn't have a QR with an ID!");
+                if (Barcode.ICCID == "") throw new ValidationException("Simcards barcode doesn't have an ICCID!");
+                if (ID != Barcode.ICCID) throw new ValidationException("Simcards barcode ICCID isn't equal to Simcards ID!");
             }
             else
             {

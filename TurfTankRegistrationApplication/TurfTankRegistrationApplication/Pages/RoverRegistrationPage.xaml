@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TurfTankRegistrationApplication.Pages.RoverRegistrationPage"
+             Title="Rover Registration"
              BackgroundColor="Black">
     <ContentPage.Content>
         <Grid HorizontalOptions="Center"
@@ -30,7 +31,7 @@
                     CornerRadius="25"
                     Text="Rover SN"
                     BackgroundColor="White"
-                    Command="{Binding DidChangeRoverSN}"
+                    Command="{Binding ChangeRoverSN}"
                     />
             
             <Button Grid.Column="1" Grid.Row="2"
@@ -39,7 +40,7 @@
                     CornerRadius="25"
                     Text="Rover Simcard"
                     Background="White"
-                    Command="{Binding DidChangeRoverSimcard}"/>
+                    Command="{Binding ChangeRoverSimcard}"/>
 
         </Grid>
     </ContentPage.Content>

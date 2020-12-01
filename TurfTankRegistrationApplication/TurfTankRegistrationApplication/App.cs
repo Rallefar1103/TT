@@ -5,12 +5,17 @@ using System.Net.Http;
 
 using TurfTankRegistrationApplication.Pages;
 using TurfTankRegistrationApplication.Connection;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace TurfTankRegistrationApplication
 {
 	public interface IWifiConnector
 	{
-		bool ConnectToWifi();
+		void ConnectToWifi(string ssid);
+		Task<List<string>> GetAvailableNetworks();
+		string GetSSID();
+		bool CheckWifiStatus();
 	};
 
 	public class App : Application
