@@ -30,7 +30,6 @@ namespace TurfTankRegistrationApplication.Model
         public string ID { get; set; }
 
         public bool ConfirmedLabelled { get; set; }
-
         public QRType ofType { get; set; }
 
         #endregion Public Attributes

@@ -103,7 +103,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         /// </summary>
         public async void PreregisterComponent()
         {
-            if (ChosenComponent == QRType.Rover || ChosenComponent == QRType.Base)
+            if(ChosenComponent == QRType.Rover || ChosenComponent == QRType.Base)
             {
                 SimCard sim = new SimCard(Barcode);
                 //await QR.Preregister(sim); TODO: This has been outcommented due to making a working ProtoType
@@ -124,7 +124,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         {
             ScanPage scanPage = new ScanPage();
             scanPage.vm.Title = "Scanning " + scanChoice;
-            if (scanChoice == "QR")
+            if(scanChoice == "QR")
             {
                 scanPage.QRMustContain = ChosenComponentString;
             }
@@ -165,7 +165,7 @@ namespace TurfTankRegistrationApplication.ViewModel
                 }
                 ConfirmAssemblyAndLabellingCommand.ChangeCanExecute();
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 await Application.Current.MainPage.DisplayAlert("OBS!", e.Message, "Ok");
             }
