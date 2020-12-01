@@ -16,7 +16,17 @@ namespace TurfTankRegistrationApplication.Pages
             RoverRegistrationViewModel RoverVM = new RoverRegistrationViewModel(Navigation);
             BindingContext = RoverVM;
             var Locationstatus = Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+            
 
+        }
+
+        protected override void OnAppearing()
+        {
+            if (Connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                Application.Current.MainPage.DisplayAlert("Attention!", "You are not connected to the internet, please connect", "OK");
+            }
+            base.OnAppearing();
         }
     }
 }

@@ -7,6 +7,7 @@ using Xamarin.Forms;
 using TurfTankRegistrationApplication.Pages;
 using System.Collections.Generic;
 using System.Linq;
+using Xamarin.Essentials;
 
 namespace TurfTankRegistrationApplication.ViewModel
 {
@@ -26,6 +27,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         public bool HasNotStartedWifiLoading { get; set; } = true;
         public bool ShowLoadingLabel { get; set; }
         public bool WifiListIsReady { get; set; } = false;
+        public bool StartedConnecting { get; set; } = false;
         
 
         public RoverRegistrationViewModel(INavigation navigation)
@@ -51,13 +53,6 @@ namespace TurfTankRegistrationApplication.ViewModel
             scanPage.vm.Title = "Scanning " + component;
             scanPage.QRMustContain = component;
             Navigation.PushAsync(scanPage);
-        }
-
-        public bool TryConnecting()
-        {
-            bool result = false;
-            result = DependencyService.Get<IWifiConnector>().ConnectToWifi();
-            return result;
         }
 
         // Needs to wait for the result to finish
@@ -109,11 +104,32 @@ namespace TurfTankRegistrationApplication.ViewModel
         // We might need to move this logic to the Model
         public async void GetRoverSerialNumber()
         {
+            string ConnectedSSID = "";
             string ssid = GetCorrectWifi(SelectedNetwork);
-            bool gotConnected = false;
             Console.WriteLine("Start connecting to wifi: " + ssid);
-            gotConnected = TryConnecting();
-            if (gotConnected)
+
+            // Connect to wifi
+            DependencyService.Get<IWifiConnector>().ConnectToWifi(SelectedNetwork);
+
+            WifiListIsReady = false;
+            OnPropertyChanged(nameof(WifiListIsReady));
+
+            StartedConnecting = true;
+            OnPropertyChanged(nameof(StartedConnecting));
+
+            await Task.Delay(5000);
+
+            StartedConnecting = false;
+            OnPropertyChanged(nameof(StartedConnecting));
+
+            if (DependencyService.Get<IWifiConnector>().CheckWifiStatus())
+            {
+                ConnectedSSID = DependencyService.Get<IWifiConnector>().GetSSID();
+            }
+
+            Console.WriteLine("!!!! ------ ConnectedSSID: " + ConnectedSSID);
+
+            if ($"\"{SelectedNetwork}\"" == ConnectedSSID && Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
                 Console.WriteLine("WE ARE CONNECTED!");
                 await Application.Current.MainPage.DisplayAlert("Success!", "You are connected to: " + ssid, "Add Serial Number");

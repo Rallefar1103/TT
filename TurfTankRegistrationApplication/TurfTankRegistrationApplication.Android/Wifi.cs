@@ -17,8 +17,9 @@ namespace TurfTankRegistrationApplication.Droid
 {
     public class Wifi : IWifiConnector
     {
-        public string SSID = "Interwebs";
-        public string PASS = "blaapostkasse";
+        //public string SSID = "Interwebs";
+        //public string PASS = "blaapostkasse";
+
         public List<string> availableNetworks { get; set; }
         public WifiManager wifiMgr { get; set; }
         
@@ -31,10 +32,11 @@ namespace TurfTankRegistrationApplication.Droid
             this.availableNetworks = new List<string>();
         }
 
-        public bool ConnectToWifi()
+        public void ConnectToWifi(string ssid)
         {
-            var formattedSSID = $"\"{SSID}\"";
-            var formattedPassword = $"\"{PASS}\"";
+            string password = "unknown";
+            var formattedSSID = $"\"{ssid}\"";
+            var formattedPassword = $"\"{password}\"";
 
             wifiMgr = (WifiManager)(context.GetSystemService(Context.WifiService));
 
@@ -49,17 +51,38 @@ namespace TurfTankRegistrationApplication.Droid
             IList<WifiConfiguration> myWifi = wifiMgr.ConfiguredNetworks;
 
             wifiMgr.Disconnect();
-            wifiMgr.EnableNetwork(myWifi.FirstOrDefault(x => x.Ssid.Contains(SSID)).NetworkId, true);
+            wifiMgr.EnableNetwork(myWifi.FirstOrDefault(x => x.Ssid.Contains(ssid)).NetworkId, true);
+            
+            Console.WriteLine($"!!!!!! -----------------------   Connecting to {ssid} ------------------------- !!!!!!!!!");
 
-            Console.WriteLine($"!!!!!! -----------------------   Connecting to {SSID} ------------------------- !!!!!!!!!");
+            wifiMgr.Reconnect();
+           
+        }
 
-            if (wifiMgr.Reconnect())
+        public bool CheckWifiStatus()
+        {
+            WifiManager wifiManager = (WifiManager)(Android.App.Application.Context.GetSystemService(Context.WifiService));
+            if (wifiManager.ConnectionInfo.SupplicantState == SupplicantState.Completed)
             {
                 return true;
+
+            } else
+            {
+                return false;
+            }
+        }
+
+        public string GetSSID()
+        {
+            WifiManager wifiManager = (WifiManager)(Android.App.Application.Context.GetSystemService(Context.WifiService));
+
+            if (wifiManager != null && !string.IsNullOrEmpty(wifiManager.ConnectionInfo.SSID))
+            {
+                return wifiManager.ConnectionInfo.SSID;
             }
             else
             {
-                return false;
+                return "WiFiManager is NULL";
             }
         }
 

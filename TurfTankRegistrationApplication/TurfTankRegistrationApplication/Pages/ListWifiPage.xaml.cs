@@ -24,6 +24,16 @@ namespace TurfTankRegistrationApplication.Pages
 
             };
 
+            Label ConnectingText = new Label
+            {
+                Text = "Connecting....",
+                FontSize = 30,
+                TextColor = Color.Black,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center,
+
+            };
+
             Button StartScanning = new Button
             {
                 Text = "Start Scanning",
@@ -64,6 +74,7 @@ namespace TurfTankRegistrationApplication.Pages
 
 
             LoadingText.SetBinding(IsVisibleProperty, "ShowLoadingLabel");
+            ConnectingText.SetBinding(IsVisibleProperty, "StartedConnecting");
 
             wifiList.SetBinding(IsVisibleProperty, "WifiListIsReady");
             wifiList.SetBinding(ListView.ItemsSourceProperty, "wifiResults");
@@ -73,8 +84,9 @@ namespace TurfTankRegistrationApplication.Pages
             stackLayout.Children.Add(StartScanning);
             stackLayout.Children.Add(LoadingText);
             stackLayout.Children.Add(wifiList);
+            stackLayout.Children.Add(ConnectingText);
             stackLayout.Children.Add(Connect);
-
+            
 
             Content = stackLayout;
             

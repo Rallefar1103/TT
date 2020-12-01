@@ -7,8 +7,10 @@ namespace TurfTankRegistrationApplication
 {
 	public interface IWifiConnector
 	{
-		bool ConnectToWifi();
+		void ConnectToWifi(string ssid);
 		Task<List<string>> GetAvailableNetworks();
+		string GetSSID();
+		bool CheckWifiStatus();
 	};
 
 	public class App : Application
