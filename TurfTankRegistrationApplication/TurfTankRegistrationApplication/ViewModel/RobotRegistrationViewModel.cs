@@ -40,7 +40,6 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public Action<object, string> ScanCallback { get; set; }
         public Action<object, string> RoverCallback { get; set; }
-        public Action<object, string> WifiCallback { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public INavigation Navigation { get; set; }

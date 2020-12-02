@@ -17,9 +17,6 @@ namespace TurfTankRegistrationApplication.Droid
 {
     public class Wifi : IWifiConnector
     {
-        //public string SSID = "Interwebs";
-        //public string PASS = "blaapostkasse";
-
         public List<string> availableNetworks { get; set; }
         public WifiManager wifiMgr { get; set; }
         
@@ -32,6 +29,10 @@ namespace TurfTankRegistrationApplication.Droid
             this.availableNetworks = new List<string>();
         }
 
+
+        // Method takes in the desired SSID you'd want to connect to. Creates a WifiManager, adds a new wifi configuration
+        // to that manager, adds it to the "pool" of associated networks. It then locates the desired network in the "pool"
+        // and reconnects to that network.
         public void ConnectToWifi(string ssid)
         {
             string password = "blaapostkasse";
@@ -87,6 +88,9 @@ namespace TurfTankRegistrationApplication.Droid
         }
             
 
+        // Method creates a WifiManager and a WifiReceiver. The WifiReceiver handles the retrieval of nearby networks.
+        // We register the receiver with the WifiReceiver as well as the ScanResultsAvailableAction.
+        // Lastly we return the located wifi networks.
         [Obsolete]
         public async Task<List<string>> GetAvailableNetworks()
         {

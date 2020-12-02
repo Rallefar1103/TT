@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace TurfTankRegistrationApplication.Helpers
 {
+    // Abstract class where the constructor handles the string manipulation of the JSON response
+    // we receive from the Rover after requesting the Serial Number. 
     public abstract class NorthCommands
     {
         public string RawInput { get; set; }
@@ -29,6 +31,8 @@ namespace TurfTankRegistrationApplication.Helpers
         }
     }
 
+    // This class basically just handles the string manipulation that gets us the
+    // Rover serial number from the JSON response.
     public class SOSVER : NorthCommands
     {
 
