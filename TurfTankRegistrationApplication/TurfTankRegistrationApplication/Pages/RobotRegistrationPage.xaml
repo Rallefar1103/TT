@@ -3,10 +3,11 @@
              xmlns:local="clr-namespace:TurfTankRegistrationApplication.ViewModel"
              x:Class="TurfTankRegistrationApplication.Pages.RobotRegistrationPage"
              BackgroundColor="Black"
-             Title="Robot Registration"
              NavigationPage.HasNavigationBar="True">
     
     <ContentPage.Content>
+         
+        
         <!--<StackLayout>
             <Button Text="Tester"
                     TextColor="White"

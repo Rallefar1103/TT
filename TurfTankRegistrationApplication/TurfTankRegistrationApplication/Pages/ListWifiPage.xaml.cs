@@ -9,10 +9,15 @@ namespace TurfTankRegistrationApplication.Pages
     {
         public ListWifiPage()
         {
+            WifiPageViewModel wifiVM = new WifiPageViewModel(Navigation);
+            BindingContext = wifiVM;
 
             InitializeComponent();
-            RoverRegistrationViewModel roverVM = new RoverRegistrationViewModel(Navigation);
-            BindingContext = roverVM;
+            //RoverRegistrationViewModel roverVM = new RoverRegistrationViewModel(Navigation);
+            //BindingContext = roverVM;
+            
+
+            Title = "Robots Nearby";
 
             Label LoadingText = new Label
             {

@@ -22,6 +22,7 @@ namespace TurfTankRegistrationApplication.ViewModel
     {
         public RobotPackage robotItem { get; set; }
 
+        public string SSIDTitle { get; set; }
         public string ChassisSN { get; set; } 
         public string ControllerSN { get; set; } 
         public string RoverSN { get; set; } 
@@ -40,13 +41,15 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public Action<object, string> ScanCallback { get; set; }
         public Action<object, string> RoverCallback { get; set; }
+        public Action<object, string> WifiCallback { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public INavigation Navigation { get; set; }
 
-        public RobotRegistrationViewModel(INavigation navigation, RobotPackage robot)
+        public RobotRegistrationViewModel(INavigation navigation)
         {
-            this.robotItem = robot;
+            
+            this.robotItem = new RobotPackage();
             this.Navigation = navigation;
             robotItem.SetAsSelected();
             ChangeChassisSN = new Command(() => NavigateToScanPage("Robot"));
@@ -57,9 +60,23 @@ namespace TurfTankRegistrationApplication.ViewModel
             SaveRobot = new Command(() => SaveRobotToDB());
             ScanCallback = new Action<object, string>(OnScanDataReceived);
             RoverCallback = new Action<object, string>(OnRoverDataReceived);
+            WifiCallback = new Action<object, string>(OnWifiDataReceived);
 
             MessagingCenter.Subscribe<ScanPage, string>(this, "Result", ScanCallback);
             MessagingCenter.Subscribe<RoverRegistrationViewModel, string>(this, "RoverSerialNumber", RoverCallback);
+            //MessagingCenter.Subscribe<WifiPageViewModel, string>(this, "RobotSSID", WifiCallback);
+        }
+
+        private void OnWifiDataReceived(object sender, string data)
+        {
+            SSIDTitle = data;
+            OnPropertyChanged(nameof(SSIDTitle));
+            DoWeGetHere(data);
+        }
+
+        public void DoWeGetHere(string wifi)
+        {
+            Console.WriteLine("!!!!!!! -------- WE get here with the wifi network: " + wifi);
         }
 
         private void OnRoverDataReceived(object sender, string data)
@@ -123,6 +140,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         #region public methods
         public async void RegistrateChassis(string result)
         {
+            Console.WriteLine("!!!!!!!!! REGISTRATING CHASSIS !!!!!!!!!!");
             if (string.IsNullOrEmpty(robotItem.SerialNumber))
             {
                 robotItem.SerialNumber = result;
@@ -137,6 +155,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public async void RegistrateController(string result)
         {
+            Console.WriteLine("!!!!!!!!! REGISTRATING CONTROLLER !!!!!!!!!!");
             if (string.IsNullOrEmpty(robotItem.Controller.ID))
             {
                 robotItem.Controller.ID = result;

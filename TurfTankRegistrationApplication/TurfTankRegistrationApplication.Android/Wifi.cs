@@ -34,7 +34,7 @@ namespace TurfTankRegistrationApplication.Droid
 
         public void ConnectToWifi(string ssid)
         {
-            string password = "unknown";
+            string password = "blaapostkasse";
             var formattedSSID = $"\"{ssid}\"";
             var formattedPassword = $"\"{password}\"";
 

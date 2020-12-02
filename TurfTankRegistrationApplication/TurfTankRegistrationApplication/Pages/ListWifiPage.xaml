@@ -2,7 +2,6 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TurfTankRegistrationApplication.Pages.ListWifiPage"
              BackgroundColor="White"
-             Title="Available Wifis"
              NavigationPage.HasNavigationBar="True">
     <ContentPage.Content>
 
