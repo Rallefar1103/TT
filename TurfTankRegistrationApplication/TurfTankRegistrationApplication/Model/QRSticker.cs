@@ -42,37 +42,7 @@ namespace TurfTankRegistrationApplication.Model
         protected const string strQRID = "QRID:";
         #endregion
 
-        //protected virtual bool ValidateScannedQR(List<string> results, out QRType type)
-        protected virtual bool ValidateScannedQR(List<string> results, out QRType outType)
-        {
-            outType = QRType.NOTYPE;
-
-            string type;
-            string qrId;
-
-            if (results[0].Contains(strType) &&
-                results[1].Contains(strQRID))
-            {
-                type = Regex.Replace(results[0], strType, "");
-                qrId = Regex.Replace(results[1], strQRID, "");
-            }
-            else
-                return false;
-
-            if (Enum.TryParse(type, out outType) && IsID(qrId))
-                return true;
-            else
-                return false;
-        }
-        protected bool IsID(string id)
-        {
-            if (Regex.IsMatch(id, @"^[0-9]*$") && id != "" && id != null)
-                return true;
-            else
-                return false;
-        }
-
-        #region Constructor
+        #region Constructors
 
         private void Initialize(QRType type, string id)
         {
@@ -94,11 +64,10 @@ namespace TurfTankRegistrationApplication.Model
         public QRSticker(string scanResult)
         {
             scanResult = scanResult.ToUpper();
-            List<string> results = scanResult.Split(' ').ToList();
             
-            if (ValidateScannedQR(results, out QRType type) && type != QRType.CONTROLLER)
+            if (ValidateScannedQR(scanResult, out List<string>validatedResults, out QRType type) && type != QRType.CONTROLLER)
             {
-                string id = Regex.Replace(results[1], strQRID, "");
+                string id = validatedResults[1];
                 Initialize(type, id);
                 Console.WriteLine("------------------The QR sticker was successfully scanned------------------");
             }
@@ -140,7 +109,44 @@ namespace TurfTankRegistrationApplication.Model
         #endregion Public Methods
 
         #region Private Methods
+        /// <summary>
+        /// This is a protected method used to validate the strings scanned with the QR scanner.
+        /// </summary>
+        /// <param name="results"></param>
+        /// <param name="outType"></param>
+        /// <returns></returns>
+        protected virtual bool ValidateScannedQR(string scanResult, out List<string> results, out QRType outType)
+        {
+            results = scanResult.Split(' ').ToList();
 
+            outType = QRType.NOTYPE;
+
+            string type;
+            string qrId;
+
+            if (results[0].Contains(strType) &&
+                results[1].Contains(strQRID))
+            {
+                type = Regex.Replace(results[0], strType, "");
+
+                qrId = Regex.Replace(results[1], strQRID, "");
+                results[1] = qrId;
+            }
+            else
+                return false;
+
+            if (Enum.TryParse(type, out outType) && IsID(qrId))
+                return true;
+            else
+                return false;
+        }
+        protected bool IsID(string id)
+        {
+            if (Regex.IsMatch(id, @"^[0-9]*$") && id != "" && id != null)
+                return true;
+            else
+                return false;
+        }
 
         #endregion Private Methods
 
