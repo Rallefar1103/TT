@@ -22,7 +22,6 @@ namespace TurfTankRegistrationApplication.ViewModel
     {
         public RobotPackage robotItem { get; set; }
 
-        public string SSIDTitle { get; set; }
         public string ChassisSN { get; set; } 
         public string ControllerSN { get; set; } 
         public string RoverSN { get; set; } 
@@ -60,23 +59,9 @@ namespace TurfTankRegistrationApplication.ViewModel
             SaveRobot = new Command(() => SaveRobotToDB());
             ScanCallback = new Action<object, string>(OnScanDataReceived);
             RoverCallback = new Action<object, string>(OnRoverDataReceived);
-            WifiCallback = new Action<object, string>(OnWifiDataReceived);
 
             MessagingCenter.Subscribe<ScanPage, string>(this, "Result", ScanCallback);
             MessagingCenter.Subscribe<RoverRegistrationViewModel, string>(this, "RoverSerialNumber", RoverCallback);
-            //MessagingCenter.Subscribe<WifiPageViewModel, string>(this, "RobotSSID", WifiCallback);
-        }
-
-        private void OnWifiDataReceived(object sender, string data)
-        {
-            SSIDTitle = data;
-            OnPropertyChanged(nameof(SSIDTitle));
-            DoWeGetHere(data);
-        }
-
-        public void DoWeGetHere(string wifi)
-        {
-            Console.WriteLine("!!!!!!! -------- WE get here with the wifi network: " + wifi);
         }
 
         private void OnRoverDataReceived(object sender, string data)
