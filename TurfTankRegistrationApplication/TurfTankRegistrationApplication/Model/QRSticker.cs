@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using TurfTankRegistrationApplication.Exceptions;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace TurfTankRegistrationApplication.Model
 {
@@ -8,19 +11,19 @@ namespace TurfTankRegistrationApplication.Model
     {
 
         string ID { get; set; }
-        QRType ofType { get; set; }
+        QRType OfType { get; set; }
         bool ConfirmedLabelled { get; set; }
         Task<bool> Preregister(IValidateable component);
     }
 
     public enum QRType
     {
-        Rover,
-        Base,
-        Tablet,
-        RobotPackage,
-        Controller, // denne qrsticker er af typen ControllerQRSticker (SSID==null på resten,)
-        NoType
+        ROVER,
+        BASE,
+        TABLET,
+        ROBOTPACKAGE,
+        CONTROLLER, // denne qrsticker er af typen ControllerQRSticker (SSID==null på resten,)
+        NOTYPE
     }
 
     public class QRSticker : ScanableSticker, IQRSticker
@@ -30,31 +33,48 @@ namespace TurfTankRegistrationApplication.Model
         public string ID { get; set; }
 
         public bool ConfirmedLabelled { get; set; }
-        public QRType ofType { get; set; }
+        public QRType OfType { get; set; }
 
         #endregion Public Attributes
 
+        #region Constants
+        protected const string strType = "TYPE:";
+        protected const string strQRID = "QRID:";
+        #endregion
+
         #region Constructors
 
-        public void Initialize(QRType type, string id)
+        private void Initialize(QRType type, string id)
         {
-            ofType = type;
+            OfType = type;
             ID = id;
             ConfirmedLabelled = false;
 
         }
         public QRSticker()
         {
-            Initialize(type: QRType.NoType, id: "");
-        }
-        public QRSticker(string scannedData) //WRONG METHOD! Just used to make the PreRegistration not fail. Marco is working on making it correct :)
-        {
-            Initialize(type: QRType.NoType, id: scannedData);
+            Initialize(type: QRType.NOTYPE, id: "");
         }
 
         public QRSticker(string id, QRType type)
         {
             Initialize(type: type, id: id);
+        }
+
+        public QRSticker(string scanResult)
+        {
+            scanResult = scanResult.ToUpper();
+            
+            if (ValidateScannedQR(scanResult, out List<string>validatedResults, out QRType type) && type != QRType.CONTROLLER)
+            {
+                string id = validatedResults[1];
+                Initialize(type, id);
+                Console.WriteLine("------------------The QR sticker was successfully scanned------------------");
+            }
+            else
+            {
+                throw new ValidationException("The scanned QR code is not in a valid format");
+            }
         }
         #endregion Constructors
 
@@ -89,7 +109,44 @@ namespace TurfTankRegistrationApplication.Model
         #endregion Public Methods
 
         #region Private Methods
+        /// <summary>
+        /// This is a protected method used to validate the strings scanned with the QR scanner.
+        /// </summary>
+        /// <param name="results"></param>
+        /// <param name="outType"></param>
+        /// <returns></returns>
+        protected virtual bool ValidateScannedQR(string scanResult, out List<string> results, out QRType outType)
+        {
+            results = scanResult.Split(' ').ToList();
 
+            outType = QRType.NOTYPE;
+
+            string type;
+            string qrId;
+
+            if (results[0].Contains(strType) &&
+                results[1].Contains(strQRID))
+            {
+                type = Regex.Replace(results[0], strType, "");
+
+                qrId = Regex.Replace(results[1], strQRID, "");
+                results[1] = qrId;
+            }
+            else
+                return false;
+
+            if (Enum.TryParse(type, out outType) && IsID(qrId))
+                return true;
+            else
+                return false;
+        }
+        protected bool IsID(string id)
+        {
+            if (Regex.IsMatch(id, @"^[0-9]*$") && id != "" && id != null)
+                return true;
+            else
+                return false;
+        }
 
         #endregion Private Methods
 
