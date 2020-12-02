@@ -78,16 +78,16 @@ namespace TurfTankRegistrationApplication.ViewModel
                 
                 switch (qrSticker.ofType)
                 {
-                    case QRType.RobotPackage:
+                    case QRType.ROBOTPACKAGE:
                         RegistrateChassis(qrSticker);
                         break;
-                    case QRType.Base:
+                    case QRType.BASE:
                         RegistrateBaseSimcard(qrSticker);
                         break;
-                    case QRType.Controller:
+                    case QRType.CONTROLLER:
                         RegistrateController(qrSticker);
                         break;
-                    case QRType.Rover:
+                    case QRType.ROVER:
                         RegistrateRoverSimcard(qrSticker);
                         break;
                     case QRType.Tablet:

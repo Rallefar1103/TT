@@ -18,12 +18,12 @@ namespace TurfTankRegistrationApplication.Model
 
     public enum QRType
     {
-        Rover,
-        Base,
+        ROVER,
+        BASE,
         Tablet,
-        RobotPackage,
-        Controller, // denne qrsticker er af typen ControllerQRSticker (SSID==null på resten,)
-        NoType
+        ROBOTPACKAGE,
+        CONTROLLER, // denne qrsticker er af typen ControllerQRSticker (SSID==null på resten,)
+        NOTYPE
     }
 
     public class QRSticker : ScanableSticker, IQRSticker
@@ -37,25 +37,42 @@ namespace TurfTankRegistrationApplication.Model
 
         #endregion Public Attributes
 
-        private bool ValidateScannedQR(List<string> results, out QRType type)
+        //protected virtual bool ValidateScannedQR(List<string> results, out QRType type)
+        protected virtual bool ValidateScannedQR(List<string> results, out QRType outType)
         {
+            outType = QRType.NOTYPE;
 
+            string strType = "TYPE:";
+            string strQRID = "QRID:";
 
-            if (Enum.TryParse(results[0], out type) && Regex.IsMatch(results[1], "[1-9]"))
+            string type;
+            string qrId;
+
+            if (results[0].Contains(strType) &&
+                results[1].Contains(strQRID))
             {
-                return true;
+                type = Regex.Replace(results[0], strType, "");
+                qrId = Regex.Replace(results[1], strQRID, "");
             }
             else
-            {
-                type = QRType.NoType;
                 return false;
 
-            }
+            if (Enum.TryParse(type, out outType) && IsID(qrId))
+                return true;
+            else
+                return false;
+        }
+        protected bool IsID(string id)
+        {
+            if (Regex.IsMatch(id, "[1-9]+$"))
+                return true;
+            else
+                return false;
         }
 
         #region Constructor
 
-        public void Initialize(QRType type, string id)
+        private void Initialize(QRType type, string id)
         {
             ofType = type;
             ID = id;
@@ -64,11 +81,7 @@ namespace TurfTankRegistrationApplication.Model
         }
         public QRSticker()
         {
-            Initialize(type: QRType.NoType, id: "");
-        }
-        public QRSticker(string scannedData) //WRONG METHOD! Just used to make the PreRegistration not fail. Marco is working on making it correct :)
-        {
-            Initialize(type: QRType.NoType, id: scannedData);
+            Initialize(type: QRType.NOTYPE, id: "");
         }
 
         public QRSticker(string id, QRType type)
@@ -78,7 +91,7 @@ namespace TurfTankRegistrationApplication.Model
 
         public QRSticker(string scanResult)
         {
-            List<string> results = scanResult.Split(';').ToList();
+            List<string> results = scanResult.Split(' ').ToList();
             
             if (ValidateScannedQR(results, out QRType type))
             {
@@ -90,7 +103,6 @@ namespace TurfTankRegistrationApplication.Model
             {
                 throw new ValidationException("The scanned QR code is not in a valid format");
             }
-
         }
         #endregion Constructors
 

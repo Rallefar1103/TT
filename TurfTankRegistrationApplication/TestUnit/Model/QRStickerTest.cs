@@ -27,7 +27,7 @@ namespace TestUnit.Model
 
             // Arrange
             QRSticker scannedQR = new QRSticker();
-            scannedQR.ofType = QRType.Rover;
+            scannedQR.ofType = QRType.ROVER;
             scannedQR.ID = "QRStickerNumber1";
             scannedQR.ConfirmedLabelled = true;
             SimCard validSimcard = new SimCard();
@@ -54,7 +54,7 @@ namespace TestUnit.Model
 
             // Arrange
             QRSticker scannedQR = new QRSticker();
-            scannedQR.ofType = QRType.Rover;
+            scannedQR.ofType = QRType.ROVER;
             scannedQR.ID = QRID;
             scannedQR.ConfirmedLabelled = true;
             SimCard validSimcard = new SimCard();
@@ -65,5 +65,27 @@ namespace TestUnit.Model
             Assert.ThrowsAsync<ValidationException>(async () => await scannedQR.Preregister(validSimcard), Desc);
         }
         #endregion ConfirmAssemblyAndLabelling
+        #region QRSTickerScanResultValidation
+
+        [TestCase("Type:controller QRID:1234 SSID:TTAP1234 PASSWORD:TTIO1234", "")]
+        public void QRSTickerScanResultValidation_QRWithInvalidScanResults_ShouldBeValid(string scanresult, string Desc)
+        {
+            //Arrange
+            //Act
+            //Assert
+            Assert.DoesNotThrow(() => new QRSticker(scanresult), Desc);
+        }
+
+        [TestCase("Typ:controller QRID:1234 SSID:TTAP1234 PASSWORD:TTIO1234", "")]
+        public void QRSTickerScanResultValidation_QRWithInvalidScanResults_ShouldThrowValidationException(string scanresult, string Desc)
+        {
+            //Arrange
+            //Act
+            //Assert
+            Assert.Throws<ValidationException>(() => new QRSticker(scanresult), Desc);
+        }
+
+        #endregion
+
     }
 }

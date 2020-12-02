@@ -51,7 +51,7 @@ namespace TurfTankRegistrationApplication.Model
         }
         public GPS(SimCard simcard)
         {
-            GPSType type = simcard.QR.ofType == QRType.Rover ? GPSType.Rover : simcard.QR.ofType == QRType.Base ? GPSType.Base : GPSType.NoType;
+            GPSType type = simcard.QR.ofType == QRType.ROVER ? GPSType.Rover : simcard.QR.ofType == QRType.BASE ? GPSType.Base : GPSType.NoType;
             Initialize(type: type, simcard: simcard);
         }
 
@@ -87,8 +87,8 @@ namespace TurfTankRegistrationApplication.Model
         public override void ValidateSelf(SerialOrQR idRestriction = SerialOrQR.AnyId)
         {
             base.ValidateSelf(idRestriction);
-            if (ofType == GPSType.Rover && Simcard.QR.ofType != QRType.Rover) throw new ValidationException($"The QR sticker is of the wrong type! The component is type Rover while the QR is type {Simcard.QR.ofType}");
-            if (ofType == GPSType.Base && Simcard.QR.ofType != QRType.Base) throw new ValidationException($"The QR sticker is of the wrong type! The component is type Base while the QR is type {Simcard.QR.ofType}");
+            if (ofType == GPSType.Rover && Simcard.QR.ofType != QRType.ROVER) throw new ValidationException($"The QR sticker is of the wrong type! The component is type Rover while the QR is type {Simcard.QR.ofType}");
+            if (ofType == GPSType.Base && Simcard.QR.ofType != QRType.BASE) throw new ValidationException($"The QR sticker is of the wrong type! The component is type Base while the QR is type {Simcard.QR.ofType}");
             if (ofType == GPSType.NoType) throw new ValidationException($"The GPS does not have a type!");
 
             if (idRestriction == SerialOrQR.AnyId)
