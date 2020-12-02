@@ -30,7 +30,7 @@ namespace TurfTankRegistrationApplication
 			// dette skal med fordi at Markup stadig er experimental.
 			Device.SetFlags(new string[] { "Markup_Experimental" });
 			ApiClient = new Client(new HttpClient());
-			MainPage = new NavigationPage (new RobotRegistrationPage("Tester"));
+			MainPage = new NavigationPage (new SignInPage()));
 		}
 
 		protected override void OnStart()
