@@ -24,6 +24,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         static string RobotIP = "192.168.80.1";
         static string RoverCMD = "SOSVER,0";
+        public string RoverResponse { get; set; }
 
         public Command ChangeRoverSimcard { get; }
         public Command ChangeRoverSN { get; }
@@ -50,6 +51,11 @@ namespace TurfTankRegistrationApplication.ViewModel
             
         }
 
+        public RoverRegistrationViewModel()
+        {
+
+        }
+
         public void NavigateToScanPage(string component)
         {
             ScanPage scanPage = new ScanPage();
@@ -62,7 +68,6 @@ namespace TurfTankRegistrationApplication.ViewModel
         {
             HttpClient http = new HttpClient();
             string URL = $"http://{RobotIP}:8888/rover";
-            string roverResponse = " ";
             var values = new Dictionary<string, string>
             {
                 { "Command", cmd },
@@ -94,13 +99,14 @@ namespace TurfTankRegistrationApplication.ViewModel
                     dynamic json = JsonConvert.DeserializeObject(StringContent);
                     Console.WriteLine("!!!!!!!! ------- THIS IS WHAT WE GOT: \n" + json);
 
-                    roverResponse = json[0]["name"];
-                    Console.WriteLine("THIS IS ROVER RESPONSE: \n" + roverResponse);
-                    await Application.Current.MainPage.DisplayAlert("Success!", "Got Serial Number for rover: " + roverResponse, "Add to Robot");
+                    RoverResponse = json[0]["name"];
+                    Console.WriteLine("THIS IS ROVER RESPONSE: \n" + RoverResponse);
+                    await Application.Current.MainPage.DisplayAlert("Success!", "Got Serial Number for rover: " + RoverResponse, "Add to Robot");
                     await Navigation.PopAsync();
                 }
                 else
                 {
+                    await Application.Current.MainPage.DisplayAlert("ERROR!", "Could not retrieve serial number from rover", "OK");
                     Console.WriteLine("BAD RESPONSE CODE!!!!!");
                 }
             } catch
@@ -109,7 +115,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             }
 
 
-            MessagingCenter.Send(this, "RoverSerialNumber", roverResponse);
+            MessagingCenter.Send(this, "RoverSerialNumber", RoverResponse);
         }
 
         
