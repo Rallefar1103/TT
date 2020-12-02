@@ -52,7 +52,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         {
             ScanPage scanPage = new ScanPage();
             scanPage.vm.Title = "Scanning " + component;
-            scanPage.QRMustContain = component;
+            scanPage.QRMustContain = "Type:" + component;
             Navigation.PushAsync(scanPage);
         }
 

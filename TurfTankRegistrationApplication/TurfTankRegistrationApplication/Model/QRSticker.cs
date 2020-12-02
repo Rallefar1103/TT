@@ -11,7 +11,7 @@ namespace TurfTankRegistrationApplication.Model
     {
 
         string ID { get; set; }
-        QRType ofType { get; set; }
+        QRType OfType { get; set; }
         bool ConfirmedLabelled { get; set; }
         Task<bool> Preregister(IValidateable component);
     }
@@ -20,7 +20,7 @@ namespace TurfTankRegistrationApplication.Model
     {
         ROVER,
         BASE,
-        Tablet,
+        TABLET,
         ROBOTPACKAGE,
         CONTROLLER, // denne qrsticker er af typen ControllerQRSticker (SSID==null på resten,)
         NOTYPE
@@ -33,17 +33,19 @@ namespace TurfTankRegistrationApplication.Model
         public string ID { get; set; }
 
         public bool ConfirmedLabelled { get; set; }
-        public QRType ofType { get; set; }
+        public QRType OfType { get; set; }
 
         #endregion Public Attributes
+
+        #region Constants
+        protected const string strType = "TYPE:";
+        protected const string strQRID = "QRID:";
+        #endregion
 
         //protected virtual bool ValidateScannedQR(List<string> results, out QRType type)
         protected virtual bool ValidateScannedQR(List<string> results, out QRType outType)
         {
             outType = QRType.NOTYPE;
-
-            string strType = "TYPE:";
-            string strQRID = "QRID:";
 
             string type;
             string qrId;
@@ -64,7 +66,7 @@ namespace TurfTankRegistrationApplication.Model
         }
         protected bool IsID(string id)
         {
-            if (Regex.IsMatch(id, "[1-9]+$"))
+            if (Regex.IsMatch(id, @"^[0-9]*$") && id != "" && id != null)
                 return true;
             else
                 return false;
@@ -74,7 +76,7 @@ namespace TurfTankRegistrationApplication.Model
 
         private void Initialize(QRType type, string id)
         {
-            ofType = type;
+            OfType = type;
             ID = id;
             ConfirmedLabelled = false;
 
@@ -91,11 +93,12 @@ namespace TurfTankRegistrationApplication.Model
 
         public QRSticker(string scanResult)
         {
+            scanResult = scanResult.ToUpper();
             List<string> results = scanResult.Split(' ').ToList();
             
-            if (ValidateScannedQR(results, out QRType type))
+            if (ValidateScannedQR(results, out QRType type) && type != QRType.CONTROLLER)
             {
-                string id = results[1];
+                string id = Regex.Replace(results[1], strQRID, "");
                 Initialize(type, id);
                 Console.WriteLine("------------------The QR sticker was successfully scanned------------------");
             }

@@ -71,7 +71,7 @@ namespace TurfTankRegistrationApplication.ViewModel
                 execute: () => ChooseComponent(QRType.BASE),
                 canExecute: () => true);
             ChooseToPreregisterTabletCommand = new Command(
-                execute: () => ChooseComponent(QRType.Tablet),
+                execute: () => ChooseComponent(QRType.TABLET),
                 canExecute: () => true);
             ScanQRCommand = new Command(
                 execute: () => NavigateToScanPage("QR"),
@@ -182,7 +182,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 
             ChooseRoverColor = chosen == QRType.ROVER ? _successOrChooseColor : _failureOrNotChooseColor;
             ChooseBaseColor = chosen == QRType.BASE ? _successOrChooseColor : _failureOrNotChooseColor;
-            ChooseTabletColor = chosen == QRType.Tablet ? _successOrChooseColor : _failureOrNotChooseColor;
+            ChooseTabletColor = chosen == QRType.TABLET? _successOrChooseColor : _failureOrNotChooseColor;
 
             ScanQRCommand.ChangeCanExecute();
             ScanBarcodeCommand.ChangeCanExecute();

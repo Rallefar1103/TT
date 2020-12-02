@@ -74,9 +74,19 @@ namespace TurfTankRegistrationApplication.ViewModel
         {
             try
             {
-                QRSticker qrSticker = new QRSticker(data);
-                
-                switch (qrSticker.ofType)
+                QRSticker qrSticker;
+
+                if (data.ToUpper().Contains("CONTROLLER"))
+                {
+                    ControllerQRSticker controllerQrSticker = new ControllerQRSticker(data);
+                    qrSticker = controllerQrSticker;
+                }
+                else
+                {
+                    qrSticker = new QRSticker(data);
+                }
+
+                switch (qrSticker.OfType)
                 {
                     case QRType.ROBOTPACKAGE:
                         RegistrateChassis(qrSticker);
@@ -90,7 +100,7 @@ namespace TurfTankRegistrationApplication.ViewModel
                     case QRType.ROVER:
                         RegistrateRoverSimcard(qrSticker);
                         break;
-                    case QRType.Tablet:
+                    case QRType.TABLET:
                         RegistrateTablet();
                         break;
                     default:
@@ -101,6 +111,10 @@ namespace TurfTankRegistrationApplication.ViewModel
             catch (ValidationException e)
             {
                 await Application.Current.MainPage.DisplayAlert("OBS!", e.Message, "Ok");
+            }
+            catch (Exception)
+            {
+                await Application.Current.MainPage.DisplayAlert("OBS!", "something went wrong", "Ok");
             }
         }
 
@@ -114,7 +128,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         {
             ScanPage scanPage = new ScanPage();
             scanPage.vm.Title = "Scanning " + component;
-            scanPage.QRMustContain = component;
+            scanPage.QRMustContain = "Type:" + component;
             Navigation.PushAsync(scanPage);
         }
 

@@ -20,12 +20,14 @@ namespace TurfTankRegistrationApplication.Model
         public string FinalSSID { get; set; }
         public string FinalPASSWORD { get; set; }
 
+        private const string strSSID = "SSID:";
+        private const string strPassword = "PASSWORD:";
+
+
         private void Initialize(QRType type, string id, string ssid, string password)
         {
-            ofType = type;
+            OfType = type;
             ID = id;
-
-            //Should this be changed?
             FinalSSID = ssid;
             FinalPASSWORD = password;
         }
@@ -33,11 +35,6 @@ namespace TurfTankRegistrationApplication.Model
         protected override bool ValidateScannedQR(List<string> results, out QRType outType)
         {
             outType = QRType.NOTYPE;
-
-            string strType = "TYPE:";
-            string strQRID = "QRID:";
-            string strSSID = "SSID:";
-            string strPassword = "PASSWORD:";
 
             string type;
             string qrId;
@@ -103,9 +100,9 @@ namespace TurfTankRegistrationApplication.Model
 
             if (ValidateScannedQR(results, out QRType type))
             {
-                string id = results[1];
-                string ssid = results[2];
-                string password = results[3];
+                string id = Regex.Replace(results[1], strQRID, "");
+                string ssid = Regex.Replace(results[2], strSSID, "");
+                string password = Regex.Replace(results[3], strPassword, "");
                 Initialize(type, id, ssid, password);
                 Console.WriteLine("------------------The QR sticker was successfully scanned------------------");
             }
