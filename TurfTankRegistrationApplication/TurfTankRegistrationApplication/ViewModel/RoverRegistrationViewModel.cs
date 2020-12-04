@@ -13,6 +13,9 @@ using Newtonsoft.Json.Linq;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 using TurfTankRegistrationApplication.Helpers;
+using System.Net;
+using System.Text;
+using System.IO;
 
 namespace TurfTankRegistrationApplication.ViewModel
 {
@@ -21,9 +24,6 @@ namespace TurfTankRegistrationApplication.ViewModel
         public INavigation Navigation { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         
-
-        static string RobotIP = "192.168.80.1";
-        static string RoverCMD = "SOSVER,0";
         public string RoverResponse { get; set; }
 
         public Command ChangeRoverSimcard { get; }
@@ -47,7 +47,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         {
             this.Navigation = navigation;
             ChangeRoverSimcard = new Command(() => NavigateToScanPage("Rover"));
-            ChangeRoverSN = new Command(() => GetRoverSerialNumber(RoverCMD));
+            ChangeRoverSN = new Command(() => GetRoverSerialNumber());
             
         }
 
@@ -64,61 +64,122 @@ namespace TurfTankRegistrationApplication.ViewModel
             Navigation.PushAsync(scanPage);
         }
 
-        public async void GetRoverSerialNumber(string cmd)
+        public async void GetRoverSerialNumber()
         {
             HttpClient http = new HttpClient();
-            string URL = $"http://{RobotIP}:8888/rover";
+            string URL = "http://192.168.80.1:8888/rover";
             var values = new Dictionary<string, string>
             {
-                { "Command", cmd },
+                { "command", "SOSVER,0" },
             };
-
+            
             var content = new FormUrlEncodedContent(values);
 
-            try
+            var successfullStop = await StopInmark();
+
+            if (successfullStop)
             {
-                //var response = await http.PostAsync(URL, content);
-                //if (response.IsSuccessStatusCode)
-                //{
-                //    string StringContent = await response.Content.ReadAsStringAsync();
-
-                //    Console.WriteLine("!!!!! ------- This is what we got back: " + StringContent);
-                //    dynamic json = JsonConvert.DeserializeObject(StringContent);
-
-                //    SOSVER RoverSOSVER = new SOSVER(json["response"]);
-                //    roverResponse = RoverSOSVER.SerialNumber;
-
-                //    Console.WriteLine(roverResponse);
-                //}
-
-                //Test
-               var response = await http.GetAsync("https://jsonplaceholder.typicode.com/users");
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    string StringContent = await response.Content.ReadAsStringAsync();
-                    dynamic json = JsonConvert.DeserializeObject(StringContent);
-                    Console.WriteLine("!!!!!!!! ------- THIS IS WHAT WE GOT: \n" + json);
+                    var response = await http.PostAsync(URL, content);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string StringContent = await response.Content.ReadAsStringAsync();
 
-                    RoverResponse = json[0]["name"];
-                    Console.WriteLine("THIS IS ROVER RESPONSE: \n" + RoverResponse);
-                    await Application.Current.MainPage.DisplayAlert("Success!", "Got Serial Number for rover: " + RoverResponse, "Add to Robot");
-                    await Navigation.PopAsync();
+                        Console.WriteLine("!!!!! ------- This is what we got back: " + StringContent);
+
+                        dynamic json = JsonConvert.DeserializeObject(StringContent);
+
+                        Console.Write("!!!!! ------ response: " + json["response"]);
+                        SOSVER RoverSOSVER = new SOSVER(json["response"]);
+
+                        RoverResponse = RoverSOSVER.SerialNumber;
+
+                        Console.WriteLine("Rover Serial Number: " + RoverResponse);
+                        MessagingCenter.Send(this, "RoverSerialNumber", RoverResponse);
+
+                        await Application.Current.MainPage.DisplayAlert("Success!", "Got the Rover Serial Number!", "OK");
+                        
+                    }
+
+                    await StartInmark();
+
                 }
-                else
+                catch (HttpRequestException e)
                 {
-                    await Application.Current.MainPage.DisplayAlert("ERROR!", "Could not retrieve serial number from rover", "OK");
-                    Console.WriteLine("BAD RESPONSE CODE!!!!!");
+                    Console.WriteLine("CATCH: " + e);
                 }
-            } catch
+            }
+            else
             {
-                throw new HttpRequestException();
+                Console.WriteLine("Something went wrong with the stopInmark!");
             }
 
+            
 
-            MessagingCenter.Send(this, "RoverSerialNumber", RoverResponse);
         }
 
-        
+        private async Task<bool> StopInmark()
+        {
+            HttpClient http = new HttpClient();
+            string URL = "http://192.168.80.1:8888/stopInmark";
+            var values = new Dictionary<string, string>();
+
+            var content = new FormUrlEncodedContent(values);
+            try
+            {
+                var response = await http.PostAsync(URL, content);
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("!!!!! ------- Stopping!");
+                    return true;
+                    
+                } else
+                {
+                    Console.WriteLine("!!!!! ------- Stopping failed!");
+                    return false;
+                }
+
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("CATCH: " + e);
+            }
+
+            return false;
+        }
+
+        private async Task<bool> StartInmark()
+        {
+            HttpClient http = new HttpClient();
+            string URL = "http://192.168.80.1:8888/startInmark";
+            var values = new Dictionary<string, string>();
+
+            var content = new FormUrlEncodedContent(values);
+            try
+            {
+                var response = await http.PostAsync(URL, content);
+                if (response.IsSuccessStatusCode)
+                {
+                    
+                    Console.WriteLine("!!!!! ------- Starting!");
+                    return true;
+
+                } else
+                {
+                    Console.WriteLine("!!!!! ------- Starting failed!");
+                    return false;
+                }
+
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("CATCH: " + e);
+            }
+
+            return false;
+        }
+
         
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -126,3 +187,24 @@ namespace TurfTankRegistrationApplication.ViewModel
         }
     }
 }
+
+
+
+//Test
+//var response = await http.GetAsync("https://jsonplaceholder.typicode.com/users");
+//if (response.IsSuccessStatusCode)
+//{
+//    string StringContent = await response.Content.ReadAsStringAsync();
+//    dynamic json = JsonConvert.DeserializeObject(StringContent);
+//    Console.WriteLine("!!!!!!!! ------- THIS IS WHAT WE GOT: \n" + json);
+
+//    RoverResponse = json[0]["name"];
+//    Console.WriteLine("THIS IS ROVER RESPONSE: \n" + RoverResponse);
+//    await Application.Current.MainPage.DisplayAlert("Success!", "Got Serial Number for rover: " + RoverResponse, "Add to Robot");
+//    await Navigation.PopAsync();
+//}
+//else
+//{
+//    await Application.Current.MainPage.DisplayAlert("ERROR!", "Could not retrieve serial number from rover", "OK");
+//    Console.WriteLine("BAD RESPONSE CODE!!!!!");
+//}
