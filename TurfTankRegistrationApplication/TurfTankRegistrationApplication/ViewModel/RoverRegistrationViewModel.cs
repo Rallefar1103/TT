@@ -140,6 +140,8 @@ namespace TurfTankRegistrationApplication.ViewModel
             try
             {
                 var response = await http.PostAsync(URL, content);
+                var responseSucces = response.IsSuccessStatusCode;
+
                 if (response.IsSuccessStatusCode)
                 {
                     Console.WriteLine("!!!!! ------- Stopping!");
@@ -177,6 +179,8 @@ namespace TurfTankRegistrationApplication.ViewModel
             try
             {
                 var response = await http.PostAsync(URL, content);
+                var responseSucces = response.IsSuccessStatusCode;
+
                 if (response.IsSuccessStatusCode)
                 {
                     
