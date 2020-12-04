@@ -30,9 +30,14 @@ namespace TurfTankRegistrationApplication.Droid
         }
 
 
-        // Method takes in the desired SSID you'd want to connect to. Creates a WifiManager, adds a new wifi configuration
-        // to that manager, adds it to the "pool" of associated networks. It then locates the desired network in the "pool"
-        // and reconnects to that network.
+
+
+        /// <summary>
+        /// Method takes in the desired SSID you'd want to connect to. Creates a WifiManager, adds a new wifi configuration
+        /// to that manager, adds it to the "pool" of associated networks.It then locates the desired network in the "pool"
+        ///  and reconnects to that network.
+        /// </summary>
+        /// <param name="ssid"></param>
         public void ConnectToWifi(string ssid)
         {
             //string password = "IMIO64eb";
@@ -87,11 +92,13 @@ namespace TurfTankRegistrationApplication.Droid
                 return "WiFiManager is NULL";
             }
         }
-            
 
-        // Method creates a WifiManager and a WifiReceiver. The WifiReceiver handles the retrieval of nearby networks.
-        // We register the receiver with the WifiReceiver as well as the ScanResultsAvailableAction.
-        // Lastly we return the located wifi networks.
+        /// <summary>
+        /// Method creates a WifiManager and a WifiReceiver. The WifiReceiver handles the retrieval of nearby networks.
+        /// We register the receiver with the WifiReceiver as well as the ScanResultsAvailableAction.
+        /// Lastly we return the located wifi networks.
+        /// </summary>
+        /// <returns></returns>
         [Obsolete]
         public async Task<List<string>> GetAvailableNetworks()
         {
