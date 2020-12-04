@@ -35,6 +35,7 @@ namespace TurfTankRegistrationApplication.Droid
         // and reconnects to that network.
         public void ConnectToWifi(string ssid)
         {
+            //string password = "IMIO64eb";
             string password = "blaapostkasse";
             var formattedSSID = $"\"{ssid}\"";
             var formattedPassword = $"\"{password}\"";
@@ -113,69 +114,4 @@ namespace TurfTankRegistrationApplication.Droid
 
 }
 
-//[Obsolete]
-//public async Task<List<string>> GetAvailableNetworks()
-//{
-//    wifiMgr = (WifiManager)(context.GetSystemService(Context.WifiService));
-//    if (!wifiMgr.IsWifiEnabled)
-//    {
-//        Console.WriteLine("Wifi must be enabled!");
-//        wifiMgr.SetWifiEnabled(true);
-//    }
 
-//    WifiReceiver wifiReceiver = new WifiReceiver(wifiMgr);
-//    context.RegisterReceiver(wifiReceiver, new IntentFilter(WifiManager.ScanResultsAvailableAction));
-//    await Task.Run(() =>
-//        {
-//            wifiMgr.StartScan();
-//            availableNetworks = wifiReceiver.wifis;
-//            return availableNetworks;
-//        });
-
-//    return availableNetworks;
-//}
-
-
-
-
-//class WifiReceiver : BroadcastReceiver
-//{
-//    private WifiManager wifi;
-//    private List<string> wifiNetworks;
-//private AutoResetEvent receiverARE;
-//private Timer tmr;
-//private const int TIMEOUT_MILLIS = 20000;
-
-//public WifiReceiver(WifiManager wifiM)
-//{
-//    wifi = wifiM;
-//    wifiNetworks = new List<string>();
-//receiverARE = new AutoResetEvent(false);
-//}
-
-//[Obsolete]
-//public IEnumerable<string> Scan()
-//{
-//tmr = new Timer(Timeout, null, TIMEOUT_MILLIS, System.Threading.Timeout.Infinite);
-//wifi.StartScan();
-//receiverARE.WaitOne();
-//    return wifiNetworks;
-//}
-
-//public override void OnReceive(Context context, Intent intent)
-//{
-//    IList<ScanResult> scanWifiNetworks = wifi.ScanResults;
-//    foreach (ScanResult wifiNetwork in scanWifiNetworks)
-//    {
-//        wifiNetworks.Add(wifiNetwork.Ssid);
-//    }
-
-//receiverARE.Set();
-//}
-
-//private void Timeout(object sender)
-//{
-//    receiverARE.Set();
-//}
-
-//}
