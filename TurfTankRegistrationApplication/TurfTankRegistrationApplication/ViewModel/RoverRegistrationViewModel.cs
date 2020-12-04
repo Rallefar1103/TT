@@ -64,6 +64,12 @@ namespace TurfTankRegistrationApplication.ViewModel
             Navigation.PushAsync(scanPage);
         }
 
+        /// <summary>
+        /// GetRoverSerialNumber sends a postrequest to the rover endpoint once you're connected to the specific robot's wifi
+        /// Before we can get any information from the rover we need to call the StopInmark method.
+        /// We get the response back and parses it through the SOSVER class to retrieve the actual serial number
+        /// When we're done we call the StartInmark method.
+        /// </summary>
         public async void GetRoverSerialNumber()
         {
             HttpClient http = new HttpClient();
