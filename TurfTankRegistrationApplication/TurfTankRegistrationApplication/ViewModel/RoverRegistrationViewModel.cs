@@ -115,10 +115,10 @@ namespace TurfTankRegistrationApplication.ViewModel
                 Console.WriteLine("Something went wrong with the stopInmark!");
             }
 
-            
-
         }
 
+        // This method gives us the opportunity to communicate with the rover by switching its mode
+        // from "operation" to "configuration"
         private async Task<bool> StopInmark()
         {
             HttpClient http = new HttpClient();
@@ -149,6 +149,8 @@ namespace TurfTankRegistrationApplication.ViewModel
             return false;
         }
 
+        // This method restarts the robot such that the production employee can continue with the
+        // testing and reassembling process
         private async Task<bool> StartInmark()
         {
             HttpClient http = new HttpClient();
