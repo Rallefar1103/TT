@@ -15,7 +15,7 @@ namespace TestUnit.ViewModel
     public class RoverRegVMTest
     {
         [TestCase("Testing that the GetRoverSerialNumber actually returns a parsed string of the response")]
-        public void GetRoverSerialNumber_NoParams_ShouldReturnString(string desc)
+        public async Task GetRoverSerialNumber_NoParams_ShouldReturnString(string desc)
         {
             // Arrange
             RoverRegistrationViewModel testObject = new RoverRegistrationViewModel();
@@ -23,6 +23,7 @@ namespace TestUnit.ViewModel
 
             // Act
             testObject.GetRoverSerialNumber("cmd");
+            await Task.Delay(3000);
             string actual = testObject.RoverResponse;
 
             // Assert
