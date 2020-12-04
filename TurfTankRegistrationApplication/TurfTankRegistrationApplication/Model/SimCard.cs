@@ -43,27 +43,30 @@ namespace TurfTankRegistrationApplication.Model
         {
             Initialize(id: barsticker.ICCID, qr: new QRSticker(), barcode: barsticker, activated: false);
         }
-        public SimCard(string serial, IBarcodeSticker barsticker)
+
+        public SimCard(IBarcodeSticker barsticker, QRSticker qrSticker)
         {
-            Initialize(id: serial, qr: new QRSticker(), barcode: barsticker, activated: false);
+            Initialize(id: barsticker.ICCID, qr: qrSticker, barcode: barsticker, activated: false);
         }
 
         #endregion Constructors
 
         #region Public Methods
 
-        public void ValidateSelf(SerialOrQR idRestriction = SerialOrQR.AnyId)
+        public void ValidateSelf(SerialOrQR idRestriction = SerialOrQR.BothSerialAndQRId)
         {
             if (idRestriction == SerialOrQR.BothSerialAndQRId)
             {
-                if (ID == "") throw new ValidationException("Simcard doesn't have an ID!");
-                if (QR.ID == "") throw new ValidationException("Simcard doesn't have a QR with an ID!");
-                if (Barcode.ICCID == "") throw new ValidationException("Simcards barcode doesn't have an ICCID!");
-                if (ID != Barcode.ICCID) throw new ValidationException("Simcards barcode ICCID isn't equal to Simcards ID!");
-            }
-            else
-            {
-                throw new NotImplementedException("The requested SerialOrQr restriction havent been implemented on Simcard.ValidateSelf");
+                if (ID == "" || ID == null) 
+                    throw new ValidationException("Simcard doesn't have an ID!");
+                if (QR.ID == "" || QR.ID == null) 
+                    throw new ValidationException("Simcard doesn't have a QR with an ID!");
+                if (QR.OfType != QRType.BASE && QR.OfType != QRType.ROVER && QR.OfType != QRType.TABLET)
+                    throw new ValidationException("The simcards QR is of an invalid type");
+                if (Barcode.ICCID == "" || Barcode.ICCID == null) 
+                    throw new ValidationException("Simcards barcode doesn't have an ICCID!");
+                if (ID != Barcode.ICCID) 
+                    throw new ValidationException("Simcards barcode ICCID isn't equal to Simcards ID!");
             }
         }
 

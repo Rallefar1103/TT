@@ -40,15 +40,11 @@ namespace TurfTankRegistrationApplication.Model
             
             if(idRestriction == SerialOrQR.AnyId || idRestriction == SerialOrQR.OnlySerialId || idRestriction == SerialOrQR.BothSerialAndQRId)
             {
-                if (ID != "") throw new ValidationException("The Component doesn't have its ID set");
+                if (ID == "" || ID == null) throw new ValidationException("The Component doesn't have its ID set");
             }
             else if(idRestriction == SerialOrQR.OnlyQRId || idRestriction == SerialOrQR.NoId)
             {
-                if (ID == "") throw new ValidationException("The Component has its ID set, which it shouldn't have");
-            }
-            else
-            {
-                throw new NotImplementedException("The requested SerialOrQr restriction havent been implemented on GPS.ValidateSelf");
+                if (ID != "" && ID != null) throw new ValidationException("The Component has its ID set, which it shouldn't have");
             }
         }
     }

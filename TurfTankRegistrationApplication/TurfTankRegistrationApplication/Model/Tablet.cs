@@ -44,9 +44,25 @@ namespace TurfTankRegistrationApplication.Model
             throw new NotImplementedException();
         }
 
-        public override void ValidateSelf(SerialOrQR idRestriction = SerialOrQR.AnyId)
+        public override void ValidateSelf(SerialOrQR idRestriction = SerialOrQR.NoId)
         {
-            throw new NotImplementedException();
+            base.ValidateSelf(idRestriction);
+            if (Simcard != null)
+                try
+                {
+                    Simcard.ValidateSelf();
+                }
+                catch (Exception e)
+                {
+                    throw new ValidationException("There was an issue with the tablet simcard: " + e.Message);
+                }
+            else
+                throw new ValidationException("There is no simcard registered to the tablet");
+            
+            if (Simcard.QR.OfType != QRType.TABLET)
+            {
+                throw new ValidationException("The simcard QR is not a tablet type");
+            }
         }
 
         #endregion Public Methods
