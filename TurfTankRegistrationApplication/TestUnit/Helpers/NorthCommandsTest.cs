@@ -7,6 +7,7 @@ using TurfTankRegistrationApplication.Model;
 using TurfTankRegistrationApplication.ViewModel;
 using TurfTankRegistrationApplication.Helpers;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace TestUnit.Helpers
 {
@@ -17,12 +18,19 @@ namespace TestUnit.Helpers
         public void SOSVER_jsonResponse_ShouldParseFromJsonToCorrectString(string desc)
         {
             // arrange
-            string testresponse = "$SOSVER,0,SMARTOS 1.3.5 EN,0917W - SRTK0128 * 0B\n";
+            Dictionary<string, string> json = new Dictionary<string, string>
+            {
+                { "command", "SOSVER,0" },
+                { "response", "$SOSVER,0,SMARTOS 1.3.5 EN,0917W - SRTK0128 * 0B\n" }
+
+            };
+
+            //string testresponse = "$SOSVER,0,SMARTOS 1.3.5 EN,0917W - SRTK0128 * 0B\n";
             string expected = "0917W - SRTK0128";
 
 
             // act
-            SOSVER testObject = new SOSVER(testresponse);
+            SOSVER testObject = new SOSVER(json["response"]);
             string actual = testObject.SerialNumber;
 
             // assert
