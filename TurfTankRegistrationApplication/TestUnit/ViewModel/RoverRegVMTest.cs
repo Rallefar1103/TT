@@ -22,7 +22,7 @@ namespace TestUnit.ViewModel
             string expected = "Leanne Graham";
 
             // Act
-            testObject.GetRoverSerialNumber("cmd");
+            testObject.GetRoverSerialNumber();
             await Task.Delay(3000);
             string actual = testObject.RoverResponse;
 
