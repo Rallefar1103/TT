@@ -10,7 +10,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 {
     public class ScanViewModel : BaseViewModel
     {
-
+        
         public enum state
         {
             Ready_To_Scan,

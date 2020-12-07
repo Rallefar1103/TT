@@ -24,38 +24,48 @@ namespace TurfTankRegistrationApplication.Model
         #region Public Attributes
 
         public GPSType ofType;
-
         public SimCard Simcard { get; set; }
+        public string SerialNumber { get; set; }
 
         public static IRegistrationDBAPI<GPS> API { get; set; } = new RegistrationDBAPI<GPS>();
 
         #endregion
 
         #region Constructor
-        public void Initialize(GPSType type, SimCard simcard)
+        public void Initialize(GPSType type, SimCard simcard, string serialNumber)
         {
             ofType = type;
+            ID = simcard.QR.ID;
             Simcard = simcard;
+            SerialNumber = serialNumber;
         }
         public GPS()
         {
-            Initialize(type: GPSType.NoType, simcard: new SimCard());
+            Initialize(type: GPSType.NoType, simcard: new SimCard(), serialNumber: "");
         }
-        public GPS(GPSType type)
+        public GPS(GPSType type, string serialNumber = "")
         {
-            Initialize(type: type, simcard: new SimCard());
+            Initialize(type: type, simcard: new SimCard(), serialNumber: serialNumber);
         }
-        public GPS(GPSType type, SimCard simcard)
+        public GPS(GPSType type, SimCard simcard, string serialNumber = "")
         {
-            Initialize(type: type, simcard: simcard);
+            Initialize(type: type, simcard: simcard, serialNumber: serialNumber);
         }
-        public GPS(SimCard simcard)
+        public GPS(SimCard simcard, string serialNumber = "")
         {
-            GPSType type = simcard.QR.ofType == QRType.Rover ? GPSType.Rover : simcard.QR.ofType == QRType.Base ? GPSType.Base : GPSType.NoType;
-            Initialize(type: type, simcard: simcard);
+            GPSType type;
+
+            if (simcard.QR.OfType == QRType.ROVER)
+                type = GPSType.Rover;
+            else if (simcard.QR.OfType == QRType.BASE)
+                type = GPSType.Base;
+            else
+                type = GPSType.NoType;
+
+            Initialize(type: type, simcard: simcard, serialNumber: serialNumber);
         }
 
-        #endregion
+        #endregion constructors
 
         #region Public Methods
 
@@ -84,25 +94,38 @@ namespace TurfTankRegistrationApplication.Model
             }
         }
 
-        public override void ValidateSelf(SerialOrQR idRestriction = SerialOrQR.AnyId)
+        public override void ValidateSelf(SerialOrQR idRestriction = SerialOrQR.BothSerialAndQRId)
         {
-            base.ValidateSelf(idRestriction);
-            if (ofType == GPSType.Rover && Simcard.QR.ofType != QRType.Rover) throw new ValidationException($"The QR sticker is of the wrong type! The component is type Rover while the QR is type {Simcard.QR.ofType}");
-            if (ofType == GPSType.Base && Simcard.QR.ofType != QRType.Base) throw new ValidationException($"The QR sticker is of the wrong type! The component is type Base while the QR is type {Simcard.QR.ofType}");
-            if (ofType == GPSType.NoType) throw new ValidationException($"The GPS does not have a type!");
+            base.ValidateSelf(SerialOrQR.AnyId);
 
-            if (idRestriction == SerialOrQR.AnyId)
+            if (idRestriction != SerialOrQR.OnlyQRId && idRestriction != SerialOrQR.BothSerialAndQRId)
+                throw new ValidationException("The idRestriction should be either OnlyQrId or BothSerialAndQrId");
+
+            if (ofType == GPSType.Rover && Simcard.QR.OfType != QRType.ROVER) 
+                throw new ValidationException($"The QR sticker is of the wrong type! The component is type Rover while the QR is type {Simcard.QR.OfType}");
+            if (ofType == GPSType.Base && Simcard.QR.OfType != QRType.BASE) 
+                throw new ValidationException($"The QR sticker is of the wrong type! The component is type Base while the QR is type {Simcard.QR.OfType}");
+            if (ofType == GPSType.NoType) 
+                throw new ValidationException($"The GPS does not have a type!");
+
+            try
             {
                 Simcard.ValidateSelf(idRestriction: SerialOrQR.BothSerialAndQRId);
-                if(ID != "" || Simcard.QR.ID != "") throw new ValidationException("Neither GPS ID or Simcards QR Id is set!");
             }
-            else if (idRestriction == SerialOrQR.OnlyQRId)
+            catch (ValidationException e)
             {
-                Simcard.ValidateSelf(idRestriction: SerialOrQR.BothSerialAndQRId);
+                throw new ValidationException("The simcard in the gps is not valid: " + e.Message);
             }
-            else
+          
+            if (idRestriction == SerialOrQR.BothSerialAndQRId)
             {
-                throw new NotImplementedException("The requested SerialOrQr restriction havent been implemented on GPS.ValidateSelf");
+                if (SerialNumber == "" || SerialNumber == null)
+                    throw new ValidationException("The GPS has no serial number");
+            }
+ 
+            if (ID != Simcard.QR.ID)
+            {
+                throw new ValidationException("The GPS ID does not match the simcard QR ID");
             }
         }
 

@@ -5,15 +5,16 @@ using System.Runtime.CompilerServices;
 using TurfTankRegistrationApplication.Model;
 using Xamarin.Forms;
 using TurfTankRegistrationApplication.Pages;
+using TurfTankRegistrationApplication.Exceptions;
 
 namespace TurfTankRegistrationApplication.ViewModel
 {
     public interface IRegistrateRobot
     {
-        void RegistrateChassis(string result);
-        void RegistrateController(string result);
-        void RegistrateRoverSimcard(string result);
-        void RegistrateBaseSimcard(string result);
+        void RegistrateChassis(QRSticker result);
+        void RegistrateController(QRSticker result);
+        void RegistrateRoverSimcard(QRSticker result);
+        void RegistrateBaseSimcard(QRSticker result);
         void RegistrateTablet();
         void SaveRobotToDB();
     }
@@ -72,25 +73,49 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         private async void OnScanDataReceived(object sender, string data)
         {
-            if (data.Contains("Robot"))
+            try
             {
-                RegistrateChassis(data);
-            }
-            else if (data.Contains("Controller"))
-            {
-                RegistrateController(data);
-            }
-            else if (data.Contains("Rover"))
-            {
-                RegistrateRoverSimcard(data);
-            }
-            else if (data.Contains("Base"))
-            {
-                RegistrateBaseSimcard(data);
+                QRSticker qrSticker;
 
-            } else
+                if (data.ToUpper().Contains("CONTROLLER"))
+                {
+                    ControllerQRSticker controllerQrSticker = new ControllerQRSticker(data);
+                    qrSticker = controllerQrSticker;
+                }
+                else
+                {
+                    qrSticker = new QRSticker(data);
+                }
+
+                switch (qrSticker.OfType)
+                {
+                    case QRType.ROBOTPACKAGE:
+                        RegistrateChassis(qrSticker);
+                        break;
+                    case QRType.BASE:
+                        RegistrateBaseSimcard(qrSticker);
+                        break;
+                    case QRType.CONTROLLER:
+                        RegistrateController(qrSticker);
+                        break;
+                    case QRType.ROVER:
+                        RegistrateRoverSimcard(qrSticker);
+                        break;
+                    case QRType.TABLET:
+                        RegistrateTablet();
+                        break;
+                    default:
+                        await Application.Current.MainPage.DisplayAlert("OBS!", "Scan did not work as expected!", "Ok");
+                        break;
+                }
+            }
+            catch (ValidationException e)
             {
-                await Application.Current.MainPage.DisplayAlert("OBS!", "Scan did not work as expected!", "Ok");
+                await Application.Current.MainPage.DisplayAlert("OBS!", e.Message, "Ok");
+            }
+            catch (Exception)
+            {
+                await Application.Current.MainPage.DisplayAlert("OBS!", "something went wrong", "Ok");
             }
         }
 
@@ -104,7 +129,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         {
             ScanPage scanPage = new ScanPage();
             scanPage.vm.Title = "Scanning " + component;
-            scanPage.QRMustContain = component;
+            scanPage.QRMustContain = "Type:" + component;
             Navigation.PushAsync(scanPage);
         }
 
@@ -122,12 +147,13 @@ namespace TurfTankRegistrationApplication.ViewModel
         #endregion
 
         #region public methods
-        public async void RegistrateChassis(string result)
+        public async void RegistrateChassis(QRSticker result)
         {
-            Console.WriteLine("!!!!!!!!! REGISTRATING CHASSIS !!!!!!!!!!");
+            robotItem.QR = result;
+
             if (string.IsNullOrEmpty(robotItem.SerialNumber))
             {
-                robotItem.SerialNumber = result;
+                robotItem.SerialNumber = result.ID;
                 ChassisSN = "Robot SN: " + robotItem.SerialNumber;
                 OnPropertyChanged(nameof(ChassisSN));
             }
@@ -137,12 +163,16 @@ namespace TurfTankRegistrationApplication.ViewModel
             }
         }
 
-        public async void RegistrateController(string result)
+        public async void RegistrateController(QRSticker result)
         {
-            Console.WriteLine("!!!!!!!!! REGISTRATING CONTROLLER !!!!!!!!!!");
+            if (result is ControllerQRSticker)
+            {
+                robotItem.Controller.QR = result as ControllerQRSticker;
+            }
+
             if (string.IsNullOrEmpty(robotItem.Controller.ID))
             {
-                robotItem.Controller.ID = result;
+                robotItem.Controller.ID = result.ID;
                 ControllerSN = "Controller SN: " + robotItem.Controller.ID;
                 OnPropertyChanged(nameof(ControllerSN));
             }
@@ -153,14 +183,16 @@ namespace TurfTankRegistrationApplication.ViewModel
         }
         
 
-        public async void RegistrateRoverSimcard(string result)
+        public async void RegistrateRoverSimcard(QRSticker result)
         {
             // Scan label for Simcard info
             robotItem.RoverGPS.ofType = GPSType.Rover;
 
+            //robotItem.RoverGPS.QR = result;
+
             if (string.IsNullOrEmpty(robotItem.RoverGPS.Simcard.ID))
             {
-                robotItem.RoverGPS.Simcard.ID = result;
+                robotItem.RoverGPS.Simcard.ID = result.ID;
                 RoverSIM = "Rover Simcard: " + robotItem.RoverGPS.Simcard.ID;
                 OnPropertyChanged(nameof(RoverSIM));
             }
@@ -171,14 +203,16 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         }
 
-        public async void RegistrateBaseSimcard(string result)
+        public async void RegistrateBaseSimcard(QRSticker result)
         {
             // Scan label for Simcard info
             robotItem.BaseGPS.ofType = GPSType.Base;
 
+            
+
             if (string.IsNullOrEmpty(robotItem.BaseGPS.Simcard.ID))
             {
-                robotItem.BaseGPS.Simcard.ID = result;
+                robotItem.BaseGPS.Simcard.ID = result.ID;
                 BaseSIM = "Base Simcard: " + robotItem.BaseGPS.Simcard.ID;
                 OnPropertyChanged(nameof(BaseSIM));
             }

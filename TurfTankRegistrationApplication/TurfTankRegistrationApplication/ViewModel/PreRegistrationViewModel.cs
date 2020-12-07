@@ -56,7 +56,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public PreRegistrationViewModel(INavigation navigation)
         {
-            ChosenComponent = QRType.NoType;
+            ChosenComponent = QRType.NOTYPE;
             QR = new QRSticker();
             QRScanData = "";
             Barcode = new BarcodeSticker();
@@ -65,20 +65,20 @@ namespace TurfTankRegistrationApplication.ViewModel
             // The following commands follow a linear flow, which is that first you choose a component, then you scan, then you confirm, then you save.
             // ChangeCanScan is just a way to force the given command to reevaluate and rerender the options to the view. There is probably a smarter way, but this works.
             ChooseToPreregisterRoverCommand = new Command(
-                execute: () => ChooseComponent(QRType.Rover),
+                execute: () => ChooseComponent(QRType.ROVER),
                 canExecute: () => true);
             ChooseToPreregisterBaseCommand = new Command(
-                execute: () => ChooseComponent(QRType.Base),
+                execute: () => ChooseComponent(QRType.BASE),
                 canExecute: () => true);
             ChooseToPreregisterTabletCommand = new Command(
-                execute: () => ChooseComponent(QRType.Tablet),
+                execute: () => ChooseComponent(QRType.TABLET),
                 canExecute: () => true);
             ScanQRCommand = new Command(
                 execute: () => NavigateToScanPage("QR"),
-                canExecute: () => ChosenComponent != QRType.NoType);
+                canExecute: () => ChosenComponent != QRType.NOTYPE);
             ScanBarcodeCommand = new Command(
                 execute: () => NavigateToScanPage("Barcode"),
-                canExecute: () => ChosenComponent != QRType.NoType && ChosenComponent != QRType.Controller);
+                canExecute: () => ChosenComponent != QRType.NOTYPE && ChosenComponent != QRType.CONTROLLER);
             ConfirmAssemblyAndLabellingCommand = new Command(
                 execute: () => ConfirmAssemblyAndLabelling(),
                 canExecute: () => QRScanData != "" && BarcodeScanData != ""); // Should be able to press when all scans are done.
@@ -103,7 +103,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         /// </summary>
         public async void PreregisterComponent()
         {
-            if(ChosenComponent == QRType.Rover || ChosenComponent == QRType.Base)
+            if(ChosenComponent == QRType.ROVER || ChosenComponent == QRType.BASE)
             {
                 SimCard sim = new SimCard(Barcode);
                 //await QR.Preregister(sim); TODO: This has been outcommented due to making a working ProtoType
@@ -180,9 +180,9 @@ namespace TurfTankRegistrationApplication.ViewModel
         {
             ChosenComponent = chosen;
 
-            ChooseRoverColor = chosen == QRType.Rover ? _successOrChooseColor : _failureOrNotChooseColor;
-            ChooseBaseColor = chosen == QRType.Base ? _successOrChooseColor : _failureOrNotChooseColor;
-            ChooseTabletColor = chosen == QRType.Tablet ? _successOrChooseColor : _failureOrNotChooseColor;
+            ChooseRoverColor = chosen == QRType.ROVER ? _successOrChooseColor : _failureOrNotChooseColor;
+            ChooseBaseColor = chosen == QRType.BASE ? _successOrChooseColor : _failureOrNotChooseColor;
+            ChooseTabletColor = chosen == QRType.TABLET? _successOrChooseColor : _failureOrNotChooseColor;
 
             ScanQRCommand.ChangeCanExecute();
             ScanBarcodeCommand.ChangeCanExecute();
