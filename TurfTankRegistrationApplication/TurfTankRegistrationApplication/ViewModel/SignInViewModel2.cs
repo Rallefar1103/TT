@@ -43,9 +43,14 @@ namespace TurfTankRegistrationApplication.ViewModel
             //_authenticator.Completed -= Handle_CompletedLoginOnPage;
             //_authenticator.Completed += Handle_CompletedLoginOnPage;
 
-
-            if (_authenticator.IsAuthenticated())
+            //Todo Spring presenter over hvis user er logged in
+            if (App.OAuthCredentials.IsLoggedIn)
             {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("Stored   Access  Token = ").AppendLine($"   {App.OAuthCredentials.AccessToken}");
+                sb.Append("Stored   Refresh Token = ").AppendLine($"   {App.OAuthCredentials.RefreshToken}");
+                await Application.Current.MainPage.DisplayAlert("Authentication Results", sb.ToString(), "OK");
+
                 await navigation.PushAsync(new MenuPage());
             }
             else
@@ -63,7 +68,11 @@ namespace TurfTankRegistrationApplication.ViewModel
 
             if (e.Account != null && e.Account.Properties != null)
             {
-                sb.Append("Token = ").AppendLine($"{e.Account.Properties["access_token"]}");
+                sb.Append("Recieved Access  Token = ").AppendLine($"   {e.Account.Properties["access_token"]}");
+                sb.Append("Stored   Access  Token = ").AppendLine($"   {App.OAuthCredentials.AccessToken}");
+                sb.Append("Stored   Refresh Token = ").AppendLine($"   {App.OAuthCredentials.RefreshToken}");
+
+
             }
             else
             {
