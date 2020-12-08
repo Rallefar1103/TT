@@ -10,11 +10,9 @@ namespace TurfTankRegistrationApplication.Pages
     public partial class SignInPage : ContentPage
     {
 
-        public SignInPage()
+        public SignInPage(TurfTankAuth authenticator)
         {
-            ICredentials cred = new Constants();
-            TurfTankAuth auth = new TurfTankAuth(cred);
-            SignInViewModel2 SignInVM = new SignInViewModel2(Navigation,auth);
+            SignInViewModel2 SignInVM = new SignInViewModel2(Navigation,authenticator);
             BindingContext = SignInVM;
             InitializeComponent();
         }

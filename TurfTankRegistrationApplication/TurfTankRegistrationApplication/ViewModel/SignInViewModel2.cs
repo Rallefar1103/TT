@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Xamarin.Auth;
 using Xamarin.Forms;
 using TurfTankRegistrationApplication.Connection;
+using TurfTankRegistrationApplication.Pages;
+using System.Text;
 
 namespace TurfTankRegistrationApplication.ViewModel
 {
@@ -14,9 +16,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         public Command NavigateToMenuPage { get; }
         public string Token { get; set; }
 
-        TurfTankAuth _auth;
-        OAuth2Authenticator _auth2;
-
+        TurfTankAuth _authenticator;
         
         #region Constructor
 
@@ -24,8 +24,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         {
             this.Navigation = navigation;
             NavigateToMenuPage = new Command(async () => await GoToMenuPageAsync());
-            _auth = auth;
-            _auth2 = auth.Auth2;
+            _authenticator = auth;
         }
         //til test
         public SignInViewModel2()
@@ -40,9 +39,43 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public async Task GoToMenuPageAsync()
         {
-            var Presenter = new Xamarin.Auth.Presenters.OAuthLoginPresenter();
-            Presenter.Login(authenticator: _auth2);
+            
+            //_authenticator.Completed -= Handle_CompletedLoginOnPage;
+            //_authenticator.Completed += Handle_CompletedLoginOnPage;
+
+
+            if (_authenticator.IsAuthenticated())
+            {
+                await navigation.PushAsync(new MenuPage());
+            }
+            else
+            {
+                var Presenter = new Xamarin.Auth.Presenters.OAuthLoginPresenter();
+                Presenter.Completed += Handle_CompletedLoginOnPage;
+                Presenter.Login(authenticator: _authenticator);
+            }
+
         }
+
+        private async void Handle_CompletedLoginOnPage(object sender, AuthenticatorCompletedEventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            if (e.Account != null && e.Account.Properties != null)
+            {
+                sb.Append("Token = ").AppendLine($"{e.Account.Properties["access_token"]}");
+            }
+            else
+            {
+                sb.Append("Not authenticated ").AppendLine($"Account.Properties does not exist");
+            }
+            await Application.Current.MainPage.DisplayAlert("Authentication Results", sb.ToString(), "OK");
+            //navigation.PushAsync(new MenuPage());
+        }
+
+
+        
+
 
         #endregion Public Methods
 

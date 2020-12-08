@@ -1,4 +1,7 @@
-﻿//        //Request
+﻿/********EXAMPLE OF THE URL COMMUNICATION USED IN THE AUTHORISATION **********/
+//
+//
+//         //Request
 //        Uri Request = new Uri(
 //            @"GET https://accounts.google.com/o/oauth2/auth?
 //            scope=openid email&
@@ -34,11 +37,17 @@
 //                          "refresh_token": "tGzv3JOkF0XG5Qx2TlKWIA",
 //                          "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ..."
 //                        }";
+
+/******* github med sourcekode til xamarin auth   *************/
+/* https://github.com/xamarin/Xamarin.Auth/blob/master/source/Core/Xamarin.Auth.Common.LinkSource/OAuth2Authenticator.cs#L845 */
+ 
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using TurfTankRegistrationApplication.Model;
 using Xamarin.Auth;
+using Xamarin.Auth.Presenters;
 using Xamarin.Essentials;
 
 namespace TurfTankRegistrationApplication.Connection
@@ -51,81 +60,116 @@ namespace TurfTankRegistrationApplication.Connection
         Refresh
 
     }
-    public class TurfTankAuth
+    public class TurfTankAuth:OAuth2Authenticator
     {
 
 
-        public OAuth2Authenticator Auth2;
+        //public OAuth2Authenticator Auth2;
         ICredentials _cred = new Constants();
-        
+        public OAuthLoginPresenter Presenter;
 
 
 
-        public OAuth2Authenticator InstantiateAuthenticator(Flow flow)
+
+      
+        #region constructor
+        /// <summary>
+        /// Completed is called when a login has been attempted
+        /// Error is called when something went wrong in the login lige Faulty state, wrong code recieved (access_token/ auth_code)
+        /// </summary>
+        /// <param name="cred"></param>
+        /// <param name="flow"></param>
+        public TurfTankAuth(ICredentials cred, Flow flow = Flow.Authentication):base(cred.ClientId, null, cred.Scope, new Uri(cred.AuthorizeURL), new Uri(cred.RedirectURL), new Uri(cred.AccessTokenURL), isUsingNativeUI: false)
         {
-            switch (flow)
+            _cred = cred;
+            Presenter = new OAuthLoginPresenter();
+            Completed += Handle_CompletetLogin;
+            Error += Handle_LoginError;
+         }
+        
+        #endregion constructor
+
+        /// <summary>
+        /// Purpose is to check if the Page is forgery, 
+        /// the overide Handles problem with the state allways being bad, TODO this should be fixed, maybe by securing that only 1 OAuth2Authenticator is used throughout program. 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="query"></param>
+        /// <param name="fragment"></param>
+        protected override void OnPageEncountered(Uri url, IDictionary<string, string> query, IDictionary<string, string> fragment)
+        {
+            //for at undgå stae error, lige nu passer den state som sættes automatisk ikke med den der kommer tilbage.
+            if (query.ContainsKey("state"))
             {
-                case Flow.Implicit:
-                    Auth2 = new OAuth2Authenticator(_cred.ClientId, _cred.Scope, new Uri(_cred.AuthorizeURL), new Uri(_cred.RedirectURL), isUsingNativeUI: true);
-                    break;
-                case Flow.Authentication:
-                case Flow.Refresh:
-                    Auth2 = new OAuth2Authenticator(_cred.ClientId, _cred.ClientSecret, _cred.Scope, new Uri(_cred.AuthorizeURL), new Uri(_cred.RedirectURL), new Uri(_cred.AccessTokenURL), isUsingNativeUI: true);
-                    break;
-                default:
-                    break;
+                query.Remove("state");
             }
-            Auth2.Completed += Handle_CompletetLogin;
-            Auth2.Error += Handle_LoginError;
-            return Auth2;
+
+            if (fragment.ContainsKey("state"))
+            {
+                fragment.Remove("state");
+            }
+
+            base.OnPageEncountered(url, query, fragment);
         }
 
 
-        #region constructor
-        public TurfTankAuth(ICredentials cred)
+        /// <summary>
+        /// called when the initial URL is being constructed.
+        /// </summary>
+        /// <param name="query"></param>
+        protected override void OnCreatingInitialUrl(IDictionary<string, string> query)
         {
-            _cred = cred;
-            InstantiateAuthenticator(flow: Flow.Authentication);
-         }
-        #endregion constructor
+            base.OnCreatingInitialUrl(query);
+        }
 
-
-
-
+        /// <summary>
+        /// Stores all tokens and authcodes in Securestorrage for quick access and the account for persistence
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         async void Handle_CompletetLogin(Object sender, AuthenticatorCompletedEventArgs e)
         {
             if (e.IsAuthenticated)
             {
 
-                Account a = e.Account;
-                await SecureStorage.SetAsync("TTRA", a.Serialize());
-                
-                if (a.Properties.ContainsKey("access_token"))
+                App.account = e.Account;
+                await SecureStorage.SetAsync("TTRA", App.account.Serialize());
+
+                if (App.account.Properties.ContainsKey("access_token"))
                 {
                     App.OAuthCredentials.AccessToken = e.Account.Properties["access_token"];
-                    await SecureStorage.SetAsync("access_token", a.Properties["access_token"]);
+                    await SecureStorage.SetAsync("access_token", App.account.Properties["access_token"]);
                 }
-                if (a.Properties.ContainsKey("refresh_token"))
+                if (App.account.Properties.ContainsKey("refresh_token"))
                 {
                     App.OAuthCredentials.RefreshToken = e.Account.Properties["refresh_token"];
-                    await SecureStorage.SetAsync("refresh_token", a.Properties["refresh_token"]);
+                    await SecureStorage.SetAsync("refresh_token", App.account.Properties["refresh_token"]);
                 }
-                if (a.Properties.ContainsKey("code"))
+                if (App.account.Properties.ContainsKey("code"))
                 {
                     App.OAuthCredentials.AccessToken = e.Account.Properties["Authentication_code"];
-                    await SecureStorage.SetAsync("Authentication_code", a.Properties["Authentication_code"]);
+                    await SecureStorage.SetAsync("Authentication_code", App.account.Properties["Authentication_code"]);
                 }
             }
         }
 
 
 
-        //did not recieve Authorization_code or accessToken, 
-        //Did not succeed in retrieving Username 
-        void Handle_LoginError(Object sender, AuthenticatorErrorEventArgs e)
+
+        /// <summary>
+        /// did not recieve Authorization_code or accessToken,
+        ///  Did not succeed in retrieving Username
+        ///  State is wrong
+        ///  TODO Handle the errors based on response errorcodes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        async void Handle_LoginError(Object sender, AuthenticatorErrorEventArgs e)
         {
+            
             var exep = e.Exception;
             var message = e.Message;
+            
         }
 
 
@@ -145,13 +189,41 @@ namespace TurfTankRegistrationApplication.Connection
                 {"client_secret", _cred.ClientSecret }
 
             };
-            var result = await Auth2.RequestAccessTokenAsync(queryValues);
+            var result = await this.RequestAccessTokenAsync(queryValues);
+
+            await UpdateTokensAsync(result);
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public async Task GetAccessTokenAsync()
+        {
+            var queryValues = new Dictionary<string, string>
+            {
+                { "code", _cred.RefreshToken},
+                { "client_id", _cred.ClientId},
+                { "grant_type", "access_code"},
+                {"client_secret", _cred.ClientSecret }
+
+            };
+            var result = await this.RequestAccessTokenAsync(queryValues);
 
             await UpdateTokensAsync(result);
 
         }
 
 
+
+        /// <summary>
+        /// Updates the the AppCredentials to match persistent storrage
+        /// updates TTRA account
+        /// Todo set up to be used when creating the account on the initial program startup
+        /// </summary>
+        /// <param name="refreshResult"></param>
+        /// <returns></returns>
         public async Task UpdateTokensAsync(IDictionary<string,string> refreshResult)
         {
             string serializedString = await SecureStorage.GetAsync("TTRA");
@@ -169,8 +241,8 @@ namespace TurfTankRegistrationApplication.Connection
             }
             if (refreshResult.ContainsKey("code"))
             {
-                App.OAuthCredentials.AccessToken = account.Properties["Authentication_code"];
-                await SecureStorage.SetAsync("Authentication_code", refreshResult["Authentication_code"]);
+                App.OAuthCredentials.AccessToken = account.Properties["code"];
+                await SecureStorage.SetAsync("Authentication_code", refreshResult["code"]);
             }
 
             await SecureStorage.SetAsync("TTRA", account.Serialize());
@@ -180,7 +252,13 @@ namespace TurfTankRegistrationApplication.Connection
 
         #region POST and GET Data
 
-
+        /// <summary>
+        /// Get text from Resource server using the Access_token
+        /// </summary>
+        /// <param name="fromResourceServer"></param>
+        /// <param name="properties"></param>
+        /// <param name="acc"></param>
+        /// <returns></returns>
         public async Task<string> TTGetTextAsync(Uri fromResourceServer, IDictionary<string, string> properties, Account acc)
         {
             var request = new OAuth2Request("GET", fromResourceServer, properties, acc);
@@ -190,7 +268,13 @@ namespace TurfTankRegistrationApplication.Connection
 
         }
 
-
+        /// <summary>
+        /// Puts text on Resource server using the Access_token
+        /// </summary>
+        /// <param name="toResourceServer"></param>
+        /// <param name="properties"></param>
+        /// <param name="acc"></param>
+        /// <returns></returns>
         public async Task<string> TTPutDataAsync(Uri toResourceServer, IDictionary<string, string> properties, Account acc)
         {
             var request = new OAuth2Request("POST", toResourceServer, properties, acc);

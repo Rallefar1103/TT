@@ -14,7 +14,6 @@ namespace TurfTankRegistrationApplication.Model
         string Domain { get; set; }
         string AuthorizeURL { get; }
         string RedirectURL { get; }
-        List<string> AllowedCallbackUrls { get; }
         string AccessTokenURL { get; }
         string Scope { get; set; }
         string AccessToken { get; set; }
@@ -29,54 +28,108 @@ namespace TurfTankRegistrationApplication.Model
 
     public class Constants : ICredentials
     {
-        //!!!!!VIGTIGT!!!!!! hvis Redirect eller Domain Ændres så skal MainActivity.cs også ændres
-        /*
+        /* ********* VIGTIGT ******* */
+        //dette bruges hvis OAuth2Authenticator isNativeUI = false
+
+        /* hvis Redirect eller Domain Ændres så skal IntentFilter i MainActivity.cs også ændres
+
          [IntentFilter(new[] { Android.Content.Intent.ActionView },
-        Categories = new[] { Android.Content.Intent.CategoryDefault, Android.Content.Intent.CategoryBrowsable
-    },
+          Categories = new[] { Android.Content.Intent.CategoryDefault, Android.Content.Intent.CategoryBrowsable},
+
   Redirect appname  -> DataScheme     = "dk.turftank.turftankregistrationapplication",
              Domain -> DataHost       = "dev-ggbq2i2p.us.auth0.com",
            Redirect -> DataPathPrefix = "/android/dk.turftank.turftankregistrationapplication/callback",
                        AutoVerify     = true)]
         */
 
-        //Skal ændres til false når databasen ikke længere anerkender access_token
+
+
+        /// <summary>
+        /// vores test auth0 server
+        /// Bruger test@saxjax.dk
+        /// kode Hyg12345
+        /// </summary>
+        #region Public testAttributes
+
+
+        //IsLoggedIn Skal ændres til false når databasen ikke længere anerkender access_token
         //så skal refreshtoken sendes til auth0 for at få et nyt access-token 
         public bool IsLoggedIn { get; set; } = false;
-        //static const AUTH0_DOMAIN = 'auth.turftank.cloud';
-        //static const AUTH0_CLIENT_ID = 'OT3kqkpjDvmSZl7WMjvwo4U72k1MWVUw';
-        //static const AUTH0_REDIRECT_URI = 'cloud.turftank.osm://login-callback';
-        //static const AUTH0_ISSUER = 'https://$AUTH0_DOMAIN';
 
-        public string ClientId { get; set; } = "OT3kqkpjDvmSZl7WMjvwo4U72k1MWVUw";//"X5goHHBzVSkwc8kwWpbw5fq9NzoVkAof";// //
+        public string ClientId { get; set; } = "X5goHHBzVSkwc8kwWpbw5fq9NzoVkAof";// //"OT3kqkpjDvmSZl7WMjvwo4U72k1MWVUw";//
         public string ClientSecret { get; set; } = "KAaqom27hUCbyhUr1KtAO1o-ooxLJUOHn2o6YPmX0OopbD4FjgZnzVzhHynF8SM8";
-        public string Domain { get; set; } = "auth.turftank.cloud"; //"dev-ggbq2i2p.us.auth0.com";   //
+        public string Domain { get; set; } = "dev-ggbq2i2p.us.auth0.com";   //"auth.turftank.cloud"; //
         public string AuthorizeURL { get => $"https://{Domain}/authorize"; }      //"https://dev-ggbq2i2p.us.auth0.com/authorize";//"https://auth.turftank.cloud/oauth/authorize";//?audience=https://auth.turftank.cloud/u/login";
         public string RedirectURL { get => _redirectURL; }
-        public List<string> AllowedCallbackUrls => _allowedCallbackURLs;
-        public string AccessTokenURL { get => $"https://{Domain}/token"; }          //"https://dev-ggbq2i2p.us.auth0.com/oauth/token";//"https://auth.turftank.cloud/token";
+        public string AccessTokenURL { get => $"https://{Domain}/oauth/token"; }          //"https://dev-ggbq2i2p.us.auth0.com/oauth/token";//"https://auth.turftank.cloud/token";
 
         public string Scope { get; set; } = "openid profile email offline_access";
         public string AccessToken { get => _accessToken; set { _accessToken = value; IsLoggedIn = true; } }
-        //TODO lav en eventhandler som reagerer når denne bliver sat, evt er det bedre med en exception til når den ikke virker og det er tid til at kalde refresh token
         public DateTime AccessTokenExpiration { get; set; }
         public string RefreshToken { get => _refreshToken; set => _refreshToken = value; }
         public string AuthorizeCode { get; set; }
         public string OAuthState { get => _oAuthState; set => _oAuthState = value; }
 
+
+        #endregion
+
+        #region Private testAttributes
+
         private string _accessToken;
         private string _refreshToken;
         string _oAuthState = "qwertyasdfgzxcvbo";
-        string _redirectURL = "cloud.turftank.osm://login-callback";//"dk.turftank.turftankregistrationapplication://dev-ggbq2i2p.us.auth0.com/android/dk.turftank.turftankregistrationapplication/callback";//"
-        List<string> _allowedCallbackURLs = new List<string>()
-        {
-            "https://dk.turftank.turftankregistrationapplication://dev-ggbq2i2p.us.auth0.com/android/dk.turftank.turftankregistrationapplication/callback",
-            "https://www.oauthdebugger.com",
-            "https://oauthdebugger.com",
-            "https://oauthdebugger.com/debug",
-            "https://cloud.turftank.osm://auth.turftank.cloud/android/cloud.turftank.osm/login-callback"
-        };
+        string _redirectURL = "dk.turftank.turftankregistrationapplication://dev-ggbq2i2p.us.auth0.com/android/dk.turftank.turftankregistrationapplication/callback";//"cloud.turftank.osm://login-callback";//
 
+        #endregion
+
+
+        /// <summary>
+        /// Turftank Production Credentials, copied from OSM app
+        /// </summary>
+        /// <param name="clientid"></param>
+        /// <param name="clientsecret"></param>
+        /// <param name="domain"></param>
+        /// <param name="scope"></param>
+        /// <param name="accesstoken"></param>
+        /// <param name="accesstokenexpiration"></param>
+        /// <param name="refreshtoken"></param>
+        /// <param name="authorizecode"></param>
+        /// <param name="state"></param>
+        /// <param name="redirecturl"></param>
+        //#region Public Turftank Attributes
+
+
+        ////IsLoggedIn Skal ændres til false når databasen ikke længere anerkender access_token
+        ////så skal refreshtoken sendes til auth0 for at få et nyt access-token 
+        //public bool IsLoggedIn { get; set; } = false;
+
+        //public string ClientId { get; set; } = "OT3kqkpjDvmSZl7WMjvwo4U72k1MWVUw";//"X5goHHBzVSkwc8kwWpbw5fq9NzoVkAof";// //
+        //public string ClientSecret { get; set; } = "KAaqom27hUCbyhUr1KtAO1o-ooxLJUOHn2o6YPmX0OopbD4FjgZnzVzhHynF8SM8";
+        //public string Domain { get; set; } = "auth.turftank.cloud"; //"dev-ggbq2i2p.us.auth0.com";   //
+        //public string AuthorizeURL { get => $"https://{Domain}/authorize"; }      //"https://dev-ggbq2i2p.us.auth0.com/authorize";//"https://auth.turftank.cloud/oauth/authorize";//?audience=https://auth.turftank.cloud/u/login";
+        //public string RedirectURL { get => _redirectURL; }
+        //public string AccessTokenURL { get => $"https://{Domain}/token"; }          //"https://dev-ggbq2i2p.us.auth0.com/oauth/token";//"https://auth.turftank.cloud/token";
+
+        //public string Scope { get; set; } = "openid profile email offline_access";
+        //public string AccessToken { get => _accessToken; set { _accessToken = value; IsLoggedIn = true; } }
+        //public DateTime AccessTokenExpiration { get; set; }
+        //public string RefreshToken { get => _refreshToken; set => _refreshToken = value; }
+        //public string AuthorizeCode { get; set; }
+        //public string OAuthState { get => _oAuthState; set => _oAuthState = value; }
+
+
+        //#endregion
+
+        //#region Private Turftank Attributes
+
+        //private string _accessToken;
+        //private string _refreshToken;
+        //string _oAuthState = "qwertyasdfgzxcvbo";
+        //string _redirectURL = "cloud.turftank.osm://login-callback";//"dk.turftank.turftankregistrationapplication://dev-ggbq2i2p.us.auth0.com/android/dk.turftank.turftankregistrationapplication/callback";//"
+
+        //#endregion
+
+        #region Constructor
 
         public void Initialize(
             string clientid, string clientsecret, string domain, string scope, string accesstoken,
@@ -88,7 +141,6 @@ namespace TurfTankRegistrationApplication.Model
             ClientSecret = clientsecret;
             Domain = domain;
 
-
             Scope = scope;
             _accessToken = accesstoken;
             AccessTokenExpiration = Convert.ToDateTime(accesstokenexpiration);
@@ -99,6 +151,7 @@ namespace TurfTankRegistrationApplication.Model
             _redirectURL = redirecturl;
         }
 
+
         public Constants(string clientid, string clientsecret, string domain, string scope, string accesstoken,
             string accesstokenexpiration, string refreshtoken, string authorizecode, string state, string redirecturl)
         {
@@ -106,14 +159,21 @@ namespace TurfTankRegistrationApplication.Model
                        accesstokenexpiration, refreshtoken, authorizecode, state, redirecturl);
         }
 
+        //alle constants er initialiserede
         public Constants()
         {
 
         }
 
-        
+        #endregion
 
+        #region Public Methods
 
+        /// <summary>
+        /// Restores all values to the values saved in SecureStorrage
+        /// The values that are commented out may or may not be usefull at a later time.
+        /// </summary>
+        /// <returns></returns>
         public async Task Restore()
         {
             //string clientid =  await SecureStorage.GetAsync("client_id"); 
@@ -132,6 +192,10 @@ namespace TurfTankRegistrationApplication.Model
                        accesstokenexpiration, refreshtoken, authorizecode, state, RedirectURL);
         }
 
+        /// <summary>
+        /// Saves all values in secure storrage
+        /// </summary>
+        /// <returns></returns>
         public async Task Save()
         {
             await SecureStorage.SetAsync("client_id",ClientId);
@@ -147,12 +211,18 @@ namespace TurfTankRegistrationApplication.Model
             await SecureStorage.SetAsync("redirect_url", RedirectURL);           
         }
     }
-    
+    #endregion
+
+
+
+   
+
+
 }
 
-            
 
 
-      
-    
+
+
+
 

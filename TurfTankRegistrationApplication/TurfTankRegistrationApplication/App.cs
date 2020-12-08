@@ -35,21 +35,27 @@ namespace TurfTankRegistrationApplication
 		/// It must only be initialized ones, and all references to it is to App.ApiClient
 		/// </summary>
 		public static Client ApiClient { get; private set; }
-		public static TurfTankAuth Authenticator { get; private set; }
-		public Account account;
+		public static Account account;
 		public static Constants OAuthCredentials { get; set; }
+		public static TurfTankAuth Authenticator;
 		public static string AppName { get; private set; } = "TTRA";
 
-        public App()
+
+		public App()
 		{
 			// dette skal med fordi at Markup stadig er experimental.
 			Device.SetFlags(new string[] { "Markup_Experimental" });
-
+			account = new Account();
 			OAuthCredentials =  new Constants();
+			Authenticator = new TurfTankAuth(OAuthCredentials);
 			ApiClient = new Client(new HttpClient());
-			MainPage = new NavigationPage (new SignInPage());
+			MainPage = new NavigationPage (new SignInPage(Authenticator));
 		}
 
+
+		/// <summary>
+        /// Restore OAuthCredentials from persistent storrage
+        /// </summary>
 		protected override async void OnStart()
 		{
 			//Clears login token
@@ -77,28 +83,49 @@ namespace TurfTankRegistrationApplication
 			System.Console.WriteLine("\n*************\nHey there, Im Freshhhh!\n****************\n");
 		}
 
-        protected override async void OnAppLinkRequestReceived(Uri uri)
+
+		/// <summary>
+		/// Is called when the Auth0 server redirects back to the app with autn_code or tokens
+		/// Is only used when OAuth2Authenticator IsNativUI = true
+		/// Todo, use TurfTankAuth.cs to handle codes, Exchange code for accesstoken, do refresh
+		/// see: /******* github  sourcekode for xamarin auth   *************/
+		/* https://github.com/xamarin/Xamarin.Auth/blob/master/source/Core/Xamarin.Auth.Common.LinkSource/OAuth2Authenticator.cs#L845 */
+		/// </summary>
+		/// <param name="uri"></param>
+		protected override async void OnAppLinkRequestReceived(Uri uri)
         {
-            if (uri.AbsoluteUri.Contains(OAuthCredentials.RedirectURL))
+			if (uri.AbsoluteUri.Contains(OAuthCredentials.RedirectURL))
             {
+				//check for accesstoken
 				try
-				{
-					//Checking if access token can be created from callback
+                {
+
 					AccessToken token = new AccessToken(uri.Fragment);
 
-					OAuthCredentials.AccessToken = token.access_token;
-					OAuthCredentials.Scope = token.scope;
-					OAuthCredentials.AccessTokenExpiration = DateTime.UtcNow.AddSeconds(Convert.ToInt32(token.expires_in));
-					OAuthCredentials.OAuthState = token.state;
-					OAuthCredentials.IsLoggedIn = true;
-					await OAuthCredentials.Save();
-
-					await MainPage.Navigation.PushAsync(new MenuPage());
-				}
-				catch
+                    await MainPage.Navigation.PushAsync(new MenuPage());
+                }
+                catch
                 {
-					await MainPage.Navigation.PushAsync(new SignInPage());
-					//Authenticator.AuthenticatorAuth2.OnError("User is not logged in");
+					//check for auth_code
+					try
+                    {
+
+                        IDictionary<string, string> dict = new Dictionary<string, string>();
+                        string[] pairs = uri.Query.TrimStart('?').Split('&');
+                        foreach (string pair in pairs)
+                        {
+                            string[] nameValaue = pair.Split(new char[] { '=' });
+                            dict.Add(nameValaue[0], nameValaue[1]);
+                        }
+                        OAuthCredentials.AuthorizeCode = dict["code"];
+                        //await Authenticator.RequestAccessTokenAsync(OAuthCredentials.AuthorizeCode);
+                        await MainPage.Navigation.PushAsync(new MenuPage());
+                    }
+                    catch
+                    {
+                    }
+
+                    await MainPage.Navigation.PushAsync(new SignInPage(Authenticator));
                 }
             }
         }
