@@ -23,6 +23,7 @@ namespace TurfTankRegistrationApplication.ViewModel
     {
         public INavigation Navigation { get; set; }
         public HttpClient http { get; set; }
+        public Page mainPage { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         
         public string RoverResponse { get; set; }
@@ -46,16 +47,18 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public RoverRegistrationViewModel(INavigation navigation)
         {
+            this.mainPage = Application.Current.MainPage;
             this.http = App.WifiClient;
             this.Navigation = navigation;
             ChangeRoverSimcard = new Command(() => NavigateToScanPage("Rover"));
-            ChangeRoverSN = new Command(() => GetRoverSerialNumber());
+            ChangeRoverSN = new Command(async () => await GetRoverSerialNumber());
             
         }
 
         public RoverRegistrationViewModel(INavigation navigation, HttpClient http)
         {
             this.http = http;
+            this.mainPage = new Page();
             this.Navigation = navigation;
         }
 
@@ -108,7 +111,7 @@ namespace TurfTankRegistrationApplication.ViewModel
                         Console.WriteLine("Rover Serial Number: " + RoverResponse);
                         MessagingCenter.Send(this, "RoverSerialNumber", RoverResponse);
 
-                        await Application.Current.MainPage.DisplayAlert("Success!", "Got the Rover Serial Number!", "OK");
+                        await mainPage.DisplayAlert("Success!", "Got the Rover Serial Number!", "OK");
                         
                     }
 
