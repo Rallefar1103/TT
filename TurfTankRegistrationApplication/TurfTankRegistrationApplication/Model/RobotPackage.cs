@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using TurfTankRegistrationApplication.Connection;
+using TurfTankRegistrationApplication.Exceptions;
 
 namespace TurfTankRegistrationApplication.Model
 {
@@ -47,6 +48,7 @@ namespace TurfTankRegistrationApplication.Model
             RoverGPS = roverGPS;
             BaseGPS = baseGPS;
             QR = qr;
+            SerialNumber = QR.ID;
         }
 
         public RobotPackage()
@@ -86,7 +88,6 @@ namespace TurfTankRegistrationApplication.Model
         {
             IsSelected = true;
         }
-
 
         public Component SwapBrokenComponent(Component component)
         {
@@ -140,9 +141,36 @@ namespace TurfTankRegistrationApplication.Model
             }
         }
 
-        public void ValidateSelf(SerialOrQR idRestriction = SerialOrQR.AnyId)
+        public void ValidateSelf(SerialOrQR idRestriction = SerialOrQR.BothSerialAndQRId)
         {
-            throw new NotImplementedException();
+
+            if (QR == null)
+                throw new ValidationException("The robot does not have a QR sticker");
+            if (SerialNumber == "" || SerialNumber == null)
+                throw new ValidationException("The robot does not have a serial number");
+            if (QR.ID != SerialNumber)
+                throw new ValidationException("The robots serial number does not match the qrid");
+            if (Controller == null)
+                throw new ValidationException("The robot does not have a controller");
+            if (RoverGPS == null)
+                throw new ValidationException("The robot does not have a rover");
+            if (BaseGPS == null)
+                throw new ValidationException("The robot does not have a base");
+            if (Tablet == null)
+                throw new ValidationException("The robot does not have a tablet");
+            
+            try { Controller.ValidateSelf(idRestriction); }
+            catch (Exception e) { throw new ValidationException("The controller is not valid: " + e.Message); }
+
+            try{ RoverGPS.ValidateSelf(idRestriction); }
+            catch (Exception e) { throw new ValidationException("The rover is not valid: " + e.Message); }
+            
+            try { BaseGPS.ValidateSelf(idRestriction); }
+            catch (Exception e) { throw new ValidationException("The base is not valid: " + e.Message); }
+
+            try { Tablet.ValidateSelf(); }
+            catch (Exception e) { throw new ValidationException("The tablet is not valid: " + e.Message); }
+
         }
 
 
