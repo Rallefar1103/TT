@@ -23,7 +23,7 @@ namespace TurfTankRegistrationApplication.ViewModel
     {
         public INavigation Navigation { get; set; }
         public HttpClient http { get; set; }
-        public Page mainPage { get; set; }
+        public bool testing { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         
         public string RoverResponse { get; set; }
@@ -47,7 +47,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public RoverRegistrationViewModel(INavigation navigation)
         {
-            this.mainPage = Application.Current.MainPage;
+            this.testing = false;
             this.http = App.WifiClient;
             this.Navigation = navigation;
             ChangeRoverSimcard = new Command(() => NavigateToScanPage("Rover"));
@@ -57,8 +57,8 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public RoverRegistrationViewModel(INavigation navigation, HttpClient http)
         {
+            this.testing = true;
             this.http = http;
-            this.mainPage = new Page();
             this.Navigation = navigation;
         }
 
@@ -109,9 +109,17 @@ namespace TurfTankRegistrationApplication.ViewModel
                         RoverResponse = RoverSOSVER.SerialNumber;
 
                         Console.WriteLine("Rover Serial Number: " + RoverResponse);
-                        MessagingCenter.Send(this, "RoverSerialNumber", RoverResponse);
 
-                        await mainPage.DisplayAlert("Success!", "Got the Rover Serial Number!", "OK");
+                        if (!testing)
+                        {
+                            MessagingCenter.Send(this, "RoverSerialNumber", RoverResponse);
+                            await Application.Current.MainPage.DisplayAlert("Success!", "Got the Rover Serial Number!", "OK");
+                        }
+                        else
+                        {
+                            await Navigation.PopAsync();
+                        }
+                        
                         
                     }
 

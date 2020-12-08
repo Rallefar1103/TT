@@ -48,6 +48,7 @@ namespace TestUnit.ViewModel
 
             // Assert
             Assert.AreEqual(expected, actual, desc);
+            await mockNavigation.Received().PopAsync();
         }
     }
 }
