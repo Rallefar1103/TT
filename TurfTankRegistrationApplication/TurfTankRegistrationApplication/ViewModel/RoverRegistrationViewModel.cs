@@ -101,7 +101,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 
                         Console.Write("!!!!! ------ response: " + json["response"]);
 
-                        SOSVER RoverSOSVER = new SOSVER(json["response"]);
+                        SOSVER RoverSOSVER = new SOSVER(json["response"].ToString());
 
                         RoverResponse = RoverSOSVER.SerialNumber;
 
