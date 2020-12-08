@@ -22,6 +22,7 @@ namespace TurfTankRegistrationApplication.ViewModel
     public class RoverRegistrationViewModel : INotifyPropertyChanged
     {
         public INavigation Navigation { get; set; }
+        public HttpClient http { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         
         public string RoverResponse { get; set; }
@@ -45,15 +46,17 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public RoverRegistrationViewModel(INavigation navigation)
         {
+            this.http = App.WifiClient;
             this.Navigation = navigation;
             ChangeRoverSimcard = new Command(() => NavigateToScanPage("Rover"));
             ChangeRoverSN = new Command(() => GetRoverSerialNumber());
             
         }
 
-        public RoverRegistrationViewModel()
+        public RoverRegistrationViewModel(INavigation navigation, HttpClient http)
         {
-
+            this.http = http;
+            this.Navigation = navigation;
         }
 
         public void NavigateToScanPage(string component)
@@ -70,9 +73,8 @@ namespace TurfTankRegistrationApplication.ViewModel
         /// We get the response back and parses it through the SOSVER class to retrieve the actual serial number
         /// When we're done we call the StartInmark method.
         /// </summary>
-        public async void GetRoverSerialNumber()
+        public async Task GetRoverSerialNumber()
         {
-            HttpClient http = new HttpClient();
             string URL = "http://192.168.80.1:8888/rover";
             var values = new Dictionary<string, string>
             {
@@ -81,15 +83,16 @@ namespace TurfTankRegistrationApplication.ViewModel
             
             var content = new FormUrlEncodedContent(values);
 
-            var successfullStop = await StopInmark();
+            //var successfullStop = await StopInmark();
 
-            if (successfullStop)
+            if (true)
             {
                 try
                 {
                     var response = await http.PostAsync(URL, content);
                     if (response.IsSuccessStatusCode)
                     {
+                        
                         string StringContent = await response.Content.ReadAsStringAsync();
 
                         Console.WriteLine("!!!!! ------- This is what we got back: " + StringContent);
@@ -97,6 +100,7 @@ namespace TurfTankRegistrationApplication.ViewModel
                         dynamic json = JsonConvert.DeserializeObject(StringContent);
 
                         Console.Write("!!!!! ------ response: " + json["response"]);
+
                         SOSVER RoverSOSVER = new SOSVER(json["response"]);
 
                         RoverResponse = RoverSOSVER.SerialNumber;
@@ -108,7 +112,7 @@ namespace TurfTankRegistrationApplication.ViewModel
                         
                     }
 
-                    await StartInmark();
+                    //await StartInmark();
 
                 }
                 catch (HttpRequestException e)
@@ -132,7 +136,6 @@ namespace TurfTankRegistrationApplication.ViewModel
         /// <returns></returns>
         private async Task<bool> StopInmark()
         {
-            HttpClient http = new HttpClient();
             string URL = "http://192.168.80.1:8888/stopInmark";
             var values = new Dictionary<string, string>();
 
@@ -171,7 +174,6 @@ namespace TurfTankRegistrationApplication.ViewModel
         /// <returns></returns>
         private async Task<bool> StartInmark()
         {
-            HttpClient http = new HttpClient();
             string URL = "http://192.168.80.1:8888/startInmark";
             var values = new Dictionary<string, string>();
 
