@@ -25,11 +25,13 @@ namespace TurfTankRegistrationApplication
 		/// It must only be initialized ones, and all references to it is to App.ApiClient
 		/// </summary>
 		public static Client ApiClient { get; private set; }
+		public static HttpClient WifiClient { get; private set; }
 		public App()
 		{
 			// dette skal med fordi at Markup stadig er experimental.
 			Device.SetFlags(new string[] { "Markup_Experimental" });
-			ApiClient = new Client(new HttpClient());
+			WifiClient = new HttpClient();
+			ApiClient = new Client(WifiClient);
 			MainPage = new NavigationPage (new SignInPage());
 		}
 

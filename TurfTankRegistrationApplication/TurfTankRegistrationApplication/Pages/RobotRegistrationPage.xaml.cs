@@ -4,19 +4,19 @@ using TurfTankRegistrationApplication.ViewModel;
 using TurfTankRegistrationApplication.Views.Registration_views;
 using TurfTankRegistrationApplication.Model;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace TurfTankRegistrationApplication.Pages
 {
     public partial class RobotRegistrationPage : ContentPage
     {
-        readonly RobotPackage robot = new RobotPackage();
 
-        public RobotRegistrationPage()
+        public RobotRegistrationPage(string ssid)
         {
-            InitializeComponent();
-            
-            RobotRegistrationViewModel RobotRegVM = new RobotRegistrationViewModel(Navigation, robot);
+            RobotRegistrationViewModel RobotRegVM = new RobotRegistrationViewModel(Navigation);
             BindingContext = RobotRegVM;
+
+            Title = "Register Robot: " + ssid;
 
             // View Components
             ComponentBtn ChassisBtn = new ComponentBtn("Chassis", RobotRegVM.ChangeChassisSN);
@@ -131,7 +131,11 @@ namespace TurfTankRegistrationApplication.Pages
                 }
             };
 
+            InitializeComponent();
+
+
         }
+
 
     }
 }

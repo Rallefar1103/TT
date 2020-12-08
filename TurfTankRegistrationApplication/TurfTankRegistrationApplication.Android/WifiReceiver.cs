@@ -25,6 +25,9 @@ namespace TurfTankRegistrationApplication.Droid
             return wifis;
         }
 
+        // Standardized onReceive method for the BroadcastReceiver class. This methods handles
+        // how the scan results are being processed upon discovery.
+        // What we do is that we add them to the wifi list and return them through the Scan method.
         public override void OnReceive(Context context, Intent intent)
         {
             IList<ScanResult> scanWifiNetworks = wifiManager.ScanResults;

@@ -25,4 +25,7 @@
   <ItemGroup>
     <Reference Include="System.Diagnostics.Tracing" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
 </Project>
