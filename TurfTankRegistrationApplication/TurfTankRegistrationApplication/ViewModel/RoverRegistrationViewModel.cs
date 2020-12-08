@@ -86,9 +86,9 @@ namespace TurfTankRegistrationApplication.ViewModel
             
             var content = new FormUrlEncodedContent(values);
 
-            //var successfullStop = await StopInmark();
+            var successfullStop = await StopInmark();
 
-            if (true)
+            if (successfullStop)
             {
                 try
                 {
@@ -123,7 +123,7 @@ namespace TurfTankRegistrationApplication.ViewModel
                         
                     }
 
-                    //await StartInmark();
+                    await StartInmark();
 
                 }
                 catch (HttpRequestException e)
