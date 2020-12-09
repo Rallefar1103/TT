@@ -94,7 +94,6 @@ namespace TurfTankRegistrationApplication.ViewModel
         {
             string ConnectedSSID = "";
             string ssid = GetCorrectWifi(SelectedNetwork);
-            Console.WriteLine("Start connecting to wifi: " + ssid);
 
             // Connect to wifi
             DependencyService.Get<IWifiConnector>().ConnectToWifi(SelectedNetwork);
@@ -116,13 +115,11 @@ namespace TurfTankRegistrationApplication.ViewModel
                 ConnectedSSID = DependencyService.Get<IWifiConnector>().GetSSID();
             }
 
-            Console.WriteLine("!!!! ------ ConnectedSSID: " + ConnectedSSID);
 
             if ($"\"{SelectedNetwork}\"" == ConnectedSSID && Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
                 Console.WriteLine("WE ARE CONNECTED!");
                 await Application.Current.MainPage.DisplayAlert("Success!", "You are connected to: " + ssid, "Start Registration");
-                //MessagingCenter.Send(this, "RobotSSID", ssid);
                 await Navigation.PushAsync(new RobotRegistrationPage(ssid));
 
             }
@@ -133,8 +130,7 @@ namespace TurfTankRegistrationApplication.ViewModel
                 await Navigation.PopAsync();
                 await Navigation.PopAsync();
             }
-
-            
+ 
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)

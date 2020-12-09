@@ -95,14 +95,9 @@ namespace TurfTankRegistrationApplication.ViewModel
                     var response = await http.PostAsync(URL, content);
                     if (response.IsSuccessStatusCode)
                     {
-                        
                         string StringContent = await response.Content.ReadAsStringAsync();
 
-                        Console.WriteLine("!!!!! ------- This is what we got back: " + StringContent);
-
                         dynamic json = JsonConvert.DeserializeObject(StringContent);
-
-                        Console.Write("!!!!! ------ response: " + json["response"]);
 
                         SOSVER RoverSOSVER = new SOSVER(json["response"].ToString());
 
@@ -119,7 +114,6 @@ namespace TurfTankRegistrationApplication.ViewModel
                         {
                             await Navigation.PopAsync();
                         }
-                        
                         
                     }
 
@@ -138,7 +132,8 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         }
 
-
+        //Console.WriteLine("!!!!! ------- This is what we got back: " + StringContent);
+        //Console.Write("!!!!! ------ response: " + json["response"]);
 
         /// <summary>
         // This method gives us the opportunity to communicate with the rover by switching its mode
