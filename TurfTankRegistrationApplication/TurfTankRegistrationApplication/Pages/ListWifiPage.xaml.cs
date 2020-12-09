@@ -16,6 +16,7 @@ namespace TurfTankRegistrationApplication.Pages
 
             Title = "Robots Nearby";
 
+            // UI Components
             Label LoadingText = new Label
             {
                 Text = "Scanning....",
@@ -67,7 +68,7 @@ namespace TurfTankRegistrationApplication.Pages
                 VerticalOptions = LayoutOptions.Center,
             };
 
-
+            // UI Bindings
             StartScanning.SetBinding(Button.CommandProperty, "ScanForWifi");
             StartScanning.SetBinding(Button.IsVisibleProperty, "HasNotStartedWifiLoading");
 
@@ -82,7 +83,7 @@ namespace TurfTankRegistrationApplication.Pages
             wifiList.SetBinding(ListView.ItemsSourceProperty, "wifiResults");
             wifiList.SetBinding(ListView.SelectedItemProperty, "SelectedNetwork");
 
-
+            // Layout addings
             stackLayout.Children.Add(StartScanning);
             stackLayout.Children.Add(LoadingText);
             stackLayout.Children.Add(wifiList);
