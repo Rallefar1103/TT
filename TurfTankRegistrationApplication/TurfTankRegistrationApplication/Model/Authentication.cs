@@ -131,8 +131,13 @@ namespace TurfTankRegistrationApplication.Connection
         {
             if (e.IsAuthenticated)
             {
+                
+                
 
                 App.account = e.Account;
+                var user = App.account.Username;
+                //var request = new OAuth2Request("GET", new Uri("https://dev-ggbq2i2p.us.auth0.com/users"), null, e.Account);
+                //var response = await request.GetResponseAsync();
                 await SecureStorage.SetAsync("TTRA", App.account.Serialize());
 
                 if (App.account.Properties.ContainsKey("access_token"))
