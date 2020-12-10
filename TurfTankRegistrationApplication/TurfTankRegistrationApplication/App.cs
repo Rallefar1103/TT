@@ -43,10 +43,11 @@ namespace TurfTankRegistrationApplication
 
 		public App()
 		{
+			OAuthCredentials = new Constants(selectedAuthServer: SelectedAuthServer.testserver ) ;
+
 			// dette skal med fordi at Markup stadig er experimental.
 			Device.SetFlags(new string[] { "Markup_Experimental" });
 			account = new Account();
-			OAuthCredentials =  new Constants();
 			Authenticator = new TurfTankAuth(OAuthCredentials);
 			ApiClient = new Client(new HttpClient());
 			MainPage = new NavigationPage (new SignInPage(Authenticator));

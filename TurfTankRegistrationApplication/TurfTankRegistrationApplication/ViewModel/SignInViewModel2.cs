@@ -12,7 +12,6 @@ namespace TurfTankRegistrationApplication.ViewModel
     public class SignInViewModel2 : BaseViewModel
     {
         public INavigation Navigation { get; set; }
-        public INavigation navigation;
         public Command NavigateToMenuPage { get; }
         public string Token { get; set; }
 
@@ -51,14 +50,29 @@ namespace TurfTankRegistrationApplication.ViewModel
                 sb.Append("Stored   Refresh Token = ").AppendLine($"   {App.OAuthCredentials.RefreshToken}");
                 await Application.Current.MainPage.DisplayAlert("Authentication Results", sb.ToString(), "OK");
 
-                await navigation.PushAsync(new MenuPage());
+                //await Navigation.PushAsync(new MenuPage());
             }
             else
             {
+                
+                _authenticator.Error += Handle_loginError;
+                //await _authenticator.RefreshTokenAsync();
                 var Presenter = new Xamarin.Auth.Presenters.OAuthLoginPresenter();
-                Presenter.Completed += Handle_CompletedLoginOnPage;
+                Presenter.Completed += Handle_CompletedLoginOnPage;               
                 Presenter.Login(authenticator: _authenticator);
+                Presenter = null;
             }
+
+        }
+
+        private async void Handle_loginError(object sender, AuthenticatorErrorEventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("Login did not succeed: ").AppendLine($"{e.Exception}");
+            sb.Append("Message: ").AppendLine($"{e.Message}");
+
+            await Application.Current.MainPage.DisplayAlert("Login Error", sb.ToString(), "OK");
 
         }
 
@@ -69,17 +83,16 @@ namespace TurfTankRegistrationApplication.ViewModel
             if (e.Account != null && e.Account.Properties != null)
             {
                 sb.Append("Recieved Access  Token = ").AppendLine($"   {e.Account.Properties["access_token"]}");
-                sb.Append("Stored   Access  Token = ").AppendLine($"   {App.OAuthCredentials.AccessToken}");
-                sb.Append("Stored   Refresh Token = ").AppendLine($"   {App.OAuthCredentials.RefreshToken}");
-
-
+                sb.Append("\n\nStored   Access  Token = ").AppendLine($"   {App.OAuthCredentials.AccessToken}");
+                sb.Append("\nStored   Refresh Token = ").AppendLine($"   {App.OAuthCredentials.RefreshToken}");
             }
             else
             {
                 sb.Append("Not authenticated ").AppendLine($"Account.Properties does not exist");
             }
             await Application.Current.MainPage.DisplayAlert("Authentication Results", sb.ToString(), "OK");
-            //navigation.PushAsync(new MenuPage());
+
+            await Navigation.PushAsync(new MenuPage());
         }
 
 

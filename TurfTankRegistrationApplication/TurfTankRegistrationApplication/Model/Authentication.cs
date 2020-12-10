@@ -1,27 +1,27 @@
 ﻿/********EXAMPLE OF THE URL COMMUNICATION USED IN THE AUTHORISATION **********/
 //
 //
-//         //Request
-//        Uri Request = new Uri(
-//            @"GET https://accounts.google.com/o/oauth2/auth?
+////Request
+//Uri Request = new Uri(
+//    @"GET https://accounts.google.com/o/oauth2/auth?
 //            scope=openid email&
 //            redirect_uri=https://app.example.com/oauth2/callback&
 //            response_type=code&
 //            client_id=812741506391&
 //            state=af0ifjsldkj");
-//        //Response
-//        Uri Response = new Uri(
-//            @"HTTP /1.1 302 Found
+////Response
+//Uri Response = new Uri(
+//    @"HTTP /1.1 302 Found
 //            Location: https://app.example.com/oauth2/callback?
 //            code=MsCeLvIaQm6bTrgtp7&state=af0ifjsldkj");
 
-//        //The code returned is the authorization grant and state is to
-//        //ensure it's not forged and it's from the same request.
-//        //And the authorization grant for tokens response contains an ID token.");
+////The code returned is the authorization grant and state is to
+////ensure it's not forged and it's from the same request.
+////And the authorization grant for tokens response contains an ID token.");
 
-//        //Request
-//        Uri Request = new Uri(
-//            @"POST /oauth2/v3/token HTTP/1.1
+////Request
+//Uri Request = new Uri(
+//    @"POST /oauth2/v3/token HTTP/1.1
 //            Host: www.googleapis.com
 //            Content-Type: application/x-www-form-urlencoded
 
@@ -30,7 +30,7 @@
 //              redirect_uri=https://app.example.com/oauth2/callback&
 //              grant_type=authorization_code");
 ////Response
-//  string response =  @"{
+//string response = @"{
 //                          "access_token": "2YotnFZFEjr1zCsicMWpAA",
 //                          "token_type": "Bearer",
 //                          "expires_in": 3600,
@@ -65,13 +65,10 @@ namespace TurfTankRegistrationApplication.Connection
 
 
         //public OAuth2Authenticator Auth2;
-        ICredentials _cred = new Constants();
+        ICredentials _cred; 
         public OAuthLoginPresenter Presenter;
 
-
-
-
-      
+ 
         #region constructor
         /// <summary>
         /// Completed is called when a login has been attempted
@@ -91,7 +88,7 @@ namespace TurfTankRegistrationApplication.Connection
 
         /// <summary>
         /// Purpose is to check if the Page is forgery, 
-        /// the overide Handles problem with the state allways being bad, TODO this should be fixed, maybe by securing that only 1 OAuth2Authenticator is used throughout program. 
+        /// the overide Handles a problem with the state allways being bad, TODO this should be fixed, maybe by securing that only 1 OAuth2Authenticator is used throughout program. 
         /// </summary>
         /// <param name="url"></param>
         /// <param name="query"></param>
@@ -181,7 +178,7 @@ namespace TurfTankRegistrationApplication.Connection
         #region Refresh Token
 
         /// <summary>
-        /// Gets a new token by showing refreshtoken
+        /// Gets a new token by showing refreshtoke
         /// </summary>
         /// <returns></returns>
         public async Task RefreshTokenAsync()
@@ -208,10 +205,11 @@ namespace TurfTankRegistrationApplication.Connection
         {
             var queryValues = new Dictionary<string, string>
             {
-                { "code", _cred.RefreshToken},
+                { "code", _cred.AuthorizeCode},
                 { "client_id", _cred.ClientId},
-                { "grant_type", "access_code"},
-                {"client_secret", _cred.ClientSecret }
+                {"client_secret", _cred.ClientSecret },
+                { "grant_type", "Authorization_code"},
+                {"redirect_uri", _cred.RedirectURL }
 
             };
             var result = await this.RequestAccessTokenAsync(queryValues);
