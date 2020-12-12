@@ -5,7 +5,7 @@
 *.lck
 
 #Credentials and hardcoded keywords should not be on github
-TurfTankRegistrationApplication/Model/Constants.cs
+TurfTankRegistrationApplication/TurfTankRegistrationApplication/Model/Constants.cs 
 
 #The output from the automated unittests
 CHANGES.txt
