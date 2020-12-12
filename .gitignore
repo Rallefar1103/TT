@@ -4,6 +4,9 @@
 *.bak_000f
 *.lck
 
+#Credentials and hardcoded keywords should not be on github
+TurfTankRegistrationApplication/Model/Constants.cs
+
 #The output from the automated unittests
 CHANGES.txt
 TestResult.xml
@@ -231,3 +234,4 @@ project.lock.json
 
 
 
+Archive.zip
