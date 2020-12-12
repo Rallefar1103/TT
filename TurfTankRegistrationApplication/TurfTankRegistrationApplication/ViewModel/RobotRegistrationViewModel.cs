@@ -45,9 +45,10 @@ namespace TurfTankRegistrationApplication.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
         public INavigation Navigation { get; set; }
 
-        public RobotRegistrationViewModel(INavigation navigation, RobotPackage robot)
+        public RobotRegistrationViewModel(INavigation navigation)
         {
-            this.robotItem = robot;
+            
+            this.robotItem = new RobotPackage();
             this.Navigation = navigation;
             robotItem.SetAsSelected();
             ChangeChassisSN = new Command(() => NavigateToScanPage("Robot"));

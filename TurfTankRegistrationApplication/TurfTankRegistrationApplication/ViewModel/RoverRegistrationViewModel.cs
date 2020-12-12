@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
@@ -8,18 +9,31 @@ using TurfTankRegistrationApplication.Pages;
 using System.Collections.Generic;
 using System.Linq;
 using Xamarin.Essentials;
+using Newtonsoft.Json.Linq;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+using TurfTankRegistrationApplication.Helpers;
+using System.Net;
+using System.Text;
+using System.IO;
 
 namespace TurfTankRegistrationApplication.ViewModel
 {
     public class RoverRegistrationViewModel : INotifyPropertyChanged
     {
         public INavigation Navigation { get; set; }
+        public HttpClient http { get; set; }
+        public bool testing { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
+        
+        public string RoverResponse { get; set; }
 
         public Command ChangeRoverSimcard { get; }
         public Command ChangeRoverSN { get; }
         public Command ScanForWifi { get; }
         public Command ConnectToSelectedWifi { get; }
+
+        public string RoverSerialNumber { get; set; }
 
         public List<string> wifiResults { get; set; }
         public string SelectedNetwork { get; set; }
@@ -33,20 +47,20 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public RoverRegistrationViewModel(INavigation navigation)
         {
+            this.testing = false;
+            this.http = App.WifiClient;
             this.Navigation = navigation;
             ChangeRoverSimcard = new Command(() => NavigateToScanPage("Rover"));
-            ChangeRoverSN = new Command(() => NavigateToWifiPage());
-            ScanForWifi = new Command(() => Scanner());
-            ConnectToSelectedWifi = new Command(() => GetRoverSerialNumber());
+            ChangeRoverSN = new Command(async () => await GetRoverSerialNumber());
             
         }
 
-        public void NavigateToWifiPage()
+        public RoverRegistrationViewModel(INavigation navigation, HttpClient http)
         {
-            ListWifiPage wifiListPage = new ListWifiPage();
-            Navigation.PushAsync(wifiListPage);
+            this.testing = true;
+            this.http = http;
+            this.Navigation = navigation;
         }
-
 
         public void NavigateToScanPage(string component)
         {
@@ -56,102 +70,176 @@ namespace TurfTankRegistrationApplication.ViewModel
             Navigation.PushAsync(scanPage);
         }
 
-        
-        public async void Scanner()
+        /// <summary>
+        /// GetRoverSerialNumber sends a postrequest to the rover endpoint once you're connected to the specific robot's wifi
+        /// Before we can get any information from the rover we need to call the StopInmark method.
+        /// We get the response back and parses it through the SOSVER class to retrieve the actual serial number
+        /// When we're done we call the StartInmark method.
+        /// </summary>
+        public async Task GetRoverSerialNumber()
         {
-            Task<List<string>> wifiTask = DependencyService.Get<IWifiConnector>().GetAvailableNetworks();
-            HasNotStartedWifiLoading = false;
-            OnPropertyChanged(nameof(HasNotStartedWifiLoading));
-
-            ShowLoadingLabel = true;
-            OnPropertyChanged(nameof(ShowLoadingLabel));
-
-            // Needs to wait for the result to finish
-            await Task.Delay(8000);
-            if (wifiTask.Status == TaskStatus.RanToCompletion)
+            string URL = "http://192.168.80.1:8888/rover";
+            var values = new Dictionary<string, string>
             {
-                Console.WriteLine("DONE");
-                ShowLoadingLabel = false;
-                OnPropertyChanged(nameof(ShowLoadingLabel));
+                { "command", "SOSVER,0" },
+            };
+            
+            var content = new FormUrlEncodedContent(values);
 
-                wifiResults = wifiTask.Result.Where(element => !string.IsNullOrEmpty(element)).ToList();
-                OnPropertyChanged(nameof(wifiResults));
+            var successfullStop = await StopInmark();
 
-                foreach (var network in wifiResults)
+            if (successfullStop)
+            {
+                try
                 {
-                    Console.WriteLine("Result: " + network);
+                    var response = await http.PostAsync(URL, content);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        
+                        string StringContent = await response.Content.ReadAsStringAsync();
+
+                        Console.WriteLine("!!!!! ------- This is what we got back: " + StringContent);
+
+                        dynamic json = JsonConvert.DeserializeObject(StringContent);
+
+                        Console.Write("!!!!! ------ response: " + json["response"]);
+
+                        SOSVER RoverSOSVER = new SOSVER(json["response"].ToString());
+
+                        RoverResponse = RoverSOSVER.SerialNumber;
+
+                        Console.WriteLine("Rover Serial Number: " + RoverResponse);
+
+                        if (!testing)
+                        {
+                            MessagingCenter.Send(this, "RoverSerialNumber", RoverResponse);
+                            await Application.Current.MainPage.DisplayAlert("Success!", "Got the Rover Serial Number!", "OK");
+                        }
+                        else
+                        {
+                            await Navigation.PopAsync();
+                        }
+                        
+                        
+                    }
+
+                    await StartInmark();
+
+                }
+                catch (HttpRequestException e)
+                {
+                    Console.WriteLine("CATCH: " + e);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Something went wrong with the stopInmark!");
+            }
+
+        }
+
+
+
+        /// <summary>
+        // This method gives us the opportunity to communicate with the rover by switching its mode
+        // from "operation" to "configuration"
+        /// </summary>
+        /// <returns></returns>
+        private async Task<bool> StopInmark()
+        {
+            string URL = "http://192.168.80.1:8888/stopInmark";
+            var values = new Dictionary<string, string>();
+
+            var content = new FormUrlEncodedContent(values);
+            try
+            {
+                var response = await http.PostAsync(URL, content);
+                var responseSucces = response.IsSuccessStatusCode;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("!!!!! ------- Stopping!");
+                    return true;
+                    
+                } else
+                {
+                    Console.WriteLine("!!!!! ------- Stopping failed!");
+                    return false;
                 }
 
-                WifiListIsReady = true;
-                OnPropertyChanged(nameof(WifiListIsReady));
-
-            } else if (wifiTask.Status == TaskStatus.Running)
+            }
+            catch (HttpRequestException e)
             {
-                Console.WriteLine("RUNNING");
-
-            } else if (wifiTask.Status == TaskStatus.WaitingToRun)
-            {
-                Console.WriteLine("WAITING");
+                Console.WriteLine("CATCH: " + e);
             }
 
-        }
-
-        public string GetCorrectWifi(string ssid)
-        {
-            ssid.Trim();
-            string foundNetwork = wifiResults.Find(wifi => wifi == ssid);
-            return foundNetwork;
-        }
-
-        // We might need to move this logic to the Model
-        public async void GetRoverSerialNumber()
-        {
-            string ConnectedSSID = "";
-            string ssid = GetCorrectWifi(SelectedNetwork);
-            Console.WriteLine("Start connecting to wifi: " + ssid);
-
-            // Connect to wifi
-            DependencyService.Get<IWifiConnector>().ConnectToWifi(SelectedNetwork);
-
-            WifiListIsReady = false;
-            OnPropertyChanged(nameof(WifiListIsReady));
-
-            StartedConnecting = true;
-            OnPropertyChanged(nameof(StartedConnecting));
-
-            // Wait for the connection to be established
-            await Task.Delay(5000);
-
-            StartedConnecting = false;
-            OnPropertyChanged(nameof(StartedConnecting));
-
-            if (DependencyService.Get<IWifiConnector>().CheckWifiStatus())
-        {
-                ConnectedSSID = DependencyService.Get<IWifiConnector>().GetSSID();
-            }
-
-            Console.WriteLine("!!!! ------ ConnectedSSID: " + ConnectedSSID);
-
-            if ($"\"{SelectedNetwork}\"" == ConnectedSSID && Connectivity.NetworkAccess == NetworkAccess.Internet)
-            {
-                Console.WriteLine("WE ARE CONNECTED!");
-                await Application.Current.MainPage.DisplayAlert("Success!", "You are connected to: " + ssid, "Add Serial Number");
-                MessagingCenter.Send(this, "RoverSerialNumber", "Rover1234");
-
-            } else
-            {
-                Console.WriteLine("OOPS WE END UP HERE!");
-                await Application.Current.MainPage.DisplayAlert("OOPS!", "You did not connect to: " + ssid, "OK");
-            }
-            
-            await Navigation.PopAsync();
-            await Navigation.PopAsync();
+            return false;
         }
 
 
+
+        /// <summary>
+        // This method restarts the robot such that the production employee can continue with the
+        // testing and reassembling process
+        /// </summary>
+        /// <returns></returns>
+        private async Task<bool> StartInmark()
+        {
+            string URL = "http://192.168.80.1:8888/startInmark";
+            var values = new Dictionary<string, string>();
+
+            var content = new FormUrlEncodedContent(values);
+            try
+            {
+                var response = await http.PostAsync(URL, content);
+                var responseSucces = response.IsSuccessStatusCode;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    
+                    Console.WriteLine("!!!!! ------- Starting!");
+                    return true;
+
+                } else
+                {
+                    Console.WriteLine("!!!!! ------- Starting failed!");
+                    return false;
+                }
+
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("CATCH: " + e);
+            }
+
+            return false;
+        }
+
+        
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
+
+
+
+//Test
+//var response = await http.GetAsync("https://jsonplaceholder.typicode.com/users");
+//if (response.IsSuccessStatusCode)
+//{
+//    string StringContent = await response.Content.ReadAsStringAsync();
+//    dynamic json = JsonConvert.DeserializeObject(StringContent);
+//    Console.WriteLine("!!!!!!!! ------- THIS IS WHAT WE GOT: \n" + json);
+
+//    RoverResponse = json[0]["name"];
+//    Console.WriteLine("THIS IS ROVER RESPONSE: \n" + RoverResponse);
+//    await Application.Current.MainPage.DisplayAlert("Success!", "Got Serial Number for rover: " + RoverResponse, "Add to Robot");
+//    await Navigation.PopAsync();
+//}
+//else
+//{
+//    await Application.Current.MainPage.DisplayAlert("ERROR!", "Could not retrieve serial number from rover", "OK");
+//    Console.WriteLine("BAD RESPONSE CODE!!!!!");
+//}

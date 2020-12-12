@@ -31,6 +31,7 @@
     <Folder Include="Pages\" />
     <Folder Include="Resources\" />
     <Folder Include="Views\Validation_views\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Views\Scanner.xaml" />

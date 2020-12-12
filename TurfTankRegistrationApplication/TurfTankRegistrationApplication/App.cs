@@ -41,6 +41,7 @@ namespace TurfTankRegistrationApplication
 		public static string AppName { get; private set; } = "TTRA";
 
 
+		public static HttpClient WifiClient { get; private set; }
 		public App()
 		{
 			OAuthCredentials = new Constants(selectedAuthServer: SelectedAuthServer.testserver ) ;
@@ -49,8 +50,10 @@ namespace TurfTankRegistrationApplication
 			Device.SetFlags(new string[] { "Markup_Experimental" });
 			account = new Account();
 			Authenticator = new TurfTankAuth(OAuthCredentials);
-			ApiClient = new Client(new HttpClient());
+			WifiClient = new HttpClient();
+			ApiClient = new Client(WifiClient);
 			MainPage = new NavigationPage (new SignInPage(Authenticator));
+
 		}
 
 
