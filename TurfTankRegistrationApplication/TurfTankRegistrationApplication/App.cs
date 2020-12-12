@@ -95,20 +95,20 @@ namespace TurfTankRegistrationApplication
 		/// <param name="uri"></param>
 		protected override async void OnAppLinkRequestReceived(Uri uri)
         {
-			if (uri.AbsoluteUri.Contains(OAuthCredentials.RedirectURL))
+            if (uri.AbsoluteUri.Contains(OAuthCredentials.RedirectURL))
             {
-				//check for accesstoken
-				try
+                //check for accesstoken
+                try
                 {
 
-					AccessToken token = new AccessToken(uri.Fragment);
+                    AccessToken token = new AccessToken(uri.Fragment);
 
                     await MainPage.Navigation.PushAsync(new MenuPage());
                 }
                 catch
                 {
-					//check for auth_code
-					try
+                    //check for auth_code
+                    try
                     {
 
                         IDictionary<string, string> dict = new Dictionary<string, string>();
