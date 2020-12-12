@@ -33,7 +33,7 @@ namespace TurfTankRegistrationApplication.Pages
         public string QRMustContain
         {
             get => _qrMustContain;
-            set => _qrMustContain = value;
+            set => _qrMustContain = value.ToUpper();
         }
         private string _qrMustContain = "TESTTTTTTTTT";
 
@@ -275,7 +275,9 @@ namespace TurfTankRegistrationApplication.Pages
         /// <param name="ZXingresult"></param>
         public void Handle_OnScanResult(Result ZXingresult)
         {
-            if (string.IsNullOrWhiteSpace(ZXingresult.Text))
+            string zxinResultText = ZXingresult.Text.ToUpper();
+
+            if (string.IsNullOrWhiteSpace(zxinResultText))
             {
                 if (vm.ScannerState == ScanViewModel.state.Saved)
                     SetScanPageStateToReadyToScan();
@@ -285,19 +287,22 @@ namespace TurfTankRegistrationApplication.Pages
 
             Device.BeginInvokeOnMainThread((Action)(() =>
             {
-                if (QRMustContain != null && !ZXingresult.Text.Contains(QRMustContain))
+                if (QRMustContain != null && !zxinResultText.Contains(QRMustContain))
                 {
                     SetScanPageStateToResultDoesNotMatchQRMustContainString();
                     return;
                 }
+                // else QRMustcontain == null || it is contained in the scanned string
                 //Only update the vm.Result if the data has changed
-                else if (vm.ScanResult != ZXingresult.Text)
+                else if (vm.ScanResult != zxinResultText)
                 {
-                    SetScanPageStateToScanResultReady(ZXingresult.Text);
+                    SetScanPageStateToScanResultReady(zxinResultText);
                 }
 
-                Console.WriteLine($"QR-detected: {ZXingresult.Text}");
+                //Console.WriteLine($"QR-detected: {ZXingresult.Text}");
             }));
+
+            //make sure the scanner is still activated and scanning.
             Scanner.IsScanning = true;
         }
 

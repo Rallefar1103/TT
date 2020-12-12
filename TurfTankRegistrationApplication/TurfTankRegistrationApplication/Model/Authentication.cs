@@ -171,6 +171,35 @@ namespace TurfTankRegistrationApplication.Connection
             
             var exep = e.Exception;
             var message = e.Message;
+            //lav en switch som checker for de forskellige error codes
+            //switch (e.Message)
+            //{
+            //    case: 
+            //    default:
+            //        break;
+            //}
+            
+                var queryValues = new Dictionary<string, string>
+            {
+                {"refresh_token", App.OAuthCredentials.RefreshToken},
+                {"client_id", this.ClientId},
+                {"grant_type", "refresh_token"}
+            };
+
+                if (!string.IsNullOrEmpty(this.ClientSecret))
+                {
+                    queryValues["client_secret"] = this.ClientSecret;
+                }
+
+                var tokens = await this.RequestAccessTokenAsync(queryValues)
+                        .ContinueWith(result =>
+                        {
+                            var accountProperties = result.Result;
+
+                            this.OnRetrievedAccountProperties(accountProperties);
+
+                            return int.Parse(accountProperties["expires_in"]);
+                        });
             
         }
 
@@ -185,9 +214,9 @@ namespace TurfTankRegistrationApplication.Connection
         {
             var queryValues = new Dictionary<string,string>
             {
+                { "grant_type", "refresh_token"},
                 { "refresh_token", _cred.RefreshToken},
                 { "client_id", _cred.ClientId},
-                { "grant_type", "refresh_token"},
                 {"client_secret", _cred.ClientSecret }
 
             };

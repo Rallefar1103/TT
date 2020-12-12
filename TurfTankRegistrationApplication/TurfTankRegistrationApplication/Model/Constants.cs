@@ -82,7 +82,7 @@ namespace TurfTankRegistrationApplication.Model
             private string _accessToken;
             private string _refreshToken;
             string _oAuthState = "qwertyasdfgzxcvbo";
-            string _redirectURL = "https://dk.turftank.turftankregistrationapplication://dev-ggbq2i2p.us.auth0.com/android/dk.turftank.turftankregistrationapplication/callback";//"cloud.turftank.osm://login-callback";//
+            string _redirectURL = "dk.turftank.turftankregistrationapplication://dev-ggbq2i2p.us.auth0.com/android/dk.turftank.turftankregistrationapplication/callback";//"cloud.turftank.osm://login-callback";//
 
             #endregion
         }
