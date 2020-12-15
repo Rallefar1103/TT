@@ -47,12 +47,6 @@
     <Compile Remove="Views\ScanPage.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Model\secrets.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="secrets.json" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="nunit.framework">
       <HintPath>..\..\..\..\..\..\..\Microsoft\Xamarin\NuGet\nunit\3.12.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>

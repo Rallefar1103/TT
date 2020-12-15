@@ -314,7 +314,20 @@ namespace TurfTankRegistrationApplication.Model
 
         private static string GetSecret(string secretScope, string secretId)
         {
-            return "S";
+            string secret = "No Secret";
+            if(secretScope == "Test")
+            {
+                secret = secretId == "ClientSecret" ? CredentialKeys.TestClientSecret : CredentialKeys.TestClientId;
+            }
+            else if (secretScope == "Development")
+            {
+                secret = secretId == "ClientSecret" ? CredentialKeys.DevelopmentClientSecret : CredentialKeys.DevelopmentClientId;
+            }
+            else if (secretScope == "Production")
+            {
+                secret = secretId == "ClientSecret" ? CredentialKeys.ProductionClientSecret : CredentialKeys.ProductionClientId;
+            }
+            return secret;
         }
 
 
