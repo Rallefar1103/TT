@@ -44,7 +44,7 @@ namespace TurfTankRegistrationApplication
 		public static HttpClient WifiClient { get; private set; }
 		public App()
 		{
-			OAuthCredentials = new Credentials(selectedAuthServer: SelectedAuthServer.testserver ) ;
+			OAuthCredentials = new Credentials(selectedAuthServer: SelectedAuthServer.developmentserver ) ;
 
 			// dette skal med fordi at Markup stadig er experimental.
 			Device.SetFlags(new string[] { "Markup_Experimental" });

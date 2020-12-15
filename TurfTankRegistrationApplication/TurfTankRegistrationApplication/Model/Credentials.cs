@@ -140,10 +140,10 @@ namespace TurfTankRegistrationApplication.Model
 
             public string ClientId { get; set; }
             public string ClientSecret { get; set; }
-            public string Domain { get; set; } = "auth.turftank.cloud"; //"dev-ggbq2i2p.us.auth0.com";   //
-            public string AuthorizeURL { get => $"https://{Domain}/authorize"; }      //"https://dev-ggbq2i2p.us.auth0.com/authorize";//"https://auth.turftank.cloud/oauth/authorize";//?audience=https://auth.turftank.cloud/u/login";
+            public string Domain { get; set; } = "turftank-dev.eu.auth0.com";
+            public string AuthorizeURL { get => $"https://{Domain}/authorize"; }
             public string RedirectURL { get => _redirectURL; }
-            public string AccessTokenURL { get => $"https://{Domain}/token"; }          //"https://dev-ggbq2i2p.us.auth0.com/oauth/token";//"https://auth.turftank.cloud/token";
+            public string AccessTokenURL { get => $"https://{Domain}/token"; }
 
             public string Scope { get; set; } = "openid profile email offline_access";
             public string AccessToken { get => _accessToken; set { _accessToken = value; IsLoggedIn = true; } }
@@ -151,6 +151,7 @@ namespace TurfTankRegistrationApplication.Model
             public string RefreshToken { get => _refreshToken; set => _refreshToken = value; }
             public string AuthorizeCode { get; set; }
             public string OAuthState { get => _oAuthState; set => _oAuthState = value; }
+
 
             public AuthDevelopmentCredentials()
             {
@@ -163,7 +164,7 @@ namespace TurfTankRegistrationApplication.Model
             private string _accessToken;
             private string _refreshToken;
             string _oAuthState = "qwertyasdfgzxcvbo";
-            string _redirectURL = "cloud.turftank.osm://login-callback";//"dk.turftank.turftankregistrationapplication://dev-ggbq2i2p.us.auth0.com/android/dk.turftank.turftankregistrationapplication/callback";//"
+            string _redirectURL = "cloud.turftank.sw3://login-callback";//"dk.turftank.turftankregistrationapplication://dev-ggbq2i2p.us.auth0.com/android/dk.turftank.turftankregistrationapplication/callback";//"
 
             #endregion
         }
