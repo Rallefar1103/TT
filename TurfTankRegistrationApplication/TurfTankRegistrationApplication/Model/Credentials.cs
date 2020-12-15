@@ -27,11 +27,6 @@ namespace TurfTankRegistrationApplication.Model
         bool IsLoggedIn { get; set; }
     }
 
-    public class Secrets
-    {
-
-    }
-
     public enum SelectedAuthServer
     {
         testserver,
@@ -196,7 +191,6 @@ namespace TurfTankRegistrationApplication.Model
 
         #region Private testAttributes
 
-        private static Dictionary<string, Dictionary<string, string>> Secrets { get; set; }
         private string _accessToken;
         private string _refreshToken;
         string _oAuthState;
@@ -241,7 +235,6 @@ namespace TurfTankRegistrationApplication.Model
 
         public Credentials(SelectedAuthServer selectedAuthServer)
         {
-            Secrets = LoadJson<Dictionary<string, Dictionary<string, string>>>("secrets.json");
             switch (selectedAuthServer)
             {
                 case SelectedAuthServer.testserver:
@@ -315,35 +308,13 @@ namespace TurfTankRegistrationApplication.Model
             await SecureStorage.SetAsync("state", OAuthState ?? "");
             await SecureStorage.SetAsync("redirect_url", RedirectURL);           
         }
-
-        /// <summary>
-        /// Uses the Newtonsoft library to load the json file into a dictionary.
-        /// </summary>
-        /// <typeparam name="T">Type that the json will be deserialized into.</typeparam>
-        /// <param name="json">name of the json file</param>
-        /// <returns></returns>
-        public T LoadJson<T>(string jsonLocation)
-        {
-            var assembly = IntrospectionExtensions.GetTypeInfo(typeof(Credentials)).Assembly;
-            string preFix = "TurfTankRegistrationApplication.Model.";
-            Stream stream = assembly.GetManifestResourceStream(preFix + "secrets.json");
-            if (stream == null)
-            {
-                stream = assembly.GetManifestResourceStream(preFix + "secretsDummy.json");
-            }
-
-            using (var reader = new StreamReader(stream))
-            {
-                return JsonConvert.DeserializeObject<T>(reader.ReadToEnd());
-            }
-        }
         #endregion
 
         #region Private Methods
 
         private static string GetSecret(string secretScope, string secretId)
         {
-            return Secrets[secretScope][secretId];
+            return "S";
         }
 
 
