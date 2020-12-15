@@ -44,6 +44,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using TurfTankRegistrationApplication.Model;
 using Xamarin.Auth;
@@ -138,6 +139,7 @@ namespace TurfTankRegistrationApplication.Connection
                 {
                     App.OAuthCredentials.AccessToken = e.Account.Properties["access_token"];
                     await SecureStorage.SetAsync("access_token", App.account.Properties["access_token"]);
+                    App.WifiClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", App.OAuthCredentials.AccessToken);
                 }
                 if (App.account.Properties.ContainsKey("refresh_token"))
                 {

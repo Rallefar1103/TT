@@ -39,8 +39,6 @@ namespace TurfTankRegistrationApplication
 		public static Credentials OAuthCredentials { get; set; }
 		public static TurfTankAuth Authenticator;
 		public static string AppName { get; private set; } = "TTRA";
-
-
 		public static HttpClient WifiClient { get; private set; }
 		public App()
 		{
@@ -53,7 +51,6 @@ namespace TurfTankRegistrationApplication
 			WifiClient = new HttpClient();
 			ApiClient = new Client(WifiClient);
 			MainPage = new NavigationPage (new SignInPage(Authenticator));
-            Console.WriteLine("THE CLIENT ID IS HERE!!!!!! " + OAuthCredentials.ClientId + "ANNDANNDAND THE OTHER " + OAuthCredentials.ClientSecret);
 		}
 
 
