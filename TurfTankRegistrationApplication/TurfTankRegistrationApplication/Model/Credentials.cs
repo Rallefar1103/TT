@@ -327,6 +327,11 @@ namespace TurfTankRegistrationApplication.Model
             var assembly = IntrospectionExtensions.GetTypeInfo(typeof(Credentials)).Assembly;
             string preFix = "TurfTankRegistrationApplication.Model.";
             Stream stream = assembly.GetManifestResourceStream(preFix + "secrets.json");
+            if (stream == null)
+            {
+                stream = assembly.GetManifestResourceStream(preFix + "secretsDummy.json");
+            }
+
             using (var reader = new StreamReader(stream))
             {
                 return JsonConvert.DeserializeObject<T>(reader.ReadToEnd());

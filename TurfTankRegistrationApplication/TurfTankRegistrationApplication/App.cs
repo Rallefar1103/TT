@@ -53,6 +53,7 @@ namespace TurfTankRegistrationApplication
 			WifiClient = new HttpClient();
 			ApiClient = new Client(WifiClient);
 			MainPage = new NavigationPage (new SignInPage(Authenticator));
+            Console.WriteLine("THE CLIENT ID IS HERE!!!!!! " + OAuthCredentials.ClientId + "ANNDANNDAND THE OTHER " + OAuthCredentials.ClientSecret);
 		}
 
 

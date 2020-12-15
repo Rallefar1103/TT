@@ -43,9 +43,7 @@
     <Compile Remove="Views\ScanPage.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Model\secrets.json" />
-  </ItemGroup>
-  <ItemGroup>
+    <EmbeddedResource Include="Model\secretsDummy.json" />
     <EmbeddedResource Include="Model\secrets.json" />
   </ItemGroup>
   <ItemGroup>
