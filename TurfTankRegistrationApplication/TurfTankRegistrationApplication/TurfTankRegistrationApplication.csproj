@@ -9,6 +9,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <WarningLevel>2</WarningLevel>
   </PropertyGroup>
 
   <ItemGroup>
@@ -40,6 +41,12 @@
   <ItemGroup>
     <Compile Remove="Views\Scanner.xaml.cs" />
     <Compile Remove="Views\ScanPage.xaml.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Model\secrets.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Model\secrets.json" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">

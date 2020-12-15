@@ -36,7 +36,7 @@ namespace TurfTankRegistrationApplication
 		/// </summary>
 		public static Client ApiClient { get; private set; }
 		public static Account account;
-		public static Constants OAuthCredentials { get; set; }
+		public static Credentials OAuthCredentials { get; set; }
 		public static TurfTankAuth Authenticator;
 		public static string AppName { get; private set; } = "TTRA";
 
@@ -44,7 +44,7 @@ namespace TurfTankRegistrationApplication
 		public static HttpClient WifiClient { get; private set; }
 		public App()
 		{
-			OAuthCredentials = new Constants(selectedAuthServer: SelectedAuthServer.testserver ) ;
+			OAuthCredentials = new Credentials(selectedAuthServer: SelectedAuthServer.testserver ) ;
 
 			// dette skal med fordi at Markup stadig er experimental.
 			Device.SetFlags(new string[] { "Markup_Experimental" });
@@ -53,7 +53,6 @@ namespace TurfTankRegistrationApplication
 			WifiClient = new HttpClient();
 			ApiClient = new Client(WifiClient);
 			MainPage = new NavigationPage (new SignInPage(Authenticator));
-
 		}
 
 
