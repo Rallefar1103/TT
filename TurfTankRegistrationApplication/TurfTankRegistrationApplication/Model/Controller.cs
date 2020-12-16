@@ -109,7 +109,7 @@ namespace TurfTankRegistrationApplication.Model
 
         
 
-        public Controller(RobotController schema)
+        public Controller(RobotControllerItemModel schema)
         {
             Initialize(
                 serial: $"{schema.SerialNumber}",

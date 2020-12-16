@@ -70,7 +70,7 @@ namespace TurfTankRegistrationApplication.Connection
             T type = new T();
             if(type is RobotPackage)
             {
-                RobotItem robotSchema = await ApiClientRef.GetRobotBySerialAsync(id);
+                RobotItemModel robotSchema = await ApiClientRef.GetRobotByIdAsync(id);
 
                 RobotPackage newObject = new RobotPackage(robotSchema);
                 return (T)Convert.ChangeType(newObject, typeof(RobotPackage));

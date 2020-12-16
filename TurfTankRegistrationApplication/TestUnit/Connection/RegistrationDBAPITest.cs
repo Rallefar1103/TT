@@ -29,14 +29,14 @@ namespace TestUnit.Connection
         public async Task GetById_RobotPackage_ShouldReturnRobotPackage(string SN, string ContSN, string SSID, string PW, string Desc)
         {
             // Arrange Robot In Database and mock HttpClient
-            RobotItem schema = Initializer.ValidRobotItem();
+            RobotItemModel schema = new RobotItemModel();
             schema.Id = SN;
             schema.Controller.SerialNumber = ContSN;
             schema.Controller.Ssid = SSID;
             schema.Controller.SsidPassword = PW;
 
             var statuscodeInResponse = HttpStatusCode.OK;
-            string responseFromDB = JsonSerializer.Serialize<RobotItem>(schema);
+            string responseFromDB = JsonSerializer.Serialize<RobotItemModel>(schema);
 
             var mockMessageHandler = new MockHttpMessageHandler(responseFromDB, statuscodeInResponse);
             var mockHttpClient = new HttpClient(mockMessageHandler);
@@ -57,12 +57,12 @@ namespace TestUnit.Connection
         public async Task GetById_PartialRobotPackage_ShouldReturnPartialRobotPackage(string SN, string ContSN, string Desc)
         {
             // Arrange Robot In Database and mock HttpClient
-            RobotItem schema = Initializer.ValidRobotItem();
+            RobotItemModel schema = new RobotItemModel();
             schema.Id = SN;
             schema.Controller.SerialNumber = ContSN;
 
             var statuscodeInResponse = HttpStatusCode.OK;
-            string responseFromDB = JsonSerializer.Serialize<RobotItem>(schema);
+            string responseFromDB = JsonSerializer.Serialize<RobotItemModel>(schema);
 
             var mockMessageHandler = new MockHttpMessageHandler(responseFromDB, statuscodeInResponse);
             var mockHttpClient = new HttpClient(mockMessageHandler);
@@ -89,11 +89,11 @@ namespace TestUnit.Connection
         public void GetById_NotAuthorized_ShouldRaiseException(string Desc)
         {
             // Arrange Robot In Database and mock HttpClient
-            RobotItem schema = Initializer.ValidRobotItem();
+            RobotItemModel schema = new RobotItemModel();
             schema.Id = "SerialNumber";
 
             var statuscodeInResponse = HttpStatusCode.Unauthorized;
-            string responseFromDB = JsonSerializer.Serialize<RobotItem>(schema);
+            string responseFromDB = JsonSerializer.Serialize<RobotItemModel>(schema);
 
             var mockMessageHandler = new MockHttpMessageHandler(responseFromDB, statuscodeInResponse);
             var mockHttpClient = new HttpClient(mockMessageHandler);
@@ -107,11 +107,11 @@ namespace TestUnit.Connection
         public void GetById_Forbidden_ShouldRaiseException(string Desc)
         {
             // Arrange Robot In Database and mock HttpClient
-            RobotItem schema = Initializer.ValidRobotItem();
+            RobotItemModel schema = new RobotItemModel();
             schema.Id = "SerialNumber";
 
             var statuscodeInResponse = HttpStatusCode.Forbidden;
-            string responseFromDB = JsonSerializer.Serialize<RobotItem>(schema);
+            string responseFromDB = JsonSerializer.Serialize<RobotItemModel>(schema);
 
             var mockMessageHandler = new MockHttpMessageHandler(responseFromDB, statuscodeInResponse);
             var mockHttpClient = new HttpClient(mockMessageHandler);
