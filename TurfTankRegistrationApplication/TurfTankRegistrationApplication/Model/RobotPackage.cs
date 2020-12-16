@@ -71,7 +71,7 @@ namespace TurfTankRegistrationApplication.Model
                 qr: qr);
         }
 
-        public RobotPackage(RobotItem schema)
+        public RobotPackage(RobotItemModel schema)
         {
             SerialNumber = schema.Id ?? "";
             Controller = new Controller();

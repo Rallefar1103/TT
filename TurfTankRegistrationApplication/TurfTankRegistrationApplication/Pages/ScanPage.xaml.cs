@@ -33,7 +33,7 @@ namespace TurfTankRegistrationApplication.Pages
         public string QRMustContain
         {
             get => _qrMustContain;
-            set => _qrMustContain = value;
+            set => _qrMustContain = value.ToUpper();
         }
         private string _qrMustContain = "TESTTTTTTTTT";
 
@@ -43,7 +43,8 @@ namespace TurfTankRegistrationApplication.Pages
         #region Private Attributes
 
         //Create a ZXing Scanner for displaying and analyzins QR-codes
-        ZXingScannerView Scanner = new ZXingScannerView();
+        ZXingScannerView _scanner = new ZXingScannerView();
+        bool _manualInput = false;
 
         #endregion
 
@@ -70,14 +71,14 @@ namespace TurfTankRegistrationApplication.Pages
             //QRScanner
 
             //Callback function for the ZXing view , is called when it has data
-            Scanner.OnScanResult += Handle_OnScanResult;
+            _scanner.OnScanResult += Handle_OnScanResult;
 
             //Add the QRscanner (ZXing)to the view 
-            TheScanner.Content = Scanner;
-            Scanner.IsVisible = true;
+            TheScanner.Content = _scanner;
+            _scanner.IsVisible = true;
 
             //Activating the scan function on the QRScanner
-            Scanner.IsScanning = true;
+            _scanner.IsScanning = true;
 
             //View Stuff
             //Show/hide the QR sticker
@@ -97,9 +98,9 @@ namespace TurfTankRegistrationApplication.Pages
         void StartScanner(System.Object sender, System.EventArgs e)
         {
             //Toggle scanner 
-            if (Scanner.IsScanning != true)
+            if (_scanner.IsScanning != true)
             {
-                Scanner.IsScanning = true;
+                _scanner.IsScanning = true;
             }
 
             //Update ScanPageState
@@ -123,11 +124,13 @@ namespace TurfTankRegistrationApplication.Pages
         async void SwitchToManual_Clicked(System.Object sender, System.EventArgs e)
         {
             //TODO sammensæt QRMustcontain med manual input
+            
             Console.WriteLine("MANUAL INPUT ACTIVATED");
-            ManualInputView.IsVisible = !ManualInputView.IsVisible;
-            TheScanner.IsVisible = !ManualInputView.IsVisible;
-            Dimmer.IsVisible = false;
-            vm.ResultIsLocked = !vm.ResultIsLocked;
+            _manualInput = !_manualInput;
+            ManualInputView.IsVisible = _manualInput;
+            TheScanner.IsVisible = !_manualInput;
+            Dimmer.IsVisible = !_manualInput;
+            vm.ResultIsLocked = _manualInput;
             SwitchToManual.Text = vm.ResultIsLocked == true ? "SWITCH TO SCANNER INPUT" : "MANUAL INPUT";
             //after typing the data call
             ManualLabel.Text = $"Plaese type the {QRMustContain} serialnumber";
@@ -148,6 +151,7 @@ namespace TurfTankRegistrationApplication.Pages
         {
             vm.ScanResult = "";
             QR.IsVisible = false;
+            Dimmer.IsVisible = !_manualInput;
             vm.DimmValue = 0;
             vm.ScannerState = ScanViewModel.state.Ready_To_Scan;
         }
@@ -158,6 +162,7 @@ namespace TurfTankRegistrationApplication.Pages
         void SetScanPageStateToScannableDiscovered()
         {
             vm.ScannerState = ScanViewModel.state.Scannable_discovered;
+            Dimmer.IsVisible = !_manualInput; ;
             vm.DimmValue = 0.3;
             vm.DimmColor = Color.Yellow;
 
@@ -173,6 +178,7 @@ namespace TurfTankRegistrationApplication.Pages
         {
             //Update the Viewmodel
             vm.ScannerState = ScanViewModel.state.Analyzing;
+            Dimmer.IsVisible = !_manualInput; ;
             vm.DimmValue = 0.5;
             vm.DimmColor = Color.Yellow;
 
@@ -181,6 +187,7 @@ namespace TurfTankRegistrationApplication.Pages
         void SetScanPageStateToResultDoesNotMatchQRMustContainString()
         {
             vm.ScanResult = $"This is not a {QRMustContain} QR-Sticker";
+            Dimmer.IsVisible = !_manualInput; ;
             vm.DimmValue = 0.2;
             vm.DimmColor = Color.Red;
             vm.ScannerState = ScanViewModel.state.Ready_To_Scan;
@@ -203,6 +210,7 @@ namespace TurfTankRegistrationApplication.Pages
             //Update the Viewmodel
             vm.ScanResult = result;
             vm.ScannerState = ScanViewModel.state.ScanResult_Ready;
+            Dimmer.IsVisible = !_manualInput; ;
             vm.DimmValue = 0.6;
             vm.DimmColor = Color.YellowGreen;
 
@@ -261,6 +269,31 @@ namespace TurfTankRegistrationApplication.Pages
 
 
         #region The primary functions!!
+        /// <summary>
+        /// This function is called from the QR-Scanner when it
+        /// has analyzed a QR-code and has data.
+        /// /// </summary>
+        /// <param name="ZXingresult"></param>
+        public void Handle_OnScanResult(Result ZXingresult)
+        {
+            if (!_manualInput)
+            {
+                if (string.IsNullOrWhiteSpace(ZXingresult.Text))
+                {
+                    if (vm.ScannerState == ScanViewModel.state.Saved)
+                        SetScanPageStateToReadyToScan();
+                    return;
+                }
+
+                Device.BeginInvokeOnMainThread((Action)(() =>
+                {
+                    string zxinResultText = ZXingresult.Text.ToUpper();
+
+                    Handle_OnScanResult(zxinResultText);
+                }));
+            }
+
+        }
 
         /// <summary>
         /// This function is called from the QR-Scanner when it
@@ -273,32 +306,34 @@ namespace TurfTankRegistrationApplication.Pages
         /// a string: Result.Text
         /// </summary>
         /// <param name="ZXingresult"></param>
-        public void Handle_OnScanResult(Result ZXingresult)
+        public void Handle_OnScanResult(string zxinResultText)
         {
-            if (string.IsNullOrWhiteSpace(ZXingresult.Text))
+
+            if (string.IsNullOrWhiteSpace(zxinResultText))
             {
                 if (vm.ScannerState == ScanViewModel.state.Saved)
                     SetScanPageStateToReadyToScan();
                 return;
             }
 
-
-            Device.BeginInvokeOnMainThread((Action)(() =>
-            {
-                if (QRMustContain != null && !ZXingresult.Text.Contains(QRMustContain))
+            //Device.BeginInvokeOnMainThread((Action)(() =>
+            //{
+                if (QRMustContain != null && !zxinResultText.Contains(QRMustContain))
                 {
                     SetScanPageStateToResultDoesNotMatchQRMustContainString();
                     return;
                 }
+                // else QRMustcontain == null || it is contained in the scanned string
                 //Only update the vm.Result if the data has changed
-                else if (vm.ScanResult != ZXingresult.Text)
+                else if (vm.ScanResult != zxinResultText)
                 {
-                    SetScanPageStateToScanResultReady(ZXingresult.Text);
+                    SetScanPageStateToScanResultReady(zxinResultText);
                 }
 
-                Console.WriteLine($"QR-detected: {ZXingresult.Text}");
-            }));
-            Scanner.IsScanning = true;
+            //}));
+
+            //make sure the scanner is still activated and scanning.
+            _scanner.IsScanning = true;
         }
 
         /// <summary>
@@ -306,16 +341,18 @@ namespace TurfTankRegistrationApplication.Pages
         /// </summary>
         void SendResultBack()
         {
+            _manualInput = false;
             MessagingCenter.Send(this, "Result", vm.ScanResult);
         }
 
         void ManualInputField_PropertyChanged(System.Object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            vm.ScanResult = e.ToString();
+
+            Handle_OnScanResult(e.ToString());
+            //vm.ScanResult = e.ToString();
         }
 
         #endregion 
-
 
 
     }

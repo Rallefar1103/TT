@@ -10,12 +10,13 @@
             <BoxView HeightRequest="80"
                      VerticalOptions="Start"
                      BackgroundColor="Black"/>
+
             <Image Source="turf_tank_transparent.png"
                        WidthRequest="300"
                        HeightRequest="300"
                        VerticalOptions="Start"
                        Margin="15"/>
-            <Button Text=" Sign In"
+            <Button Text=" Sign in"
                        FontAttributes="Bold"
                        FontSize="20"
                        Command=" {Binding NavigateToMenuPage}"
@@ -29,6 +30,8 @@
                        HorizontalOptions="Center"
                        VerticalOptions="End"
                        />
+            
+
 
         </StackLayout>
     </ContentPage.Content>

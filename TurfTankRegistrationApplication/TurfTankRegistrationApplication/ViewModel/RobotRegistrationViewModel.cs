@@ -79,6 +79,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 
                 if (data.ToUpper().Contains("CONTROLLER"))
                 {
+                    //Todo  fix denne constructor den crasher når den kommer tilbage med manual data
                     ControllerQRSticker controllerQrSticker = new ControllerQRSticker(data);
                     qrSticker = controllerQrSticker;
                 }
