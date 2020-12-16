@@ -57,6 +57,12 @@ namespace TurfTankRegistrationApplication.Droid
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
+        /// <summary>
+        /// This function is called when an intent is triggered by the intent filter in  line 24
+        /// This triggers the function OnAppLinkRequestReceived() in App.cs , it is only used when
+        /// OAuth login is set to native.
+        /// </summary>
+        /// <param name="intent"></param>
         protected override void OnNewIntent(Intent intent)
         {
             base.OnNewIntent(intent);

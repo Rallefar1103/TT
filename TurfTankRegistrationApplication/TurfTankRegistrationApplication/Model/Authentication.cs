@@ -158,9 +158,11 @@ namespace TurfTankRegistrationApplication.Connection
 
 
         /// <summary>
-        /// did not recieve Authorization_code or accessToken,
-        ///  Did not succeed in retrieving Username
-        ///  State is wrong
+        /// When login does not succeed it triggers an event, This function is the callback
+        ///  that should handle the exceptions when i.e.
+        ///  "did not recieve Authorization_code or accessToken",
+        ///  "Did not succeed in retrieving Username"
+        ///  "State variable does not match"
         ///  TODO Handle the errors based on response errorcodes
         /// </summary>
         /// <param name="sender"></param>

@@ -14,10 +14,6 @@ using Xamarin.Essentials;
 
 namespace TurfTankRegistrationApplication
 {
-	public interface ITTAuthentication
-    {
-
-    };
 
 
 	public interface IWifiConnector
