@@ -78,6 +78,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         /// </summary>
         public async Task GetRoverSerialNumber()
         {
+            Console.WriteLine("!!!!!!! ---------------   Retriving rover serial number! -------------- !!!!!!!!!");
             string URL = "http://192.168.80.1:8888/rover";
             var values = new Dictionary<string, string>
             {
@@ -122,11 +123,13 @@ namespace TurfTankRegistrationApplication.ViewModel
                 }
                 catch (HttpRequestException e)
                 {
+                    await Application.Current.MainPage.DisplayAlert("OOPS!", "Did catch an exception" + e, "OK");
                     Console.WriteLine("CATCH: " + e);
                 }
             }
             else
             {
+                await Application.Current.MainPage.DisplayAlert("OOPS!", "Something went wrong!", "OK");
                 Console.WriteLine("Something went wrong with the stopInmark!");
             }
 

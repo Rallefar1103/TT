@@ -32,7 +32,7 @@ namespace TurfTankRegistrationApplication
 			Device.SetFlags(new string[] { "Markup_Experimental" });
 			WifiClient = new HttpClient();
 			ApiClient = new Client(WifiClient);
-			MainPage = new NavigationPage (new SignInPage());
+			MainPage = new NavigationPage (new RobotRegistrationPage("Testing"));
 		}
 
 		protected override void OnStart()
