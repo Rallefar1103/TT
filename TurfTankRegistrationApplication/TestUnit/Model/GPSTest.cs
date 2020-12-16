@@ -14,9 +14,9 @@ namespace TestUnit.Model
     class GPSTest
     {
         #region ValidateSelf
-        [TestCase("1234", "5678", "91011",QRType.BASE, SerialOrQR.BothSerialAndQRId, "Tests that a GPS is valid with a Base type")]
-        [TestCase("1234", "5678", "91011", QRType.ROVER, SerialOrQR.BothSerialAndQRId, "Tests that a GPS is valid with a Rover type")]
-        [TestCase("", "5678", "91011", QRType.BASE, SerialOrQR.OnlyQRId, "Tests that a gps is valid when the idrestriction is onlyQRID")]
+        [TestCase("1234", "5678", "91011",QRType.basestation, SerialOrQR.BothSerialAndQRId, "Tests that a GPS is valid with a Base type")]
+        [TestCase("1234", "5678", "91011", QRType.rover, SerialOrQR.BothSerialAndQRId, "Tests that a GPS is valid with a Rover type")]
+        [TestCase("", "5678", "91011", QRType.basestation, SerialOrQR.OnlyQRId, "Tests that a gps is valid when the idrestriction is onlyQRID")]
         public void GPSValidateSelfTest_ValidGPS_ShouldNotThrow(string serialNumber, string qrid, string iccid, QRType qrType, SerialOrQR idRestriction,  string Desc) 
         {
             //Arrange
@@ -29,11 +29,11 @@ namespace TestUnit.Model
             Assert.DoesNotThrow(() => gps.ValidateSelf(idRestriction), Desc);
         }
 
-        [TestCase("1234", "5678", "91011", GPSType.Rover, QRType.BASE, SerialOrQR.BothSerialAndQRId, "Tests that an exception is thrown when the GPS type and QR type doesn't match")]
-        [TestCase("1234", "", "91011", GPSType.Base, QRType.BASE, SerialOrQR.BothSerialAndQRId, "Tests that an exception is thrown when there is no QRID")]
-        [TestCase("", "5678", "91011", GPSType.Base, QRType.BASE, SerialOrQR.BothSerialAndQRId, "Tests that an exception is thrown when it should have qr and serial, but the serial is missing")]
-        [TestCase("1234", "5678", "91011", GPSType.NoType, QRType.NOTYPE, SerialOrQR.BothSerialAndQRId, "Tests that an exception is thrown when the GPS dosen't have a type")]
-        [TestCase("1234", "5678", "", GPSType.Base, QRType.BASE, SerialOrQR.BothSerialAndQRId, "Tests that an exception is thrown if the simcard is invalid")]
+        [TestCase("1234", "5678", "91011", GPSType.Rover, QRType.basestation, SerialOrQR.BothSerialAndQRId, "Tests that an exception is thrown when the GPS type and QR type doesn't match")]
+        [TestCase("1234", "", "91011", GPSType.Base, QRType.basestation, SerialOrQR.BothSerialAndQRId, "Tests that an exception is thrown when there is no QRID")]
+        [TestCase("", "5678", "91011", GPSType.Base, QRType.basestation, SerialOrQR.BothSerialAndQRId, "Tests that an exception is thrown when it should have qr and serial, but the serial is missing")]
+        [TestCase("1234", "5678", "91011", GPSType.NoType, QRType.notype, SerialOrQR.BothSerialAndQRId, "Tests that an exception is thrown when the GPS dosen't have a type")]
+        [TestCase("1234", "5678", "", GPSType.Base, QRType.basestation, SerialOrQR.BothSerialAndQRId, "Tests that an exception is thrown if the simcard is invalid")]
         public void GPSValidateSelfTest_InvalidGPS_ShouldTrow(string serialNumber, string qrid, string iccid, GPSType gpsType, QRType qrType, SerialOrQR idRestriction, string Desc)
         {
             //Arrange

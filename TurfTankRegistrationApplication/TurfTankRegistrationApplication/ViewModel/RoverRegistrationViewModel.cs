@@ -50,7 +50,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             this.testing = false;
             this.http = App.WifiClient;
             this.Navigation = navigation;
-            ChangeRoverSimcard = new Command(() => NavigateToScanPage("Rover"));
+            ChangeRoverSimcard = new Command(() => NavigateToScanPage("rover"));
             ChangeRoverSN = new Command(async () => await GetRoverSerialNumber());
             
         }

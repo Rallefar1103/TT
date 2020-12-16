@@ -18,12 +18,12 @@ namespace TurfTankRegistrationApplication.Model
 
     public enum QRType
     {
-        ROVER,
-        BASE,
-        TABLET,
-        ROBOTPACKAGE,
-        CONTROLLER, // denne qrsticker er af typen ControllerQRSticker (SSID==null på resten,)
-        NOTYPE
+        rover,
+        basestation,
+        tablet,
+        robot,
+        controller, // denne qrsticker er af typen ControllerQRSticker (SSID==null på resten,)
+        notype
     }
 
     public class QRSticker : ScanableSticker, IQRSticker
@@ -31,15 +31,15 @@ namespace TurfTankRegistrationApplication.Model
         #region Public Attributes
 
         public string ID { get; set; }
-
+        
         public bool ConfirmedLabelled { get; set; }
         public QRType OfType { get; set; }
 
         #endregion Public Attributes
 
         #region Constants
-        protected const string strType = "TYPE:";
-        protected const string strQRID = "QRID:";
+        //protected const string strType = "TYPE:";
+        //protected const string strQRID = "QRID:";
         #endregion
 
         #region Constructors
@@ -53,7 +53,7 @@ namespace TurfTankRegistrationApplication.Model
         }
         public QRSticker()
         {
-            Initialize(type: QRType.NOTYPE, id: "");
+            Initialize(type: QRType.notype, id: "");
         }
 
         public QRSticker(string id, QRType type)
@@ -63,11 +63,11 @@ namespace TurfTankRegistrationApplication.Model
 
         public QRSticker(string scanResult)
         {
-            scanResult = scanResult.ToUpper();
+            string id = scanResult;
             
-            if (ValidateScannedQR(scanResult, out List<string>validatedResults, out QRType type) && type != QRType.CONTROLLER)
+            if (ValidateScannedQR(scanResult, out QRType type) && type != QRType.controller)
             {
-                string id = validatedResults[1];
+                //string id = validatedResults[1];
                 Initialize(type, id);
                 Console.WriteLine("------------------The QR sticker was successfully scanned------------------");
             }
@@ -115,34 +115,33 @@ namespace TurfTankRegistrationApplication.Model
         /// <param name="results"></param>
         /// <param name="outType"></param>
         /// <returns></returns>
-        protected virtual bool ValidateScannedQR(string scanResult, out List<string> results, out QRType outType)
+        protected bool ValidateScannedQR(string scanResult, out QRType outType)
         {
-            results = scanResult.Split(' ').ToList();
+            List<string> results = scanResult.Split('|').ToList();
 
-            outType = QRType.NOTYPE;
+            string type = results[0];
+            string GUID = results[1];
 
-            string type;
-            string qrId;
+            //if (results[0].Contains(strType) &&
+            //    results[1].Contains(strQRID))
+            //{
+            //    type = Regex.Replace(results[0], strType, "");
 
-            if (results[0].Contains(strType) &&
-                results[1].Contains(strQRID))
-            {
-                type = Regex.Replace(results[0], strType, "");
+            //    qrId = Regex.Replace(results[1], strQRID, "");
+            //    results[1] = qrId;
+            //}
+            //else
+            //    return false;
 
-                qrId = Regex.Replace(results[1], strQRID, "");
-                results[1] = qrId;
-            }
-            else
-                return false;
-
-            if (Enum.TryParse(type, out outType) && IsID(qrId))
+            if (Enum.TryParse(type, out outType) && IsGUID(GUID))
                 return true;
             else
                 return false;
         }
-        protected bool IsID(string id)
+        protected bool IsGUID(string id)
         {
-            if (Regex.IsMatch(id, @"^[0-9]*$") && id != "" && id != null)
+
+            if (Regex.IsMatch(id, @"[a-zA-Z0-9-]*$") && id != "" && id != null)
                 return true;
             else
                 return false;

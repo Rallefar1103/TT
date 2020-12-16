@@ -21,6 +21,7 @@ namespace TurfTankRegistrationApplication.Droid
         [Obsolete]
         public List<string> Scan()
         {
+            Console.WriteLine("DO WE CALL SCAN METHOD?!");
             wifiManager.StartScan();
             return wifis;
         }
@@ -30,14 +31,14 @@ namespace TurfTankRegistrationApplication.Droid
         // What we do is that we add them to the wifi list and return them through the Scan method.
         public override void OnReceive(Context context, Intent intent)
         {
+            Console.WriteLine("!!!!!! ------ DO WE END IN THE ONRECEIVE METHOD?! -------- !!!!!!!!");
             IList<ScanResult> scanWifiNetworks = wifiManager.ScanResults;
-            foreach (ScanResult wifiNetwork in scanWifiNetworks)
-            {
-                Console.WriteLine("Found something - " + wifiNetwork.Ssid);
-                wifis.Add(wifiNetwork.Ssid);
-            }
+                foreach (ScanResult wifiNetwork in scanWifiNetworks)
+                {
+                    Console.WriteLine("Found something - " + wifiNetwork.Ssid);
+                    wifis.Add(wifiNetwork.Ssid);
+                }
             
-
         }
     }
 }

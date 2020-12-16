@@ -75,6 +75,22 @@ namespace TurfTankRegistrationApplication.Connection
                 RobotPackage newObject = new RobotPackage(robotSchema);
                 return (T)Convert.ChangeType(newObject, typeof(RobotPackage));
             }
+            else if (type is GPS)
+            {
+                if (id.Contains("basestation"))
+                {
+                    RobotBasestationItemModel BaseSchema = await ApiClientRef.GetBasestationByIdAsync(id);
+
+                    GPS newObject = new GPS(BaseSchema);
+                    return (T)Convert.ChangeType(newObject, typeof(GPS));
+
+                }
+                else
+                {
+                    throw new Exception("Type GPS did not contain the correct GPS QR ID");
+                }
+
+            }
             else
             {
                 throw new Exception($"The type {typeof(T)} is not yet added to the RegistrationDBAPI.GetById method, or might not be added to swagger yet.");

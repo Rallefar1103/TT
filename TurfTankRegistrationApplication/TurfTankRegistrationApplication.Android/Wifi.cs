@@ -10,6 +10,7 @@ using Android.Net.Wifi;
 using Android.Support.V4.App;
 using TurfTankRegistrationApplication;
 using TurfTankRegistrationApplication.Droid;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(Wifi))]
@@ -40,7 +41,8 @@ namespace TurfTankRegistrationApplication.Droid
         /// <param name="ssid"></param>
         public void ConnectToWifi(string ssid)
         {
-            string password = "IMIO64eb";
+            //string password = "IMIO64eb";
+            string password = "linemarkingrobot";
             var formattedSSID = $"\"{ssid}\"";
             var formattedPassword = $"\"{password}\"";
 
@@ -105,10 +107,12 @@ namespace TurfTankRegistrationApplication.Droid
             var wifiMgr = (WifiManager)context.GetSystemService(Context.WifiService);
             var wifiReceiver = new WifiReceiver(wifiMgr);
 
+
             await Task.Run(() =>
             {
                 context.RegisterReceiver(wifiReceiver, new IntentFilter(WifiManager.ScanResultsAvailableAction));
                 availableNetworks = wifiReceiver.Scan();
+
             });
                 
             return availableNetworks;

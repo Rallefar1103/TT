@@ -33,7 +33,7 @@ namespace TurfTankRegistrationApplication.Pages
         public string QRMustContain
         {
             get => _qrMustContain;
-            set => _qrMustContain = value.ToUpper();
+            set => _qrMustContain = value;
         }
         private string _qrMustContain = "TESTTTTTTTTT";
 
@@ -287,7 +287,7 @@ namespace TurfTankRegistrationApplication.Pages
 
                 Device.BeginInvokeOnMainThread((Action)(() =>
                 {
-                    string zxinResultText = ZXingresult.Text.ToUpper();
+                    string zxinResultText = ZXingresult.Text;
 
                     Handle_OnScanResult(zxinResultText);
                 }));

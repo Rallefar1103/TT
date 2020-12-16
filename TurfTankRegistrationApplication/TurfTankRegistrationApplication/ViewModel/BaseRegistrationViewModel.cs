@@ -17,7 +17,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         public BaseRegistrationViewModel(INavigation navigation)
         {
             this.Navigation = navigation;
-            ChangeBaseSimcard = new Command(() => NavigateToScanPage("Base"));
+            ChangeBaseSimcard = new Command(() => NavigateToScanPage("basestation"));
             ChangeBaseSN = new Command(async () => await GetBaseSerialNumber());
         }
 
@@ -25,16 +25,18 @@ namespace TurfTankRegistrationApplication.ViewModel
         {
             ScanPage scanPage = new ScanPage();
             scanPage.vm.Title = "Scanning " + component;
-            scanPage.QRMustContain = "Type:" + component;
+            scanPage.QRMustContain = component;
             Navigation.PushAsync(scanPage);
         }
 
+        // Should use bluetooth TODO
         public async Task GetBaseSerialNumber()
         {
             try
             {
-                GPS response = await GPS.API.GetById("basestation|68e1e7e3-270f-4235-89bb-2f315bd7b8a5");
-                Console.WriteLine(response);
+                GPS response = await GPS.API.GetById("basestation|97cce3bc-cd81-4c74-9dfa-8b048baedbe5");
+                Console.WriteLine("BASE ID: " + response.ID + "BASE SERIAL NUMBER: " + response.SerialNumber);
+                MessagingCenter.Send(this, "BaseSerialNumber", response.SerialNumber);
 
             } catch (HttpRequestException e)
             {

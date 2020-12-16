@@ -46,7 +46,6 @@ namespace TurfTankRegistrationApplication.Model
         }
         public ControllerQRSticker(string scannedData)
         {
-            scannedData = scannedData.ToUpper();
 
             if (ValidateScannedQR(scannedData, out List<string> validatedResults, out QRType type))
             {
@@ -71,40 +70,40 @@ namespace TurfTankRegistrationApplication.Model
         /// <param name="results"></param>
         /// <param name="outType"></param>
         /// <returns></returns>
-        protected override bool ValidateScannedQR(string scanResult, out List<string> results, out QRType outType)
+        private  bool ValidateScannedQR(string scanResult, out List<string> results, out QRType outType)
         {
-            outType = QRType.NOTYPE;
+            outType = QRType.notype;
 
-            results = scanResult.Split(' ').ToList();
+            results = scanResult.Split('|').ToList();
 
-            string type;
-            string qrId;
-            string ssid;
-            string password;
+            string type = results[0];
+            string GUID = results[1];
+            string ssid = results[2];
+            string password = results[3];
 
-            if (results[0].Contains(strType) &&
-                results[1].Contains(strQRID) &&
-                results[2].Contains(strSSID) &&
-                results[3].Contains(strPassword))
-            {
-                type = Regex.Replace(results[0], strType, "");
+            //if (results[0].Contains(type) &&
+            //    results[1].Contains(strQRID) &&
+            //    results[2].Contains(strSSID) &&
+            //    results[3].Contains(strPassword))
+            //{
+            //    type = Regex.Replace(results[0], strType, "");
 
-                qrId = Regex.Replace(results[1], strQRID, "");
-                results[1] = qrId;
+            //    qrId = Regex.Replace(results[1], strQRID, "");
+            //    results[1] = qrId;
 
-                ssid = Regex.Replace(results[2], strSSID, "");
-                results[2] = ssid;
+            ssid = Regex.Replace(results[2], strSSID, "");
+            results[2] = ssid;
 
-                password = Regex.Replace(results[3], strPassword, "");
-                results[3] = password;
-            }
-            else
-            {
-                return false;
-            }
+            password = Regex.Replace(results[3], strPassword, "");
+            results[3] = password;
+            //}
+            //else
+            //{
+            //    return false;
+            //}
 
             if (Enum.TryParse(type, out outType) &&
-                IsID(qrId) &&
+                IsGUID(GUID) &&
                 IsSSID(ssid) &&
                 IsPassword(password))
             {

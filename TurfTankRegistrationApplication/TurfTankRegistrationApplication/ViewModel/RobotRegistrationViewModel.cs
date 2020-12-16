@@ -14,7 +14,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         void RegistrateChassis(QRSticker result);
         void RegistrateController(QRSticker result);
         void RegistrateRoverSimcard(QRSticker result);
-        void RegistrateBaseSimcard(QRSticker result);
+        Task RegistrateBaseSimcard(QRSticker result);
         void RegistrateTablet();
         void SaveRobotToDB();
     }
@@ -41,6 +41,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public Action<object, string> ScanCallback { get; set; }
         public Action<object, string> RoverCallback { get; set; }
+        public Action<object, string> BaseCallback { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public INavigation Navigation { get; set; }
@@ -51,17 +52,19 @@ namespace TurfTankRegistrationApplication.ViewModel
             this.robotItem = new RobotPackage();
             this.Navigation = navigation;
             robotItem.SetAsSelected();
-            ChangeChassisSN = new Command(() => NavigateToScanPage("Robot"));
-            ChangeControllerSN = new Command(() => NavigateToScanPage("Controller"));
-            ChangeTabletSN = new Command(() => NavigateToScanPage("Tablet"));
+            ChangeChassisSN = new Command(() => NavigateToScanPage("robot"));
+            ChangeControllerSN = new Command(() => NavigateToScanPage("controller"));
+            ChangeTabletSN = new Command(() => NavigateToScanPage("tablet"));
             ChangeRoverSN = new Command(() => NavigateToRoverPage());
             ChangeBaseSN = new Command(() => NavigateToBasePage());
             SaveRobot = new Command(() => SaveRobotToDB());
             ScanCallback = new Action<object, string>(OnScanDataReceived);
             RoverCallback = new Action<object, string>(OnRoverDataReceived);
+            BaseCallback = new Action<object, string>(OnBaseDataReceived);
 
             MessagingCenter.Subscribe<ScanPage, string>(this, "Result", ScanCallback);
             MessagingCenter.Subscribe<RoverRegistrationViewModel, string>(this, "RoverSerialNumber", RoverCallback);
+            MessagingCenter.Subscribe<BaseRegistrationViewModel, string>(this, "BaseSerialNumber", BaseCallback);
         }
 
         private void OnRoverDataReceived(object sender, string data)
@@ -69,6 +72,13 @@ namespace TurfTankRegistrationApplication.ViewModel
             robotItem.RoverGPS.ID = data;
             RoverSN = "Rover SN: " + robotItem.RoverGPS.ID;
             OnPropertyChanged(nameof(RoverSN));
+        }
+
+        private void OnBaseDataReceived(object sender, string data)
+        {
+            robotItem.BaseGPS.ID = data;
+            BaseSN = "Base SN: " + robotItem.BaseGPS.ID;
+            OnPropertyChanged(nameof(BaseSN));
         }
 
         private async void OnScanDataReceived(object sender, string data)
@@ -90,19 +100,19 @@ namespace TurfTankRegistrationApplication.ViewModel
 
                 switch (qrSticker.OfType)
                 {
-                    case QRType.ROBOTPACKAGE:
+                    case QRType.robot:
                         RegistrateChassis(qrSticker);
                         break;
-                    case QRType.BASE:
-                        RegistrateBaseSimcard(qrSticker);
+                    case QRType.basestation:
+                        await RegistrateBaseSimcard(qrSticker);
                         break;
-                    case QRType.CONTROLLER:
+                    case QRType.controller:
                         RegistrateController(qrSticker);
                         break;
-                    case QRType.ROVER:
+                    case QRType.rover:
                         RegistrateRoverSimcard(qrSticker);
                         break;
-                    case QRType.TABLET:
+                    case QRType.tablet:
                         RegistrateTablet();
                         break;
                     default:
@@ -114,9 +124,9 @@ namespace TurfTankRegistrationApplication.ViewModel
             {
                 await Application.Current.MainPage.DisplayAlert("OBS!", e.Message, "Ok");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                await Application.Current.MainPage.DisplayAlert("OBS!", "something went wrong", "Ok");
+                await Application.Current.MainPage.DisplayAlert("OBS!", e.Message, "Ok");
             }
         }
 
@@ -204,15 +214,26 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         }
 
-        public async void RegistrateBaseSimcard(QRSticker result)
+        public async Task RegistrateBaseSimcard(QRSticker result)
         {
             // Scan label for Simcard info
             robotItem.BaseGPS.ofType = GPSType.Base;
 
-            
-
+           
             if (string.IsNullOrEmpty(robotItem.BaseGPS.Simcard.ID))
             {
+                try
+                {
+                    GPS response = await GPS.API.GetById(result.ID.Trim());
+                    BaseSN = "Base Serial Number: " + response.SerialNumber;
+                    OnPropertyChanged(nameof(BaseSIM));
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Something went wrong..." + e.Message);
+                }
+                
+
                 robotItem.BaseGPS.Simcard.ID = result.ID;
                 BaseSIM = "Base Simcard: " + robotItem.BaseGPS.Simcard.ID;
                 OnPropertyChanged(nameof(BaseSIM));

@@ -31,54 +31,66 @@ namespace TurfTankRegistrationApplication.ViewModel
         public WifiPageViewModel(INavigation navigation)
         {
             this.Navigation = navigation;
-            ScanForWifi = new Command(() => Scanner());
+            ScanForWifi = new Command( async () => await Scanner());
             ConnectToSelectedWifi = new Command(() => ConnectToRobot());
         }
 
-        public WifiPageViewModel()
+        public async Task Scanner()
         {
+            var status = await Permissions.RequestAsync<Permissions.LocationAlways>();
 
-        }
-
-
-        public async void Scanner()
-        {
-            Task<List<string>> wifiTask = DependencyService.Get<IWifiConnector>().GetAvailableNetworks();
-            HasNotStartedWifiLoading = false;
-            OnPropertyChanged(nameof(HasNotStartedWifiLoading));
-
-            ShowLoadingLabel = true;
-            OnPropertyChanged(nameof(ShowLoadingLabel));
-
-            // Needs to wait for the result to finish
-            await Task.Delay(8000);
-            if (wifiTask.Status == TaskStatus.RanToCompletion)
+            if (status == PermissionStatus.Granted)
             {
-                Console.WriteLine("DONE");
-                ShowLoadingLabel = false;
+                Task<List<string>> wifiTask = DependencyService.Get<IWifiConnector>().GetAvailableNetworks();
+                HasNotStartedWifiLoading = false;
+                OnPropertyChanged(nameof(HasNotStartedWifiLoading));
+
+                ShowLoadingLabel = true;
                 OnPropertyChanged(nameof(ShowLoadingLabel));
 
-                wifiResults = wifiTask.Result.Where(element => !string.IsNullOrEmpty(element)).ToList();
-                OnPropertyChanged(nameof(wifiResults));
-
-                foreach (var network in wifiResults)
+                // Needs to wait for the result to finish
+                await Task.Delay(8000);
+                if (wifiTask.Status == TaskStatus.RanToCompletion)
                 {
-                    Console.WriteLine("Result: " + network);
+                    Console.WriteLine("DONE");
+                    ShowLoadingLabel = false;
+                    OnPropertyChanged(nameof(ShowLoadingLabel));
+
+                    wifiResults = wifiTask.Result.Where(element => !string.IsNullOrEmpty(element)).ToList();
+                    OnPropertyChanged(nameof(wifiResults));
+
+                    if (wifiResults.Count != 0)
+                    {
+                        foreach (var network in wifiResults)
+                        {
+                            Console.WriteLine("Result: " + network);
+                        }
+                    }
+                    else
+                    {
+                        await Application.Current.MainPage.DisplayAlert("OOPS!", "Could not find any wifi networks", "OK");
+                    }
+
+
+                    WifiListIsReady = true;
+                    OnPropertyChanged(nameof(WifiListIsReady));
+
                 }
+                else if (wifiTask.Status == TaskStatus.Running)
+                {
+                    Console.WriteLine("RUNNING");
 
-                WifiListIsReady = true;
-                OnPropertyChanged(nameof(WifiListIsReady));
-
+                }
+                else if (wifiTask.Status == TaskStatus.WaitingToRun)
+                {
+                    Console.WriteLine("WAITING");
+                }
             }
-            else if (wifiTask.Status == TaskStatus.Running)
+            else
             {
-                Console.WriteLine("RUNNING");
-
+                await Application.Current.MainPage.DisplayAlert("OOPS!", "You need to allow location", "OK");
             }
-            else if (wifiTask.Status == TaskStatus.WaitingToRun)
-            {
-                Console.WriteLine("WAITING");
-            }
+            
 
         }
 

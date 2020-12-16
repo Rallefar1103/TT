@@ -15,7 +15,6 @@ namespace TurfTankRegistrationApplication.Pages
             
             RoverRegistrationViewModel RoverVM = new RoverRegistrationViewModel(Navigation);
             BindingContext = RoverVM;
-            var Locationstatus = Permissions.RequestAsync<Permissions.LocationWhenInUse>();
 
             Title = "Register Rover";
 

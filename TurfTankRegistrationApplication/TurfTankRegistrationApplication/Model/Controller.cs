@@ -150,7 +150,7 @@ namespace TurfTankRegistrationApplication.Model
 
             if (string.IsNullOrEmpty(QR.ID))
                 throw new ValidationException("Controller doesn't have a QR with an ID");
-            if (QR.OfType != QRType.CONTROLLER)
+            if (QR.OfType != QRType.controller)
                 throw new ValidationException("The QR type is not a Controller");
             if (string.IsNullOrEmpty(ID))
                 throw new ValidationException("The controller doesn't have an ID");

@@ -59,7 +59,7 @@ namespace TurfTankRegistrationApplication.Model
             else
                 throw new ValidationException("There is no simcard registered to the tablet");
             
-            if (Simcard.QR.OfType != QRType.TABLET)
+            if (Simcard.QR.OfType != QRType.tablet)
             {
                 throw new ValidationException("The simcard QR is not a tablet type");
             }
