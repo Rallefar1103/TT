@@ -15,9 +15,27 @@ using TurfTankRegistrationApplication.Model;
 
 namespace TestUnit.Connection
 {
+
     [TestFixture]
     class RegistrationDBAPITest
     {
+
+        #region Setup
+        public RobotItemModel RobotSchema { get; set; }
+        [SetUp]
+        public void SetupRobotItemModelSchema()
+        {
+            RobotSchema = new RobotItemModel();
+            RobotSchema.BaseStation = new RobotBasestationItemModel();
+            RobotSchema.Controller = new RobotControllerItemModel();
+            RobotSchema.Rover = new RobotRoverItemModel();
+            RobotSchema.Subscription = new RobotSubscriptionModel();
+            RobotSchema.Routeplans = new List<RouteplanItemModel>();
+            RobotSchema.Users = new List<RobotUserModel>();
+            RobotSchema.CreatedAt = new DateTimeOffset();
+            RobotSchema.UpdatedAt = new DateTimeOffset();
+        }
+        #endregion
         #region GetById
 
         #region Testing that it works
@@ -29,11 +47,8 @@ namespace TestUnit.Connection
         public async Task GetById_RobotPackage_ShouldReturnRobotPackage(string SN, string ContSN, string SSID, string PW, string Desc)
         {
             // Arrange Robot In Database and mock HttpClient
-            RobotItemModel schema = new RobotItemModel();
-            schema.Id = SN;
-            schema.Controller.SerialNumber = ContSN;
-            schema.Controller.Ssid = SSID;
-            schema.Controller.SsidPassword = PW;
+            RobotItemModel schema = RobotSchema;
+           
 
             var statuscodeInResponse = HttpStatusCode.OK;
             string responseFromDB = JsonSerializer.Serialize<RobotItemModel>(schema);
@@ -57,9 +72,8 @@ namespace TestUnit.Connection
         public async Task GetById_PartialRobotPackage_ShouldReturnPartialRobotPackage(string SN, string ContSN, string Desc)
         {
             // Arrange Robot In Database and mock HttpClient
-            RobotItemModel schema = new RobotItemModel();
-            schema.Id = SN;
-            schema.Controller.SerialNumber = ContSN;
+            RobotItemModel schema = RobotSchema;
+           
 
             var statuscodeInResponse = HttpStatusCode.OK;
             string responseFromDB = JsonSerializer.Serialize<RobotItemModel>(schema);
@@ -89,7 +103,7 @@ namespace TestUnit.Connection
         public void GetById_NotAuthorized_ShouldRaiseException(string Desc)
         {
             // Arrange Robot In Database and mock HttpClient
-            RobotItemModel schema = new RobotItemModel();
+            RobotItemModel schema = RobotSchema;
             schema.Id = "SerialNumber";
 
             var statuscodeInResponse = HttpStatusCode.Unauthorized;
@@ -107,7 +121,8 @@ namespace TestUnit.Connection
         public void GetById_Forbidden_ShouldRaiseException(string Desc)
         {
             // Arrange Robot In Database and mock HttpClient
-            RobotItemModel schema = new RobotItemModel();
+            RobotItemModel schema = RobotSchema;            
+
             schema.Id = "SerialNumber";
 
             var statuscodeInResponse = HttpStatusCode.Forbidden;
