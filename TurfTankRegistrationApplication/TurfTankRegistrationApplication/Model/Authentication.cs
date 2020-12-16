@@ -169,7 +169,7 @@ namespace TurfTankRegistrationApplication.Connection
         /// <param name="e"></param>
         async void Handle_LoginError(Object sender, AuthenticatorErrorEventArgs e)
         {
-            
+            // IMPLEMENT THIS FUNCTION!
             var exep = e.Exception;
             var message = e.Message;
             //lav en switch som checker for de forskellige error codes
