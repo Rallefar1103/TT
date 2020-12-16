@@ -70,10 +70,26 @@ namespace TurfTankRegistrationApplication.Connection
             T type = new T();
             if(type is RobotPackage)
             {
-                RobotItem robotSchema = await ApiClientRef.GetRobotBySerialAsync(id);
+                RobotItemModel robotSchema = await ApiClientRef.GetRobotByIdAsync(id);
 
                 RobotPackage newObject = new RobotPackage(robotSchema);
                 return (T)Convert.ChangeType(newObject, typeof(RobotPackage));
+            }
+            else if (type is GPS)
+            {
+                if (id.Contains("basestation"))
+                {
+                    RobotBasestationItemModel BaseSchema = await ApiClientRef.GetBasestationByIdAsync(id);
+
+                    GPS newObject = new GPS(BaseSchema);
+                    return (T)Convert.ChangeType(newObject, typeof(GPS));
+
+                }
+                else
+                {
+                    throw new Exception("Type GPS did not contain the correct GPS QR ID");
+                }
+
             }
             else
             {

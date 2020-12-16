@@ -61,7 +61,7 @@ namespace TurfTankRegistrationApplication.Model
                     throw new ValidationException("Simcard doesn't have an ID!");
                 if (QR.ID == "" || QR.ID == null) 
                     throw new ValidationException("Simcard doesn't have a QR with an ID!");
-                if (QR.OfType != QRType.BASE && QR.OfType != QRType.ROVER && QR.OfType != QRType.TABLET)
+                if (QR.OfType != QRType.basestation && QR.OfType != QRType.rover && QR.OfType != QRType.tablet)
                     throw new ValidationException("The simcards QR is of an invalid type");
                 if (Barcode.ICCID == "" || Barcode.ICCID == null) 
                     throw new ValidationException("Simcards barcode doesn't have an ICCID!");

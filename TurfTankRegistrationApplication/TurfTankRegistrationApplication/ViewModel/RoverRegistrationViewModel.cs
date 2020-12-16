@@ -50,7 +50,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             this.testing = false;
             this.http = App.WifiClient;
             this.Navigation = navigation;
-            ChangeRoverSimcard = new Command(() => NavigateToScanPage("Rover"));
+            ChangeRoverSimcard = new Command(() => NavigateToScanPage("rover"));
             ChangeRoverSN = new Command(async () => await GetRoverSerialNumber());
             
         }
@@ -78,6 +78,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         /// </summary>
         public async Task GetRoverSerialNumber()
         {
+            Console.WriteLine("!!!!!!! ---------------   Retriving rover serial number! -------------- !!!!!!!!!");
             string URL = "http://192.168.80.1:8888/rover";
             var values = new Dictionary<string, string>
             {
@@ -95,14 +96,9 @@ namespace TurfTankRegistrationApplication.ViewModel
                     var response = await http.PostAsync(URL, content);
                     if (response.IsSuccessStatusCode)
                     {
-                        
                         string StringContent = await response.Content.ReadAsStringAsync();
 
-                        Console.WriteLine("!!!!! ------- This is what we got back: " + StringContent);
-
                         dynamic json = JsonConvert.DeserializeObject(StringContent);
-
-                        Console.Write("!!!!! ------ response: " + json["response"]);
 
                         SOSVER RoverSOSVER = new SOSVER(json["response"].ToString());
 
@@ -120,7 +116,6 @@ namespace TurfTankRegistrationApplication.ViewModel
                             await Navigation.PopAsync();
                         }
                         
-                        
                     }
 
                     await StartInmark();
@@ -128,17 +123,20 @@ namespace TurfTankRegistrationApplication.ViewModel
                 }
                 catch (HttpRequestException e)
                 {
+                    await Application.Current.MainPage.DisplayAlert("OOPS!", "Did catch an exception" + e, "OK");
                     Console.WriteLine("CATCH: " + e);
                 }
             }
             else
             {
+                await Application.Current.MainPage.DisplayAlert("OOPS!", "Something went wrong!", "OK");
                 Console.WriteLine("Something went wrong with the stopInmark!");
             }
 
         }
 
-
+        //Console.WriteLine("!!!!! ------- This is what we got back: " + StringContent);
+        //Console.Write("!!!!! ------ response: " + json["response"]);
 
         /// <summary>
         // This method gives us the opportunity to communicate with the rover by switching its mode

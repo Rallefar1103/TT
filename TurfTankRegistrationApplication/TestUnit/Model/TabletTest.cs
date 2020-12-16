@@ -15,7 +15,7 @@ namespace TestUnit.Model
     class TabletTest
     {
         #region ValidateSelf
-        [TestCase("1234", "5678", QRType.TABLET, "Tests that tablets does not throw with a simcard qr which is type TABLET")]
+        [TestCase("1234", "5678", QRType.tablet, "Tests that tablets does not throw with a simcard qr which is type TABLET")]
         public void TabletValidateSelfTest_ValidTablets_ShouldNotTrow(string iccid, string qrid, QRType qrType, string Desc)
         {
             //Arrange
@@ -28,11 +28,11 @@ namespace TestUnit.Model
             Assert.DoesNotThrow(() => tablet.ValidateSelf(), Desc);
         }
 
-        [TestCase("1234", "5678", QRType.ROBOTPACKAGE, "Tests that tablets throw with a simcard qr which is of a type that is not TABLET")]
-        [TestCase("", "5678", QRType.TABLET, "Tests that the validation throws when the id is empty")]
-        [TestCase(null, "5678", QRType.TABLET, "Tests that the validation throws when the id is null")]
-        [TestCase("1234", "", QRType.TABLET, "Tests that the validation throws when the qrid is empty")]
-        [TestCase("1234", null, QRType.TABLET, "Tests that the validation throws when the qrid is null")]
+        [TestCase("1234", "5678", QRType.robot, "Tests that tablets throw with a simcard qr which is of a type that is not TABLET")]
+        [TestCase("", "5678", QRType.tablet, "Tests that the validation throws when the id is empty")]
+        [TestCase(null, "5678", QRType.tablet, "Tests that the validation throws when the id is null")]
+        [TestCase("1234", "", QRType.tablet, "Tests that the validation throws when the qrid is empty")]
+        [TestCase("1234", null, QRType.tablet, "Tests that the validation throws when the qrid is null")]
         public void TabletValidateSelfTest_InvalidTablets_ShouldTrow(string iccid, string qrid, QRType qrType, string Desc)
         {
             //Arrange

@@ -1,33 +1,105 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using TurfTankRegistrationApplication.Pages;
+using Xamarin.Auth;
 using Xamarin.Forms;
+using TurfTankRegistrationApplication.Connection;
+using TurfTankRegistrationApplication.Pages;
+using System.Text;
 
 namespace TurfTankRegistrationApplication.ViewModel
 {
-    public class SignInViewModel2 
+    
+    public class SignInViewModel2 : BaseViewModel
     {
         public INavigation Navigation { get; set; }
+        public Command NavigateToMenuPage { get; }
+        public string Token { get; set; }
 
-        public SignInViewModel2(INavigation navigation)
+        TurfTankAuth _authenticator;
+        
+        #region Constructor
+
+        public SignInViewModel2(INavigation navigation,TurfTankAuth auth)
         {
             this.Navigation = navigation;
-            NavigateToMenuPage = new Command( async () => await GoToMenuPage());
+            NavigateToMenuPage = new Command(async () => await GoToMenuPageAsync());
+            _authenticator = auth;
+        }
+        //til test
+        public SignInViewModel2()
+        {
+            this.Navigation = null;
+            NavigateToMenuPage = new Command(async () => await GoToMenuPageAsync());
         }
 
+        #endregion
 
-        public INavigation navigation;
+        #region Public Methods
 
-        public Command NavigateToMenuPage { get; }
-
-        public async Task GoToMenuPage()
+        public async Task GoToMenuPageAsync()
         {
+            
+            //_authenticator.Completed -= Handle_CompletedLoginOnPage;
+            //_authenticator.Completed += Handle_CompletedLoginOnPage;
+
+            //Todo Spring presenter over hvis user er logged in
+            if (App.OAuthCredentials.IsLoggedIn)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("Stored   Access  Token = ").AppendLine($"   {App.OAuthCredentials.AccessToken}");
+                sb.Append("Stored   Refresh Token = ").AppendLine($"   {App.OAuthCredentials.RefreshToken}");
+                await Application.Current.MainPage.DisplayAlert("Authentication Results", sb.ToString(), "OK");
+
+                //await Navigation.PushAsync(new MenuPage());
+            }
+            else
+            {
+                
+                _authenticator.Error += Handle_loginError;
+                //await _authenticator.RefreshTokenAsync();
+                var Presenter = new Xamarin.Auth.Presenters.OAuthLoginPresenter();
+                Presenter.Completed += Handle_CompletedLoginOnPage;               
+                Presenter.Login(authenticator: _authenticator);
+                Presenter = null;
+            }
+
+        }
+
+        private async void Handle_loginError(object sender, AuthenticatorErrorEventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("Login did not succeed: ").AppendLine($"{e.Exception}");
+            sb.Append("Message: ").AppendLine($"{e.Message}");
+
+            await Application.Current.MainPage.DisplayAlert("Login Error", sb.ToString(), "OK");
+
+        }
+
+        private async void Handle_CompletedLoginOnPage(object sender, AuthenticatorCompletedEventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            if (e.Account != null && e.Account.Properties != null)
+            {
+                sb.Append("Recieved Access  Token = ").AppendLine($"   {e.Account.Properties["access_token"]}");
+                sb.Append("\n\nStored   Access  Token = ").AppendLine($"   {App.OAuthCredentials.AccessToken}");
+                sb.Append("\nStored   Refresh Token = ").AppendLine($"   {App.OAuthCredentials.RefreshToken}");
+            }
+            else
+            {
+                sb.Append("Not authenticated ").AppendLine($"Account.Properties does not exist");
+            }
+            await Application.Current.MainPage.DisplayAlert("Authentication Results", sb.ToString(), "OK");
+
             await Navigation.PushAsync(new MenuPage());
         }
+
+
         
+
+
+        #endregion Public Methods
 
     }
 }

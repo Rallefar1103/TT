@@ -55,14 +55,21 @@ namespace TurfTankRegistrationApplication.Model
         {
             GPSType type;
 
-            if (simcard.QR.OfType == QRType.ROVER)
+            if (simcard.QR.OfType == QRType.rover)
                 type = GPSType.Rover;
-            else if (simcard.QR.OfType == QRType.BASE)
+            else if (simcard.QR.OfType == QRType.basestation)
                 type = GPSType.Base;
             else
                 type = GPSType.NoType;
 
             Initialize(type: type, simcard: simcard, serialNumber: serialNumber);
+        }
+        public GPS(RobotBasestationItemModel baseStationItemModel)
+        {
+            ofType = GPSType.Base;
+            ID = baseStationItemModel.Id;
+            //Simcard = baseStationItemModel.simcard;
+            SerialNumber = baseStationItemModel.SerialNumber;
         }
 
         #endregion constructors
@@ -101,9 +108,9 @@ namespace TurfTankRegistrationApplication.Model
             if (idRestriction != SerialOrQR.OnlyQRId && idRestriction != SerialOrQR.BothSerialAndQRId)
                 throw new ValidationException("The idRestriction should be either OnlyQrId or BothSerialAndQrId");
 
-            if (ofType == GPSType.Rover && Simcard.QR.OfType != QRType.ROVER) 
+            if (ofType == GPSType.Rover && Simcard.QR.OfType != QRType.rover) 
                 throw new ValidationException($"The QR sticker is of the wrong type! The component is type Rover while the QR is type {Simcard.QR.OfType}");
-            if (ofType == GPSType.Base && Simcard.QR.OfType != QRType.BASE) 
+            if (ofType == GPSType.Base && Simcard.QR.OfType != QRType.basestation) 
                 throw new ValidationException($"The QR sticker is of the wrong type! The component is type Base while the QR is type {Simcard.QR.OfType}");
             if (ofType == GPSType.NoType) 
                 throw new ValidationException($"The GPS does not have a type!");

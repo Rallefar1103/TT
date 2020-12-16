@@ -19,7 +19,7 @@ namespace TestUnit.Model
 
         #region ValidateSelf
         [TestCase(
-            QRType.CONTROLLER, "SomeQRID", "SomeActiveSSID", "SomeActivePassword",
+            QRType.controller, "SomeQRID", "SomeActiveSSID", "SomeActivePassword",
              "SomeMacEthernet", "SomeMacWifi", 
             "Should validate when when the controller only has a qr, macEthernet and macWifi when validate self is told it only has qr")]
         public void ValidateSelf_ValidControllerOnlyQR_ShouldValidate(
@@ -34,7 +34,7 @@ namespace TestUnit.Model
             Assert.DoesNotThrow(() => validController.ValidateSelf(SerialOrQR.OnlyQRId), Desc);
         }
         [TestCase(
-            QRType.CONTROLLER, "SomeQRID", "SomeActiveSSID", "SomeActivePassword",
+            QRType.controller, "SomeQRID", "SomeActiveSSID", "SomeActivePassword",
              "SomeSerialNumber", "SomeMacEthernet", "SomeMacWifi", 
             "Should validate when all attributes have been entered, and the password and ssid mathces that on the QR, when it has both serial and QR")]
         public void ValidateSelf_ValidControllerQRAndSerial_ShouldValidate(
@@ -51,19 +51,19 @@ namespace TestUnit.Model
             Assert.DoesNotThrow(() => validController.ValidateSelf(SerialOrQR.BothSerialAndQRId), Desc);
         }
 
-        [TestCase(QRType.BASE, "SomeQRID", "SomeSerialNumber", "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", "SomeMacWifi", "Should throw exception when QR type is not controller")]
-        [TestCase(QRType.CONTROLLER, "", "SomeSerialNumber", "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", "SomeMacWifi", "Should throw exception when QR ID is empty")]
-        [TestCase(QRType.CONTROLLER, null, "SomeSerialNumber", "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", "SomeMacWifi", "Should throw exception when QR ID is null")]
-        [TestCase(QRType.CONTROLLER, "SomeQRID", "", "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", "SomeMacWifi", "Should throw exception when serial number is empty")]
-        [TestCase(QRType.CONTROLLER, "SomeQRID", null, "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", "SomeMacWifi", "Should throw exception when serial number is null")]
-        [TestCase(QRType.CONTROLLER, "SomeQRID", "SomeSerialNumber", "", "SomeActivePassword", "SomeMacEthernet", "SomeMacWifi", "Should throw exception when active SSID is empty")]
-        [TestCase(QRType.CONTROLLER, "SomeQRID", "SomeSerialNumber", null, "SomeActivePassword", "SomeMacEthernet", "SomeMacWifi", "Should throw exception when active SSID is null")]
-        [TestCase(QRType.CONTROLLER, "SomeQRID", "SomeSerialNumber", "SomeActiveSSID", "", "SomeMacEthernet", "SomeMacWifi", "Should throw exception when active password is empty")]
-        [TestCase(QRType.CONTROLLER, "SomeQRID", "SomeSerialNumber", "SomeActiveSSID", null, "SomeMacEthernet", "SomeMacWifi", "Should throw exception when active password is null")]
-        [TestCase(QRType.CONTROLLER, "SomeQRID", "SomeSerialNumber", "SomeActiveSSID", "SomeActivePassword", "", "SomeMacWifi", "Should throw exception when mac ethernet is empty")]
-        [TestCase(QRType.CONTROLLER, "SomeQRID", "SomeSerialNumber", "SomeActiveSSID", "SomeActivePassword", null, "SomeMacWifi", "Should throw exception when mac ethernet is null")]
-        [TestCase(QRType.CONTROLLER, "SomeQRID", "SomeSerialNumber", "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", "", "Should throw exception when mac wifi is empty")]
-        [TestCase(QRType.CONTROLLER, "SomeQRID", "SomeSerialNumber", "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", null, "Should throw exception when mac wifi is null")]
+        [TestCase(QRType.basestation, "SomeQRID", "SomeSerialNumber", "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", "SomeMacWifi", "Should throw exception when QR type is not controller")]
+        [TestCase(QRType.controller, "", "SomeSerialNumber", "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", "SomeMacWifi", "Should throw exception when QR ID is empty")]
+        [TestCase(QRType.controller, null, "SomeSerialNumber", "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", "SomeMacWifi", "Should throw exception when QR ID is null")]
+        [TestCase(QRType.controller, "SomeQRID", "", "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", "SomeMacWifi", "Should throw exception when serial number is empty")]
+        [TestCase(QRType.controller, "SomeQRID", null, "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", "SomeMacWifi", "Should throw exception when serial number is null")]
+        [TestCase(QRType.controller, "SomeQRID", "SomeSerialNumber", "", "SomeActivePassword", "SomeMacEthernet", "SomeMacWifi", "Should throw exception when active SSID is empty")]
+        [TestCase(QRType.controller, "SomeQRID", "SomeSerialNumber", null, "SomeActivePassword", "SomeMacEthernet", "SomeMacWifi", "Should throw exception when active SSID is null")]
+        [TestCase(QRType.controller, "SomeQRID", "SomeSerialNumber", "SomeActiveSSID", "", "SomeMacEthernet", "SomeMacWifi", "Should throw exception when active password is empty")]
+        [TestCase(QRType.controller, "SomeQRID", "SomeSerialNumber", "SomeActiveSSID", null, "SomeMacEthernet", "SomeMacWifi", "Should throw exception when active password is null")]
+        [TestCase(QRType.controller, "SomeQRID", "SomeSerialNumber", "SomeActiveSSID", "SomeActivePassword", "", "SomeMacWifi", "Should throw exception when mac ethernet is empty")]
+        [TestCase(QRType.controller, "SomeQRID", "SomeSerialNumber", "SomeActiveSSID", "SomeActivePassword", null, "SomeMacWifi", "Should throw exception when mac ethernet is null")]
+        [TestCase(QRType.controller, "SomeQRID", "SomeSerialNumber", "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", "", "Should throw exception when mac wifi is empty")]
+        [TestCase(QRType.controller, "SomeQRID", "SomeSerialNumber", "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", null, "Should throw exception when mac wifi is null")]
         public void ValidateSelf_InvalidControllerQRAndSerial_ShouldThrowException(QRType qrType, string qrId, string serialNumber, string finalSSID, string finalPassword, string macEthernet, string macWifi, string Desc)
         {
             // Arrange
@@ -76,14 +76,14 @@ namespace TestUnit.Model
             Assert.Throws<ValidationException>(() => validController.ValidateSelf(SerialOrQR.BothSerialAndQRId), Desc);
         }
 
-        [TestCase(QRType.BASE, "SomeQRID", "", "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", "SomeMacWifi", "Should throw exception when QR type is not controller")]
-        [TestCase(QRType.CONTROLLER, "", "", "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", "SomeMacWifi", "Should throw exception when QR ID is empty")]
-        [TestCase(QRType.CONTROLLER, null, "", "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", "SomeMacWifi", "Should throw exception when QR ID is null")]
-        [TestCase(QRType.CONTROLLER, "SomeQRID", "someSerialNumber", "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", "SomeMacWifi", "Should throw exception when QR ID is null")]
-        [TestCase(QRType.CONTROLLER, "SomeQRID", "", "SomeActiveSSID", "SomeActivePassword", "", "SomeMacWifi", "Should throw exception when mac ethernet is empty")]
-        [TestCase(QRType.CONTROLLER, "SomeQRID", "", "SomeActiveSSID", "SomeActivePassword", null, "SomeMacWifi", "Should throw exception when mac ethernet is null")]
-        [TestCase(QRType.CONTROLLER, "SomeQRID", "", "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", "", "Should throw exception when mac wifi is empty")]
-        [TestCase(QRType.CONTROLLER, "SomeQRID", "", "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", null, "Should throw exception when mac wifi is null")]
+        [TestCase(QRType.basestation, "SomeQRID", "", "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", "SomeMacWifi", "Should throw exception when QR type is not controller")]
+        [TestCase(QRType.controller, "", "", "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", "SomeMacWifi", "Should throw exception when QR ID is empty")]
+        [TestCase(QRType.controller, null, "", "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", "SomeMacWifi", "Should throw exception when QR ID is null")]
+        [TestCase(QRType.controller, "SomeQRID", "someSerialNumber", "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", "SomeMacWifi", "Should throw exception when QR ID is null")]
+        [TestCase(QRType.controller, "SomeQRID", "", "SomeActiveSSID", "SomeActivePassword", "", "SomeMacWifi", "Should throw exception when mac ethernet is empty")]
+        [TestCase(QRType.controller, "SomeQRID", "", "SomeActiveSSID", "SomeActivePassword", null, "SomeMacWifi", "Should throw exception when mac ethernet is null")]
+        [TestCase(QRType.controller, "SomeQRID", "", "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", "", "Should throw exception when mac wifi is empty")]
+        [TestCase(QRType.controller, "SomeQRID", "", "SomeActiveSSID", "SomeActivePassword", "SomeMacEthernet", null, "Should throw exception when mac wifi is null")]
         public void ValidateSelf_InvalidControllerQROnly_ShouldThrowException(QRType qrType, string qrId, string serialNumber, string activeSSID, string activePassword, string macEthernet, string macWifi, string Desc)
         {
             // Arrange
@@ -102,7 +102,7 @@ namespace TestUnit.Model
         public void ValidateSelf_noSSIDOrPasswordQROnly_ShouldThrowException(string newSSID, string newPassword, string Desc)
         {
             // Arrange
-            QRType qrType = QRType.CONTROLLER;
+            QRType qrType = QRType.controller;
             string qrId = "someQRID";
             string activeSSID = "someActiveSSID";
             string activePassword = "someActivePassword";
@@ -118,7 +118,7 @@ namespace TestUnit.Model
             Assert.Throws<ValidationException>(() => Controller.ValidateSelf(SerialOrQR.OnlyQRId), Desc);
         }
         [TestCase(
-            QRType.CONTROLLER, "SomeQRID","SomeSSID", "SomePassword", 
+            QRType.controller, "SomeQRID","SomeSSID", "SomePassword", 
             "SomeNewControllerID",  "SomeSerialNumber", "SomeMacEthernet", 
             "SomeMacWifi", "Should throw and exception if the  QR ID does not match controller ID")]
         public void ValidateSelf_InvalidControllerIDAndQRID_ShouldThrowException(
@@ -135,7 +135,7 @@ namespace TestUnit.Model
         }
 
         [TestCase(
-            QRType.CONTROLLER, "SomeQRID", "SomeSSID", "SomePassword", 
+            QRType.controller, "SomeQRID", "SomeSSID", "SomePassword", 
             "SomeNewControllerPassword", "SomeSerialNumber", "SomeMacEthernet", "SomeMacWifi", 
             "Should throw and exception if the  QR ID does not match controller ID")]
         public void ValidateSelf_InvalidControllerPasswordAndQRPassword_ShouldThrowException(
@@ -158,7 +158,7 @@ namespace TestUnit.Model
             string newControllerSSID, string newControllerPassword, string serialNumber, string Desc)
         {
             // Arrange
-            QRType qrType = QRType.CONTROLLER;
+            QRType qrType = QRType.controller;
             string qrId = "SomeQRID";
             string activeSSID = "SomeActiveSSID";
             string activePassword = "SomePassword";
@@ -185,7 +185,7 @@ namespace TestUnit.Model
             string serialNumber, string newControllerSSID, string newControllerPassword , string Desc)
         {
             // Arrange
-            QRType qrType = QRType.CONTROLLER;
+            QRType qrType = QRType.controller;
             string qrId = "SomeQRID";
             string activeSSID = "QRSSID";
             string activePassword = "QRPassword";

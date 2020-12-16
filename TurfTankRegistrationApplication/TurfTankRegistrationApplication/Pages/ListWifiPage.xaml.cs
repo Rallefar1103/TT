@@ -13,9 +13,6 @@ namespace TurfTankRegistrationApplication.Pages
             BindingContext = wifiVM;
 
             InitializeComponent();
-            //RoverRegistrationViewModel roverVM = new RoverRegistrationViewModel(Navigation);
-            //BindingContext = roverVM;
-            
 
             Title = "Robots Nearby";
 

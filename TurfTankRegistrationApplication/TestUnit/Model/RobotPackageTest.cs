@@ -36,11 +36,11 @@ namespace TestUnit.Model
             string finalSSID = "finalSSID";
             string finalPassword = "finalPassword";
 
-            QRSticker roverQR = new QRSticker(qrid, QRType.ROVER);
-            QRSticker baseQR = new QRSticker(qrid, QRType.BASE);
-            QRSticker tabletQR = new QRSticker(qrid, QRType.TABLET);
-            QRSticker robotQR = new QRSticker(qrid, QRType.ROBOTPACKAGE);
-            ControllerQRSticker controllerQR = new ControllerQRSticker(QRType.CONTROLLER, qrid, finalSSID, finalPassword);
+            QRSticker roverQR = new QRSticker(qrid, QRType.rover);
+            QRSticker baseQR = new QRSticker(qrid, QRType.basestation);
+            QRSticker tabletQR = new QRSticker(qrid, QRType.tablet);
+            QRSticker robotQR = new QRSticker(qrid, QRType.robot);
+            ControllerQRSticker controllerQR = new ControllerQRSticker(QRType.controller, qrid, finalSSID, finalPassword);
             
             BarcodeSticker barcode = new BarcodeSticker("1234");
 
@@ -75,11 +75,11 @@ namespace TestUnit.Model
             string password = "password";
             string serialNumber = "serialNumber";
 
-            QRSticker roverQR = new QRSticker(qrid, QRType.ROVER);
-            QRSticker baseQR = new QRSticker(qrid, QRType.BASE);
-            QRSticker tabletQR = new QRSticker(qrid, QRType.TABLET);
-            QRSticker robotQR = new QRSticker(qrid, QRType.ROBOTPACKAGE);
-            ControllerQRSticker controllerQR = new ControllerQRSticker(QRType.CONTROLLER, qrid, ssid, password);
+            QRSticker roverQR = new QRSticker(qrid, QRType.rover);
+            QRSticker baseQR = new QRSticker(qrid, QRType.basestation);
+            QRSticker tabletQR = new QRSticker(qrid, QRType.tablet);
+            QRSticker robotQR = new QRSticker(qrid, QRType.robot);
+            ControllerQRSticker controllerQR = new ControllerQRSticker(QRType.controller, qrid, ssid, password);
 
             BarcodeSticker barcode = new BarcodeSticker("1234");
 
@@ -116,11 +116,11 @@ namespace TestUnit.Model
             string password = "password";
             string serialNumber = "serialNumber";
 
-            QRSticker roverQR = new QRSticker(qrid, QRType.ROVER);
-            QRSticker baseQR = new QRSticker(qrid, QRType.BASE);
-            QRSticker tabletQR = new QRSticker(qrid, QRType.TABLET);
-            QRSticker robotQR = new QRSticker(qrid, QRType.ROBOTPACKAGE);
-            ControllerQRSticker controllerQR = new ControllerQRSticker(QRType.CONTROLLER, qrid, ssid, password);
+            QRSticker roverQR = new QRSticker(qrid, QRType.rover);
+            QRSticker baseQR = new QRSticker(qrid, QRType.basestation);
+            QRSticker tabletQR = new QRSticker(qrid, QRType.tablet);
+            QRSticker robotQR = new QRSticker(qrid, QRType.robot);
+            ControllerQRSticker controllerQR = new ControllerQRSticker(QRType.controller, qrid, ssid, password);
 
             BarcodeSticker barcode = new BarcodeSticker("1234");
 
@@ -157,11 +157,11 @@ namespace TestUnit.Model
             string password = "password";
             string serialNumber = "serialNumber";
 
-            QRSticker roverQR = new QRSticker(qrid, QRType.ROVER);
-            QRSticker baseQR = new QRSticker(qrid, QRType.BASE);
-            QRSticker tabletQR = new QRSticker(qrid, QRType.TABLET);
-            QRSticker robotQR = new QRSticker(qrid, QRType.ROBOTPACKAGE);
-            ControllerQRSticker controllerQR = new ControllerQRSticker(QRType.CONTROLLER, qrid, ssid, password);
+            QRSticker roverQR = new QRSticker(qrid, QRType.rover);
+            QRSticker baseQR = new QRSticker(qrid, QRType.basestation);
+            QRSticker tabletQR = new QRSticker(qrid, QRType.tablet);
+            QRSticker robotQR = new QRSticker(qrid, QRType.robot);
+            ControllerQRSticker controllerQR = new ControllerQRSticker(QRType.controller, qrid, ssid, password);
 
             BarcodeSticker barcode = new BarcodeSticker("1234");
 
@@ -198,11 +198,11 @@ namespace TestUnit.Model
             string password = "password";
             string serialNumber = "serialNumber";
 
-            QRSticker roverQR = new QRSticker(qrid, QRType.ROVER);
-            QRSticker baseQR = new QRSticker(qrid, QRType.BASE);
-            QRSticker tabletQR = new QRSticker(qrid, QRType.TABLET);
-            QRSticker robotQR = new QRSticker(qrid, QRType.ROBOTPACKAGE);
-            ControllerQRSticker controllerQR = new ControllerQRSticker(QRType.CONTROLLER, qrid, ssid, password);
+            QRSticker roverQR = new QRSticker(qrid, QRType.rover);
+            QRSticker baseQR = new QRSticker(qrid, QRType.basestation);
+            QRSticker tabletQR = new QRSticker(qrid, QRType.tablet);
+            QRSticker robotQR = new QRSticker(qrid, QRType.robot);
+            ControllerQRSticker controllerQR = new ControllerQRSticker(QRType.controller, qrid, ssid, password);
 
             BarcodeSticker barcode = new BarcodeSticker("1234");
 
@@ -239,11 +239,11 @@ namespace TestUnit.Model
             string password = "password";
             string serialNumber = "serialNumber";
 
-            QRSticker roverQR = new QRSticker(qrid, QRType.ROVER);
-            QRSticker baseQR = new QRSticker(qrid, QRType.BASE);
-            QRSticker tabletQR = new QRSticker(qrid, QRType.TABLET);
-            QRSticker robotQR = new QRSticker(qrid, QRType.ROBOTPACKAGE);
-            ControllerQRSticker controllerQR = new ControllerQRSticker(QRType.CONTROLLER, qrid, ssid, password);
+            QRSticker roverQR = new QRSticker(qrid, QRType.rover);
+            QRSticker baseQR = new QRSticker(qrid, QRType.basestation);
+            QRSticker tabletQR = new QRSticker(qrid, QRType.tablet);
+            QRSticker robotQR = new QRSticker(qrid, QRType.robot);
+            ControllerQRSticker controllerQR = new ControllerQRSticker(QRType.controller, qrid, ssid, password);
 
             BarcodeSticker barcode = new BarcodeSticker("1234");
 
@@ -278,11 +278,11 @@ namespace TestUnit.Model
             string password = "password";
             string serialNumber = "serialNumber";
 
-            QRSticker roverQR = new QRSticker(qrid, QRType.ROVER);
-            QRSticker baseQR = new QRSticker(qrid, QRType.BASE);
-            QRSticker tabletQR = new QRSticker(qrid, QRType.TABLET);
-            QRSticker robotQR = new QRSticker(qrid, QRType.ROBOTPACKAGE);
-            ControllerQRSticker controllerQR = new ControllerQRSticker(QRType.CONTROLLER, qrid, ssid, password);
+            QRSticker roverQR = new QRSticker(qrid, QRType.rover);
+            QRSticker baseQR = new QRSticker(qrid, QRType.basestation);
+            QRSticker tabletQR = new QRSticker(qrid, QRType.tablet);
+            QRSticker robotQR = new QRSticker(qrid, QRType.robot);
+            ControllerQRSticker controllerQR = new ControllerQRSticker(QRType.controller, qrid, ssid, password);
 
             BarcodeSticker barcode = new BarcodeSticker("1234");
 
@@ -318,11 +318,11 @@ namespace TestUnit.Model
             string password = "password";
             string serialNumber = "serialNumber";
 
-            QRSticker roverQR = new QRSticker(qrid, QRType.ROVER);
-            QRSticker baseQR = new QRSticker(qrid, QRType.BASE);
-            QRSticker tabletQR = new QRSticker(qrid, QRType.TABLET);
-            QRSticker robotQR = new QRSticker(qrid, QRType.ROBOTPACKAGE);
-            ControllerQRSticker controllerQR = new ControllerQRSticker(QRType.CONTROLLER, qrid, ssid, password);
+            QRSticker roverQR = new QRSticker(qrid, QRType.rover);
+            QRSticker baseQR = new QRSticker(qrid, QRType.basestation);
+            QRSticker tabletQR = new QRSticker(qrid, QRType.tablet);
+            QRSticker robotQR = new QRSticker(qrid, QRType.robot);
+            ControllerQRSticker controllerQR = new ControllerQRSticker(QRType.controller, qrid, ssid, password);
 
             BarcodeSticker barcode = new BarcodeSticker("1234");
 
@@ -358,11 +358,11 @@ namespace TestUnit.Model
             string password = "password";
             string serialNumber = "serialNumber";
 
-            QRSticker roverQR = new QRSticker(qrid, QRType.ROVER);
-            QRSticker baseQR = new QRSticker(qrid, QRType.BASE);
-            QRSticker tabletQR = new QRSticker(qrid, QRType.TABLET);
-            QRSticker robotQR = new QRSticker(qrid, QRType.ROBOTPACKAGE);
-            ControllerQRSticker controllerQR = new ControllerQRSticker(QRType.CONTROLLER, qrid, ssid, password);
+            QRSticker roverQR = new QRSticker(qrid, QRType.rover);
+            QRSticker baseQR = new QRSticker(qrid, QRType.basestation);
+            QRSticker tabletQR = new QRSticker(qrid, QRType.tablet);
+            QRSticker robotQR = new QRSticker(qrid, QRType.robot);
+            ControllerQRSticker controllerQR = new ControllerQRSticker(QRType.controller, qrid, ssid, password);
 
             BarcodeSticker barcode = new BarcodeSticker("1234");
 
@@ -398,11 +398,11 @@ namespace TestUnit.Model
             string password = "password";
             string serialNumber = "serialNumber";
 
-            QRSticker roverQR = new QRSticker(qrid, QRType.ROVER);
-            QRSticker baseQR = new QRSticker(qrid, QRType.BASE);
-            QRSticker tabletQR = new QRSticker(qrid, QRType.TABLET);
-            QRSticker robotQR = new QRSticker(qrid, QRType.ROBOTPACKAGE);
-            ControllerQRSticker controllerQR = new ControllerQRSticker(QRType.CONTROLLER, qrid, ssid, password);
+            QRSticker roverQR = new QRSticker(qrid, QRType.rover);
+            QRSticker baseQR = new QRSticker(qrid, QRType.basestation);
+            QRSticker tabletQR = new QRSticker(qrid, QRType.tablet);
+            QRSticker robotQR = new QRSticker(qrid, QRType.robot);
+            ControllerQRSticker controllerQR = new ControllerQRSticker(QRType.controller, qrid, ssid, password);
 
             BarcodeSticker barcode = new BarcodeSticker("1234");
 
