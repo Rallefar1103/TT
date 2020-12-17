@@ -29,6 +29,8 @@ namespace TurfTankRegistrationApplication.ViewModel
         public bool CanScanSQ { get; set; } = true;
         public bool CanScanBarcode { get; set; } = false;
         public bool CanConfirm { get; set; } = false;
+        public bool toggledQRMounted { get; set; } = false;
+        public bool toggleSimcardMounted { get; set; } = false;
 
         // UI Color properties
         public Color ScanQRColor { get; set; }
@@ -80,9 +82,17 @@ namespace TurfTankRegistrationApplication.ViewModel
             await Navigation.PopAsync();
         }
 
+        public void toggleQRTapped()
+        {
+            toggledQRMounted = true;
+            OnPropertyChanged(nameof(toggledQRMounted));
+        }
 
-
-
+        public void toggleSimcardTapped()
+        {
+            toggledQRMounted = true;
+            OnPropertyChanged(nameof(toggleSimcardMounted));
+        }
 
 
 
