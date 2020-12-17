@@ -25,24 +25,9 @@ namespace TurfTankRegistrationApplication.ViewModel
         public HttpClient http { get; set; }
         public bool testing { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
-        
-        public string RoverResponse { get; set; }
 
         public Command ChangeRoverSimcard { get; }
         public Command ChangeRoverSN { get; }
-        public Command ScanForWifi { get; }
-        public Command ConnectToSelectedWifi { get; }
-
-        public string RoverSerialNumber { get; set; }
-
-        public List<string> wifiResults { get; set; }
-        public string SelectedNetwork { get; set; }
-
-        // UI bools
-        public bool HasNotStartedWifiLoading { get; set; } = true;
-        public bool ShowLoadingLabel { get; set; }
-        public bool WifiListIsReady { get; set; } = false;
-        public bool StartedConnecting { get; set; } = false;
         
 
         public RoverRegistrationViewModel(INavigation navigation)
@@ -50,8 +35,8 @@ namespace TurfTankRegistrationApplication.ViewModel
             this.testing = false;
             this.http = App.WifiClient;
             this.Navigation = navigation;
-            ChangeRoverSimcard = new Command(() => NavigateToScanPage("rover"));
-            ChangeRoverSN = new Command(async () => await GetRoverSerialNumber());
+            ChangeRoverSimcard = new Command(() => GetRoverSimcard("rover"));
+            ChangeRoverSN = new Command(() =>  NavigateToRoverSN());
             
         }
 
@@ -62,7 +47,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             this.Navigation = navigation;
         }
 
-        public void NavigateToScanPage(string component)
+        public void GetRoverSimcard(string component)
         {
             ScanPage scanPage = new ScanPage();
             scanPage.vm.Title = "Scanning " + component;
@@ -70,147 +55,10 @@ namespace TurfTankRegistrationApplication.ViewModel
             Navigation.PushAsync(scanPage);
         }
 
-        /// <summary>
-        /// GetRoverSerialNumber sends a postrequest to the rover endpoint once you're connected to the specific robot's wifi
-        /// Before we can get any information from the rover we need to call the StopInmark method.
-        /// We get the response back and parses it through the SOSVER class to retrieve the actual serial number
-        /// When we're done we call the StartInmark method.
-        /// </summary>
-        public async Task GetRoverSerialNumber()
+        public void NavigateToRoverSN()
         {
-            Console.WriteLine("!!!!!!! ---------------   Retriving rover serial number! -------------- !!!!!!!!!");
-            string URL = "http://192.168.80.1:8888/rover";
-            var values = new Dictionary<string, string>
-            {
-                { "command", "SOSVER,0" },
-            };
-            
-            var content = new FormUrlEncodedContent(values);
-
-            var successfullStop = await StopInmark();
-
-            if (successfullStop)
-            {
-                try
-                {
-                    var response = await http.PostAsync(URL, content);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string StringContent = await response.Content.ReadAsStringAsync();
-
-                        dynamic json = JsonConvert.DeserializeObject(StringContent);
-
-                        SOSVER RoverSOSVER = new SOSVER(json["response"].ToString());
-
-                        RoverResponse = RoverSOSVER.SerialNumber;
-
-                        Console.WriteLine("Rover Serial Number: " + RoverResponse);
-
-                        if (!testing)
-                        {
-                            MessagingCenter.Send(this, "RoverSerialNumber", RoverResponse);
-                            await Application.Current.MainPage.DisplayAlert("Success!", "Got Rover Serial Number: " + RoverResponse, "OK");
-                            await Navigation.PopAsync();
-                        }
-                        else
-                        {
-                            await Navigation.PopAsync();
-                        }
-                        
-                    }
-
-                    await StartInmark();
-
-                }
-                catch (HttpRequestException e)
-                {
-                    await Application.Current.MainPage.DisplayAlert("OOPS!", "Did catch an exception" + e, "OK");
-                    Console.WriteLine("CATCH: " + e);
-                }
-            }
-            else
-            {
-                await Application.Current.MainPage.DisplayAlert("OOPS!", "Could not complete Stop Inmark!", "OK");
-            }
-
-        }
-
-        //Console.WriteLine("!!!!! ------- This is what we got back: " + StringContent);
-        //Console.Write("!!!!! ------ response: " + json["response"]);
-
-        /// <summary>
-        // This method gives us the opportunity to communicate with the rover by switching its mode
-        // from "operation" to "configuration"
-        /// </summary>
-        /// <returns></returns>
-        private async Task<bool> StopInmark()
-        {
-            string URL = "http://192.168.80.1:8888/stopInmark";
-            var values = new Dictionary<string, string>();
-
-            var content = new FormUrlEncodedContent(values);
-            try
-            {
-                var response = await http.PostAsync(URL, content);
-                var responseSucces = response.IsSuccessStatusCode;
-
-                if (response.IsSuccessStatusCode)
-                {
-                    Console.WriteLine("!!!!! ------- Stopping!");
-                    return true;
-                    
-                } else
-                {
-                    Console.WriteLine("!!!!! ------- Stopping failed!");
-                    return false;
-                }
-
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("CATCH: " + e);
-            }
-
-            return false;
-        }
-
-
-
-        /// <summary>
-        // This method restarts the robot such that the production employee can continue with the
-        // testing and reassembling process
-        /// </summary>
-        /// <returns></returns>
-        private async Task<bool> StartInmark()
-        {
-            string URL = "http://192.168.80.1:8888/startInmark";
-            var values = new Dictionary<string, string>();
-
-            var content = new FormUrlEncodedContent(values);
-            try
-            {
-                var response = await http.PostAsync(URL, content);
-                var responseSucces = response.IsSuccessStatusCode;
-
-                if (response.IsSuccessStatusCode)
-                {
-                    
-                    Console.WriteLine("!!!!! ------- Starting!");
-                    return true;
-
-                } else
-                {
-                    Console.WriteLine("!!!!! ------- Starting failed!");
-                    return false;
-                }
-
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("CATCH: " + e);
-            }
-
-            return false;
+            RoverSerialNumberPage roverSNPage = new RoverSerialNumberPage();
+            Navigation.PushAsync(roverSNPage);
         }
 
         
