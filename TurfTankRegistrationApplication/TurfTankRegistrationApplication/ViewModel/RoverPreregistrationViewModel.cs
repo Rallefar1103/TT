@@ -64,6 +64,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         private async Task DummyScanBarcode()
         {
+            
             await Task.Delay(2000);
             await Application.Current.MainPage.DisplayAlert("Success!", "Scanned the barcode", "Ok");
 
@@ -78,8 +79,15 @@ namespace TurfTankRegistrationApplication.ViewModel
         private async Task DummyConfirm()
         {
             await Task.Delay(2000);
-            await Application.Current.MainPage.DisplayAlert("Success!", "You succesfully preregistered the Rover", "Ok");
-            await Navigation.PopAsync();
+            if (toggledQRMounted && toggleSimcardMounted)
+            {
+                await Application.Current.MainPage.DisplayAlert("Success!", "You succesfully preregistered the Rover", "Ok");
+                await Navigation.PopAsync();
+            } else
+            {
+                await Application.Current.MainPage.DisplayAlert("OOPS!", "Have you remembered mount the QR label and insert the simcard?", "Ok");
+            }
+            
         }
 
         public void toggleQRTapped()

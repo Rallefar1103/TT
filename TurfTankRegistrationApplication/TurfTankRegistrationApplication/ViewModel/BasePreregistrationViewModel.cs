@@ -28,6 +28,8 @@ namespace TurfTankRegistrationApplication.ViewModel
         public bool CanScanSQ { get; set; } = true;
         public bool CanScanBarcode { get; set; } = false;
         public bool CanConfirm { get; set; } = false;
+        public bool toggledQRMounted { get; set; } = false;
+        public bool toggleSimcardMounted { get; set; } = false;
 
         // UI Color properties
         public Color ScanQRColor { get; set; }
@@ -49,7 +51,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         private async Task DummyScanQR()
         {
             await Task.Delay(2000);
-            await Application.Current.MainPage.DisplayAlert("Success!", "Scanned the Rover QR-label ", "OK");
+            await Application.Current.MainPage.DisplayAlert("Success!", "Scanned the Basestation QR-label ", "OK");
 
             CanScanBarcode = true;
             OnPropertyChanged(nameof(CanScanBarcode));
@@ -75,12 +77,29 @@ namespace TurfTankRegistrationApplication.ViewModel
         private async Task DummyConfirm()
         {
             await Task.Delay(2000);
-            await Application.Current.MainPage.DisplayAlert("Success!", "You succesfully preregistered the Rover", "Ok");
-            await Navigation.PopAsync();
+            if (toggledQRMounted && toggleSimcardMounted)
+            {
+                await Application.Current.MainPage.DisplayAlert("Success!", "You succesfully preregistered the Basestation", "Ok");
+                await Navigation.PopAsync();
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("OOPS!", "Have you remembered mount the QR label and insert the simcard?", "Ok");
+            }
         }
 
 
+        public void toggleQRTapped()
+        {
+            toggledQRMounted = true;
+            OnPropertyChanged(nameof(toggledQRMounted));
+        }
 
+        public void toggleSimcardTapped()
+        {
+            toggledQRMounted = true;
+            OnPropertyChanged(nameof(toggleSimcardMounted));
+        }
 
 
 
