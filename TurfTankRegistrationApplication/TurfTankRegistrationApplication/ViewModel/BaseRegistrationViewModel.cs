@@ -11,12 +11,16 @@ namespace TurfTankRegistrationApplication.ViewModel
     {
         public INavigation Navigation { get; set; }
 
+        public GPS BaseStation { get; set; }
+
         public Command ChangeBaseSimcard { get; }
         public Command ChangeBaseSN { get; }
 
         public BaseRegistrationViewModel(INavigation navigation)
         {
             this.Navigation = navigation;
+            this.BaseStation = new GPS();
+            BaseStation.ofType = GPSType.Base;
             ChangeBaseSimcard = new Command(() => NavigateToScanPage("basestation"));
             ChangeBaseSN = new Command(async () => await GetBaseSerialNumber());
         }
@@ -34,13 +38,13 @@ namespace TurfTankRegistrationApplication.ViewModel
         {
             try
             {
-                GPS response = await GPS.API.GetById("basestation|97cce3bc-cd81-4c74-9dfa-8b048baedbe5");
-                Console.WriteLine("BASE ID: " + response.ID + "BASE SERIAL NUMBER: " + response.SerialNumber);
+                BaseStation = await GPS.API.GetById("basestation|97cce3bc-cd81-4c74-9dfa-8b048baedbe5");
+                Console.WriteLine("BASE ID: " + BaseStation.ID + "BASE SERIAL NUMBER: " + BaseStation.SerialNumber);
 
-                if (response.SerialNumber != null)
+                if (BaseStation.SerialNumber != null)
                 {
-                    MessagingCenter.Send(this, "BaseSerialNumber", response.SerialNumber);
-                    await Application.Current.MainPage.DisplayAlert("Success!", "Got Base Serial Number: " + response.SerialNumber, "OK");
+                    MessagingCenter.Send(this, "BaseSerialNumber", BaseStation.SerialNumber);
+                    await Application.Current.MainPage.DisplayAlert("Success!", "Got Base Serial Number: " + BaseStation.SerialNumber, "OK");
                 }
                 else
                 {
