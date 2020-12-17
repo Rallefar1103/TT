@@ -109,7 +109,8 @@ namespace TurfTankRegistrationApplication.ViewModel
                         if (!testing)
                         {
                             MessagingCenter.Send(this, "RoverSerialNumber", RoverResponse);
-                            await Application.Current.MainPage.DisplayAlert("Success!", "Got the Rover Serial Number!", "OK");
+                            await Application.Current.MainPage.DisplayAlert("Success!", "Got Rover Serial Number: " + RoverResponse, "OK");
+                            await Navigation.PopAsync();
                         }
                         else
                         {
@@ -129,8 +130,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             }
             else
             {
-                await Application.Current.MainPage.DisplayAlert("OOPS!", "Something went wrong!", "OK");
-                Console.WriteLine("Something went wrong with the stopInmark!");
+                await Application.Current.MainPage.DisplayAlert("OOPS!", "Could not complete Stop Inmark!", "OK");
             }
 
         }

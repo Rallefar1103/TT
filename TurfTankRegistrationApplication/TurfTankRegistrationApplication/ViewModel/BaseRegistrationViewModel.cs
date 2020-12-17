@@ -36,7 +36,17 @@ namespace TurfTankRegistrationApplication.ViewModel
             {
                 GPS response = await GPS.API.GetById("basestation|97cce3bc-cd81-4c74-9dfa-8b048baedbe5");
                 Console.WriteLine("BASE ID: " + response.ID + "BASE SERIAL NUMBER: " + response.SerialNumber);
-                MessagingCenter.Send(this, "BaseSerialNumber", response.SerialNumber);
+
+                if (response.SerialNumber != null)
+                {
+                    MessagingCenter.Send(this, "BaseSerialNumber", response.SerialNumber);
+                    await Application.Current.MainPage.DisplayAlert("Success!", "Got Base Serial Number: " + response.SerialNumber, "OK");
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("OBS!", "Could not retrieve the serial number for Base", "OK");
+                }
+               
 
             } catch (HttpRequestException e)
             {
