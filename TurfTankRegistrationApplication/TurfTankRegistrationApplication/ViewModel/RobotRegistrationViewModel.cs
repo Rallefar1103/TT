@@ -62,7 +62,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             BaseCallback = new Action<object, string>(OnBaseDataReceived);
 
             MessagingCenter.Subscribe<ScanPage, string>(this, "Result", ScanCallback);
-            MessagingCenter.Subscribe<RoverRegistrationViewModel, string>(this, "RoverSerialNumber", RoverCallback);
+            MessagingCenter.Subscribe<RoverSerialNumberViewModel, string>(this, "RoverSerialNumber", RoverCallback);
             MessagingCenter.Subscribe<BaseRegistrationViewModel, string>(this, "BaseSerialNumber", BaseCallback);
         }
 
@@ -86,7 +86,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             {
                 QRSticker qrSticker;
 
-                if (data.ToUpper().Contains("CONTROLLER"))
+                if (data.Contains("controller"))
                 {
                     //Todo  fix denne constructor den crasher når den kommer tilbage med manual data
                     ControllerQRSticker controllerQrSticker = new ControllerQRSticker(data);
@@ -139,7 +139,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         {
             ScanPage scanPage = new ScanPage();
             scanPage.vm.Title = "Scanning " + component;
-            scanPage.QRMustContain = "Type:" + component;
+            scanPage.QRMustContain = component;
             Navigation.PushAsync(scanPage);
         }
 
@@ -231,11 +231,6 @@ namespace TurfTankRegistrationApplication.ViewModel
                 {
                     throw new Exception("Something went wrong..." + e.Message);
                 }
-                
-
-                robotItem.BaseGPS.Simcard.ID = result.ID;
-                BaseSIM = "Base Simcard: " + robotItem.BaseGPS.Simcard.ID;
-                OnPropertyChanged(nameof(BaseSIM));
             }
             else
             {

@@ -48,9 +48,9 @@ namespace TurfTankRegistrationApplication.ViewModel
             this.navigation = nav;
             this.testing = false;
             this.http = App.WifiClient;
-            stoppingInmark = new Command(async () => await StopInmark());
-            startingInmark = new Command(async () => await StartInmark());
-            RetrieveSerialNumber = new Command(async () => await GetRoverSerialNumber());
+            stoppingInmark = new Command(async () => await DummyStopInmark());
+            startingInmark = new Command(async () => await DummyStartInmark());
+            RetrieveSerialNumber = new Command(async () => await DummyGetRoverSerialNumber());
         }
 
         /// <summary>
@@ -147,8 +147,9 @@ namespace TurfTankRegistrationApplication.ViewModel
 
             try
             {
-                http.Timeout = TimeSpan.FromMilliseconds(8000);
+                
                 var response = await http.PostAsync(URL, content);
+                http.Timeout = TimeSpan.FromMilliseconds(8000);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -201,8 +202,9 @@ namespace TurfTankRegistrationApplication.ViewModel
 
             try
             {
-                http.Timeout = TimeSpan.FromMilliseconds(8000);
+                
                 var response = await http.PostAsync(URL, content);
+                http.Timeout = TimeSpan.FromMilliseconds(8000);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -284,7 +286,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             await navigation.PopAsync();
         }
 
-        public async Task DummyRoverSerial()
+        public async Task DummyGetRoverSerialNumber()
         {
             Console.WriteLine("Started RoverSerial Retrieval");
             showGetRoverSerial = false;
@@ -294,10 +296,12 @@ namespace TurfTankRegistrationApplication.ViewModel
             OnPropertyChanged(nameof(showRoverRetrievalLabel));
 
             await Task.Delay(2000);
+            MessagingCenter.Send(this, "RoverSerialNumber", "1234567");
 
             showRoverRetrievalLabel = false;
             OnPropertyChanged(nameof(showRoverRetrievalLabel));
 
+            
             await Application.Current.MainPage.DisplayAlert("Success!", "Got Rover Serial Number", "OK");
 
 
