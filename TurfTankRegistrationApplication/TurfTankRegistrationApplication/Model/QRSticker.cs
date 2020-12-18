@@ -18,6 +18,7 @@ namespace TurfTankRegistrationApplication.Model
 
     public enum QRType
     {
+        robotpackage,
         rover,
         basestation,
         tablet,
@@ -119,19 +120,8 @@ namespace TurfTankRegistrationApplication.Model
         {
             List<string> results = scanResult.Split('|').ToList();
 
-            string type = results[0];
+            string type = results[0].ToLower();
             string GUID = results[1];
-
-            //if (results[0].Contains(strType) &&
-            //    results[1].Contains(strQRID))
-            //{
-            //    type = Regex.Replace(results[0], strType, "");
-
-            //    qrId = Regex.Replace(results[1], strQRID, "");
-            //    results[1] = qrId;
-            //}
-            //else
-            //    return false;
 
             if (Enum.TryParse(type, out outType) && IsGUID(GUID))
                 return true;
@@ -140,7 +130,6 @@ namespace TurfTankRegistrationApplication.Model
         }
         protected bool IsGUID(string id)
         {
-
             if (Regex.IsMatch(id, @"[a-zA-Z0-9-]*$") && id != "" && id != null)
                 return true;
             else
