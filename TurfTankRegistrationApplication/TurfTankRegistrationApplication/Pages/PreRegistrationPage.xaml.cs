@@ -12,7 +12,6 @@ namespace TurfTankRegistrationApplication.Pages
         {
             PreRegistrationViewModel PreRegVM = new PreRegistrationViewModel(Navigation);
             BindingContext = PreRegVM;
-            NavigationPage.SetHasNavigationBar(this, false);
 
             ComponentBtn ChooseRover = new ComponentBtn("Rover", PreRegVM.ChooseToPreregisterRoverCommand);
             ComponentBtn ChooseBase = new ComponentBtn("Base", PreRegVM.ChooseToPreregisterBaseCommand);
