@@ -36,7 +36,7 @@ namespace TurfTankRegistrationApplication.Model
         public bool IsSynchronized { get; set; }
         public bool IsSelected { get; set; }
 
-        public static IDBAPI<RobotPackage> API { get; set; }
+        public static IDBAPI<RobotPackage> API { get; set; } = new DBAPI<RobotPackage>();
 
         #endregion Public Attributes
 
@@ -49,7 +49,6 @@ namespace TurfTankRegistrationApplication.Model
             BaseGPS = baseGPS;
             QR = qr;
             SerialNumber = QR.ID;
-            API = new DBAPI<RobotPackage>();
         }
 
         public RobotPackage()

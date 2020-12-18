@@ -80,7 +80,6 @@ namespace TurfTankRegistrationApplication
 			System.Console.WriteLine("\n*************\nHey there, Im Freshhhh!\n****************\n");
 		}
 
-
 		/// <summary>
 		/// Is called when the Auth0 server redirects back to the app with autn_code or tokens
 		/// Is only used when OAuth2Authenticator IsNativUI = true

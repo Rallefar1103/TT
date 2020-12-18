@@ -33,7 +33,6 @@ namespace TurfTankRegistrationApplication.Model
             QR = qr;
             Barcode = barcode;
             Activated = activated;
-            API = new DBAPI<SimCard>();
         }
 
         public SimCard()

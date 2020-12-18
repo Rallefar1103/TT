@@ -38,7 +38,6 @@ namespace TurfTankRegistrationApplication.Model
             ID = simcard.QR.ID;
             Simcard = simcard;
             SerialNumber = serialNumber;
-            API = new DBAPI<GPS>();
         }
         public GPS()
         {

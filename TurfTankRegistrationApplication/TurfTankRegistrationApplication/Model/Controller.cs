@@ -27,7 +27,7 @@ namespace TurfTankRegistrationApplication.Model
         public string EtherMac { get; set; }
         public string WifiMac { get; set; }
 
-        public static IDBAPI<Controller> API { get; set; }
+        public static IDBAPI<Controller> API { get; set; } = new DBAPI<Controller>();
 
         #endregion Public Attributes
 
@@ -66,7 +66,6 @@ namespace TurfTankRegistrationApplication.Model
             QR = qr;
             EtherMac = ether;
             WifiMac = wifi;
-            API = new DBAPI<Controller>();
         }
         public Controller()
         {
