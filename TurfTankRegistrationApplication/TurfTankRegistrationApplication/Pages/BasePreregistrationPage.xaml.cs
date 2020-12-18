@@ -57,7 +57,7 @@ namespace TurfTankRegistrationApplication.Pages
 
             Label ToggleQR = new Label
             {
-                Text = "Check QR Label",
+                Text = "Check QR Label Mounted",
                 TextColor = Color.White,
                 FontSize = 15,
                 HorizontalOptions = LayoutOptions.Center,
@@ -81,7 +81,7 @@ namespace TurfTankRegistrationApplication.Pages
 
             Label ToggleSimcardInserted = new Label
             {
-                Text = "Check QR Label",
+                Text = "Check Simcard Inserted",
                 TextColor = Color.White,
                 FontSize = 15,
                 HorizontalOptions = LayoutOptions.Center,
