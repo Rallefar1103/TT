@@ -22,15 +22,19 @@ namespace TurfTankRegistrationApplication.ViewModel
         public Command ScanForWifi { get; }
         public Command ConnectToSelectedWifi { get; }
 
+
         // UI bools
         public bool HasNotStartedWifiLoading { get; set; } = true;
         public bool ShowLoadingLabel { get; set; }
         public bool WifiListIsReady { get; set; } = false;
         public bool StartedConnecting { get; set; } = false;
 
+
+
         public WifiPageViewModel(INavigation navigation)
         {
             this.Navigation = navigation;
+            
             ScanForWifi = new Command( async () => await Scanner());
             ConnectToSelectedWifi = new Command(() => ConnectToRobot());
         }

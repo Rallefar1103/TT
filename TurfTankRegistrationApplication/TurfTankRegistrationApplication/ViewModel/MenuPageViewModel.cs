@@ -32,7 +32,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public async Task GoToPreRegistration()
         {
-            await Navigation.PushAsync(new PreRegistrationPage());
+            await Navigation.PushAsync(new PreRegPage());
         }
 
         public async Task GoToScanner()
