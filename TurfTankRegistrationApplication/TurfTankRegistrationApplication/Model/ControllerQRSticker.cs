@@ -71,14 +71,12 @@ namespace TurfTankRegistrationApplication.Model
         /// <returns></returns>
         private  bool ValidateScannedQR(string scanResult, out List<string> results, out QRType outType)
         {
-            outType = QRType.controller;
-
             results = scanResult.Split('|').ToList();
 
-            string type = results[0].ToLower();
-            string GUID = results[1];
-            string ssid = results[2];
-            string password = results[3];
+            string type = results[0].ToLower().Trim();
+            string GUID = results[1].Trim();
+            string ssid = results[2].Trim();
+            string password = results[3].Trim();
 
             if (Enum.TryParse(type, out outType) &&
                 IsGUID(GUID) &&
