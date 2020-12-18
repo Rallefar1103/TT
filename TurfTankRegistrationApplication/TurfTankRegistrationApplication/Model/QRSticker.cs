@@ -121,10 +121,6 @@ namespace TurfTankRegistrationApplication.Model
             List<string> results = scanResult.Split('|').ToList();
 
             string type = results[0].ToLower();
-            if(type == "base")
-            {
-                type = "basestation"; // TODO: Make QRType all caps instead, so that we don't use the "base" keyword, and need to change it this way.
-            }
             string GUID = results[1];
 
             if (Enum.TryParse(type, out outType) && IsGUID(GUID))

@@ -109,7 +109,7 @@ namespace TestUnit.Model
         [TestCase("ROBOTPACKAGE|1234", "Tests a valid QR string returns true")]
         [TestCase("ROBOTPACKAGE|1", "Tests a QR with a short id, ssid and password is still valid")]
         [TestCase("rOBOTpaCkAGE|1", "Tests that scanned qrs ar case insensitive")]
-        [TestCase("BASE|1234", "Tests that a base is a valid type")]
+        [TestCase("BASESTATION|1234", "Tests that a base is a valid type")]
         [TestCase("ROVER|1234", "Tests that a rover is a valid type")]
         [TestCase("TABLET|1234", "Tests that a tablet is a valid type")]
         public void QRSTickerScanResultValidation_QRWithvalidScanResults_ShouldBeValid(string scanresult, string Desc)
