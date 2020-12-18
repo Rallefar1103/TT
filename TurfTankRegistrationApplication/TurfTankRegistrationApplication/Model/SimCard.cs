@@ -22,7 +22,7 @@ namespace TurfTankRegistrationApplication.Model
         public IBarcodeSticker Barcode { get; set; }
         public bool Activated { get; set; }
 
-        public static IRegistrationDBAPI<SimCard> API { get; set; } = new RegistrationDBAPI<SimCard>();
+        public static IDBAPI<SimCard> API { get; set; } = new DBAPI<SimCard>();
 
         #endregion Public Attributes
 
@@ -33,6 +33,7 @@ namespace TurfTankRegistrationApplication.Model
             QR = qr;
             Barcode = barcode;
             Activated = activated;
+            API = new DBAPI<SimCard>();
         }
 
         public SimCard()

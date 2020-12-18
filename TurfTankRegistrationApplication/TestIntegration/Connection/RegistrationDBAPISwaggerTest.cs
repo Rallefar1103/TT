@@ -16,13 +16,13 @@ namespace TestIntegration.Connection
     [TestFixture]
     class RegistrationDBAPISwaggerTest
     {
-        RegistrationDBAPI<RobotPackage> RobotAPI { get; set; }
+        DBAPI<RobotPackage> RobotAPI { get; set; }
 
 
         [SetUp]
         public void SetupAPIs()
         {
-            RobotAPI = new RegistrationDBAPI<RobotPackage>();
+            RobotAPI = new DBAPI<RobotPackage>();
 
             RobotAPI.ApiClientRef = new Client(new HttpClient());
         }

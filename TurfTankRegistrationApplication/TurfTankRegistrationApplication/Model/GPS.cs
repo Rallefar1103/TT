@@ -27,7 +27,7 @@ namespace TurfTankRegistrationApplication.Model
         public SimCard Simcard { get; set; }
         public string SerialNumber { get; set; }
 
-        public static IRegistrationDBAPI<GPS> API { get; set; } = new RegistrationDBAPI<GPS>();
+        public static IDBAPI<GPS> API { get; set; } = new DBAPI<GPS>();
 
         #endregion
 
@@ -38,6 +38,7 @@ namespace TurfTankRegistrationApplication.Model
             ID = simcard.QR.ID;
             Simcard = simcard;
             SerialNumber = serialNumber;
+            API = new DBAPI<GPS>();
         }
         public GPS()
         {
