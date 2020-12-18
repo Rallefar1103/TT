@@ -25,11 +25,36 @@ namespace TestUnit.Connection
         [SetUp]
         public void SetupRobotItemModelSchema()
         {
+            // This Setup (although incredibly stupid), is needed, otherwise it will get a null reference error.
+            // This is due to the serializer putting in null at the places there should be an empty string.
             RobotSchema = new RobotItemModel();
+            RobotSchema.Id = "";
+            RobotSchema.SerialNumber = "";
             RobotSchema.BaseStation = new RobotBasestationItemModel();
+            RobotSchema.BaseStation.Type = "";
+            RobotSchema.BaseStation.SerialNumber = "";
+            RobotSchema.BaseStation.Id = "";
+            RobotSchema.BaseStation.CreatedAt = new DateTimeOffset();
             RobotSchema.Controller = new RobotControllerItemModel();
+            RobotSchema.Controller.Id = "";
+            RobotSchema.Controller.MacEth = "";
+            RobotSchema.Controller.CreatedAt = new DateTimeOffset();
+            RobotSchema.Controller.MacWifi = "";
+            RobotSchema.Controller.ProductNumber = "";
+            RobotSchema.Controller.SerialNumber = "";
+            RobotSchema.Controller.Ssid = "";
+            RobotSchema.Controller.SsidPassword = "";
+            RobotSchema.Controller.Type = "";
+            RobotSchema.Controller.UpdatedAt = new DateTimeOffset();
             RobotSchema.Rover = new RobotRoverItemModel();
+            RobotSchema.Rover.UpdatedAt = new DateTimeOffset();
+            RobotSchema.Rover.Type = "";
+            RobotSchema.Rover.SerialNumber = "";
+            RobotSchema.Rover.Id = "";
+            RobotSchema.Rover.CreatedAt = new DateTimeOffset();
             RobotSchema.Subscription = new RobotSubscriptionModel();
+            RobotSchema.Subscription.Id = "";
+            RobotSchema.Subscription.Name = "";
             RobotSchema.Routeplans = new List<RouteplanItemModel>();
             RobotSchema.Users = new List<RobotUserModel>();
             RobotSchema.CreatedAt = new DateTimeOffset();
@@ -51,7 +76,7 @@ namespace TestUnit.Connection
            
 
             var statuscodeInResponse = HttpStatusCode.OK;
-            string responseFromDB = JsonSerializer.Serialize<RobotItemModel>(schema);
+            string responseFromDB = JsonSerializer.Serialize<RobotItemModel>(schema, new JsonSerializerOptions() { IgnoreNullValues=true });
 
             var mockMessageHandler = new MockHttpMessageHandler(responseFromDB, statuscodeInResponse);
             var mockHttpClient = new HttpClient(mockMessageHandler);

@@ -49,11 +49,10 @@ namespace TurfTankRegistrationApplication.Model
 
             if (ValidateScannedQR(scannedData, out List<string> validatedResults, out QRType type))
             {
-                string id = validatedResults[1];
+                string id = scannedData;
                 string ssid = validatedResults[2];
                 string password = validatedResults[3];
                 Initialize(type, id, ssid, password);
-                Console.WriteLine("------------------The QR sticker was successfully scanned------------------");
             }
             else
             {
@@ -72,35 +71,14 @@ namespace TurfTankRegistrationApplication.Model
         /// <returns></returns>
         private  bool ValidateScannedQR(string scanResult, out List<string> results, out QRType outType)
         {
-            outType = QRType.notype;
+            outType = QRType.controller;
 
             results = scanResult.Split('|').ToList();
 
-            string type = results[0];
+            string type = results[0].ToLower();
             string GUID = results[1];
             string ssid = results[2];
             string password = results[3];
-
-            //if (results[0].Contains(type) &&
-            //    results[1].Contains(strQRID) &&
-            //    results[2].Contains(strSSID) &&
-            //    results[3].Contains(strPassword))
-            //{
-            //    type = Regex.Replace(results[0], strType, "");
-
-            //    qrId = Regex.Replace(results[1], strQRID, "");
-            //    results[1] = qrId;
-
-            ssid = Regex.Replace(results[2], strSSID, "");
-            results[2] = ssid;
-
-            password = Regex.Replace(results[3], strPassword, "");
-            results[3] = password;
-            //}
-            //else
-            //{
-            //    return false;
-            //}
 
             if (Enum.TryParse(type, out outType) &&
                 IsGUID(GUID) &&

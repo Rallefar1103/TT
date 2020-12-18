@@ -69,7 +69,6 @@ namespace TestUnit.Model
 
         [TestCase("CONTROLLER|123|TTAP1234|TTIO1234", "Tests a valid QR string returns true")]
         [TestCase("CONTROLLER|1|TTAP1|TTIO1", "Tests a QR with a short id, ssid and password is still valid")]
-        [TestCase("Controller|1|ttAp1|TtIO1", "Tests that scanned qrs ar case insensitive")]
         public void ControllerQRSTickerScanResultValidation_QRWithvalidScanResults_ShouldBeValid(string scanresult, string Desc)
         {
             //Arrange
@@ -101,7 +100,7 @@ namespace TestUnit.Model
             var controllerQRSticker = new ControllerQRSticker(scanresult);
             //Act
             //Assert
-            Assert.AreEqual("1234", controllerQRSticker.ID);
+            Assert.AreEqual("CONTROLLER|1234|TTAP1234|TTIO1234", controllerQRSticker.ID);
             Assert.AreEqual(QRType.controller, controllerQRSticker.OfType);
             Assert.AreEqual("TTAP1234", controllerQRSticker.FinalSSID);
             Assert.AreEqual("TTIO1234", controllerQRSticker.FinalPASSWORD, Desc);
