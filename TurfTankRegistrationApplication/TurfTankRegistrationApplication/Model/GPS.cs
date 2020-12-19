@@ -7,7 +7,7 @@ using TurfTankRegistrationApplication.Exceptions;
 
 namespace TurfTankRegistrationApplication.Model
 {
-    interface IGPS
+    interface IGPS : IComponent
     {
         SimCard Simcard { get; set; }
     }
@@ -25,7 +25,6 @@ namespace TurfTankRegistrationApplication.Model
 
         public GPSType ofType;
         public SimCard Simcard { get; set; }
-        public string SerialNumber { get; set; }
 
         public static IDBAPI<GPS> API { get; set; } = new DBAPI<GPS>();
 

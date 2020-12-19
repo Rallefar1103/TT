@@ -7,7 +7,7 @@ using TurfTankRegistrationApplication.Exceptions;
 
 namespace TurfTankRegistrationApplication.Model
 {
-    interface ITablet
+    interface ITablet : IComponent
     {
         SimCard Simcard { get; set; }
         void ActivateSimcard();
