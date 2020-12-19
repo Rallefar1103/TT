@@ -137,7 +137,7 @@ namespace TurfTankRegistrationApplication.Pages
             ScanQR.SetBinding(Button.CommandProperty, "ScanRoverQR");
             QRScannedData.SetBinding(Label.TextProperty, "QRScannedData");
             ScanBarcode.SetBinding(Button.CommandProperty, "ScanRoverSim");
-            BarcodeSN.SetBinding(Label.TextProperty, "RoverSN");
+            BarcodeSN.SetBinding(Label.TextProperty, "BarcodeSN");
 
             ConfirmAndSave.SetBinding(Button.CommandProperty, "ConfirmPreregistration");
 
