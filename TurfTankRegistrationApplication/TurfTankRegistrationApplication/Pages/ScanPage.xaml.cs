@@ -35,7 +35,7 @@ namespace TurfTankRegistrationApplication.Pages
             get => _qrMustContain;
             set => _qrMustContain = value;
         }
-        private string _qrMustContain = "TESTTTTTTTTT";
+        private string _qrMustContain = "";
 
 
         #endregion
