@@ -182,9 +182,17 @@ namespace TurfTankRegistrationApplication.ViewModel
 
             if (string.IsNullOrEmpty(robotItem.Controller.ID))
             {
-                robotItem.Controller.ID = result.ID;
-                ControllerSN = "Controller SN: " + robotItem.Controller.ID;
-                OnPropertyChanged(nameof(ControllerSN));
+                try
+                {
+                    robotItem.Controller.ID = result.ID;
+                    ControllerSN = "Controller SN: " + robotItem.Controller.ID;
+                    OnPropertyChanged(nameof(ControllerSN));
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Something went wrong fetching the controller..." + e.Message);
+                }
+                
             }
             else
             {
@@ -229,7 +237,7 @@ namespace TurfTankRegistrationApplication.ViewModel
                 }
                 catch (Exception e)
                 {
-                    throw new Exception("Something went wrong..." + e.Message);
+                    throw new Exception("Something went wrong fetching the base simcard..." + e.Message);
                 }
             }
             else
