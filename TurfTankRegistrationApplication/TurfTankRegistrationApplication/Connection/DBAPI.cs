@@ -64,7 +64,7 @@ namespace TurfTankRegistrationApplication.Connection
         public async Task<T> GetById(string id)
         {
             T type = new T();
-            if(type is RobotPackage)
+            if (type is RobotPackage)
             {
                 RobotItemModel robotSchema = await ApiClientRef.GetRobotByIdAsync(id);
 
@@ -85,16 +85,32 @@ namespace TurfTankRegistrationApplication.Connection
                 {
                     throw new Exception("Type GPS did not contain the correct GPS QR ID");
                 }
+            }
+
+            else if (type is Controller)
+            {
+                if (id.Contains("controller"))
+                {
+                    RobotControllerItemModel BaseSchema = await ApiClientRef.GetControllerByIdAsync(id);
+
+                    Controller newObject = new Controller(BaseSchema);
+                    return (T)Convert.ChangeType(newObject, typeof(Controller));
+
+                }
+                else
+                {
+                    throw new Exception("Type Controller did not contain the correct type in its ID");
+                }
 
             }
             else
             {
                 throw new Exception($"The type {typeof(T)} is not yet added to the RegistrationDBAPI.GetById method, or might not be added to swagger yet.");
             }
-            
-        }
 
-        public async Task<List<T>> GetListOfObjects(List<T> someListWithIds)
+            }
+
+            public async Task<List<T>> GetListOfObjects(List<T> someListWithIds)
         {
             await Task.Delay(1);
             throw new NotImplementedException();
