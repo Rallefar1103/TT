@@ -32,7 +32,16 @@ namespace TurfTankRegistrationApplication.Model
         public Tablet(SimCard simcard)
         {
             Initialize(simcard: simcard);
+        }
 
+        public Tablet(RobotTabletItemModel schema)
+        {
+            SimCard sim = new SimCard();
+            sim.QR = new QRSticker();
+            sim.QR.ID = schema.Id;
+            sim.Barcode = new BarcodeSticker();
+            sim.Barcode.ICCID = schema.Imei;
+            Initialize(simcard: sim);
         }
         #endregion Constructors
 

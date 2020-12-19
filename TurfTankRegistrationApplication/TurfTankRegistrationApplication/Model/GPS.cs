@@ -64,12 +64,19 @@ namespace TurfTankRegistrationApplication.Model
 
             Initialize(type: type, simcard: simcard, serialNumber: serialNumber);
         }
-        public GPS(RobotBasestationItemModel baseStationItemModel)
+        public GPS(RobotBasestationItemModel baseSchema)
         {
             ofType = GPSType.Base;
-            ID = baseStationItemModel.Id;
+            ID = baseSchema.Id;
             //Simcard = baseStationItemModel.simcard;
-            SerialNumber = baseStationItemModel.SerialNumber;
+            SerialNumber = baseSchema.SerialNumber;
+        }
+        public GPS(RobotRoverItemModel roverSchema)
+        {
+            ofType = GPSType.Base;
+            ID = roverSchema.Id;
+            //Simcard = baseStationItemModel.simcard;
+            SerialNumber = roverSchema.SerialNumber;
         }
 
         #endregion constructors
