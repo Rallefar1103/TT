@@ -17,7 +17,7 @@ namespace TestUnit.Connection
 {
 
     [TestFixture]
-    class RegistrationDBAPITest
+    class DBAPITest
     {
 
         #region Setup
@@ -80,7 +80,7 @@ namespace TestUnit.Connection
 
             var mockMessageHandler = new MockHttpMessageHandler(responseFromDB, statuscodeInResponse);
             var mockHttpClient = new HttpClient(mockMessageHandler);
-            RegistrationDBAPI<RobotPackage> testRegistrationDBAPI = new RegistrationDBAPI<RobotPackage>(new Client(mockHttpClient));
+            DBAPI<RobotPackage> testRegistrationDBAPI = new DBAPI<RobotPackage>(new Client(mockHttpClient));
 
             // Act
             RobotPackage RobotTest = await testRegistrationDBAPI.GetById(SN);
@@ -105,7 +105,7 @@ namespace TestUnit.Connection
 
             var mockMessageHandler = new MockHttpMessageHandler(responseFromDB, statuscodeInResponse);
             var mockHttpClient = new HttpClient(mockMessageHandler);
-            RegistrationDBAPI<RobotPackage> testRegistrationDBAPI = new RegistrationDBAPI<RobotPackage>(new Client(mockHttpClient));
+            DBAPI<RobotPackage> testRegistrationDBAPI = new DBAPI<RobotPackage>(new Client(mockHttpClient));
 
             // Act
             RobotPackage RobotTest = await testRegistrationDBAPI.GetById(SN);
@@ -136,7 +136,7 @@ namespace TestUnit.Connection
 
             var mockMessageHandler = new MockHttpMessageHandler(responseFromDB, statuscodeInResponse);
             var mockHttpClient = new HttpClient(mockMessageHandler);
-            RegistrationDBAPI<RobotPackage> testRegistrationDBAPI = new RegistrationDBAPI<RobotPackage>(new Client(mockHttpClient));
+            DBAPI<RobotPackage> testRegistrationDBAPI = new DBAPI<RobotPackage>(new Client(mockHttpClient));
 
             // Act & Assert (since throws needs to take the acting object)
             Assert.ThrowsAsync<ApiException>(async () => await testRegistrationDBAPI.GetById(schema.Id));
@@ -155,7 +155,7 @@ namespace TestUnit.Connection
 
             var mockMessageHandler = new MockHttpMessageHandler(responseFromDB, statuscodeInResponse);
             var mockHttpClient = new HttpClient(mockMessageHandler);
-            RegistrationDBAPI<RobotPackage> testRegistrationDBAPI = new RegistrationDBAPI<RobotPackage>(new Client(mockHttpClient));
+            DBAPI<RobotPackage> testRegistrationDBAPI = new DBAPI<RobotPackage>(new Client(mockHttpClient));
 
             // Act & Assert (since throws needs to take the acting object)
             Assert.ThrowsAsync<ApiException>(async () => await testRegistrationDBAPI.GetById(schema.Id));

@@ -27,7 +27,7 @@ namespace TurfTankRegistrationApplication.Model
         public string EtherMac { get; set; }
         public string WifiMac { get; set; }
 
-        public static IRegistrationDBAPI<Controller> API { get; set; }
+        public static IDBAPI<Controller> API { get; set; } = new DBAPI<Controller>();
 
         #endregion Public Attributes
 
@@ -57,7 +57,7 @@ namespace TurfTankRegistrationApplication.Model
         #endregion Private methods
 
         #region Constructors
-        public void Initialize(string serial, string ssid, string pw, ControllerQRSticker qr, string ether, string wifi, RegistrationDBAPI<Controller> api)
+        public void Initialize(string serial, string ssid, string pw, ControllerQRSticker qr, string ether, string wifi)
         {
             ID = qr.ID;
             SerialNumber = serial;
@@ -66,7 +66,6 @@ namespace TurfTankRegistrationApplication.Model
             QR = qr;
             EtherMac = ether;
             WifiMac = wifi;
-            API = api;
         }
         public Controller()
         {
@@ -76,8 +75,7 @@ namespace TurfTankRegistrationApplication.Model
                 pw: $"",
                 qr: new ControllerQRSticker(),
                 ether: $"",
-                wifi: $"",
-                api: new RegistrationDBAPI<Controller>()
+                wifi: $""
             );
         }
 
@@ -89,8 +87,7 @@ namespace TurfTankRegistrationApplication.Model
                 pw: initialPassword,
                 qr: qr,
                 ether: macEthernet,
-                wifi: macWifi,
-                api: new RegistrationDBAPI<Controller>()
+                wifi: macWifi
            );
         }
 
@@ -102,8 +99,7 @@ namespace TurfTankRegistrationApplication.Model
                 pw: initialPassword,
                 qr: qr,
                 ether: macEthernet,
-                wifi: macWifi,
-                api: new RegistrationDBAPI<Controller>()
+                wifi: macWifi
            );
         }
 
@@ -117,8 +113,7 @@ namespace TurfTankRegistrationApplication.Model
                 pw: $"{schema.SsidPassword}",
                 qr: new ControllerQRSticker(),
                 ether: $"{schema.MacEth}",
-                wifi: $"{schema.MacWifi}",
-                api: new RegistrationDBAPI<Controller>()
+                wifi: $"{schema.MacWifi}"
             );
         }
 

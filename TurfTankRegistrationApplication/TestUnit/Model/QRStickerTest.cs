@@ -21,7 +21,7 @@ namespace TestUnit.Model
         public async Task ConfirmAssemblyAndLabeling_QrWithRoverType_ShouldValidateAndSaveRover(string Desc)
         {
             // Mock
-            var mockDBAPI = Substitute.For<IRegistrationDBAPI<GPS>>();
+            var mockDBAPI = Substitute.For<IDBAPI<GPS>>();
             mockDBAPI.Save(Arg.Any<GPS>()).Returns(true);
             GPS.API = mockDBAPI;
 
@@ -48,7 +48,7 @@ namespace TestUnit.Model
         public void ConfirmAssemblyAndLabeling_RoverWithInvalidQr_ShouldThrowInvalidQRException(string Desc, string QRID, string SimcardID, string BarcodeICCID)
         {
             // Mock
-            var mockDBAPI = Substitute.For<IRegistrationDBAPI<GPS>>();
+            var mockDBAPI = Substitute.For<IDBAPI<GPS>>();
             mockDBAPI.Save(Arg.Any<GPS>()).Returns(true);
             GPS.API = mockDBAPI;
 

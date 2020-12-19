@@ -16,8 +16,7 @@ namespace TurfTankRegistrationApplication.Model
     {
         public SimCard Simcard { get; set; }
 
-        public static IRegistrationDBAPI<Tablet> API { get; set; }
-        public IRegistrationDBAPI<Tablet> SelfAPI { get => API; }
+        public static IDBAPI<Tablet> API { get; set; } = new DBAPI<Tablet>();
 
         #region Constructors
         public void Initialize(SimCard simcard)
