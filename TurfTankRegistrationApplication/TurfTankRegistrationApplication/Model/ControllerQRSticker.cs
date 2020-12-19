@@ -50,7 +50,7 @@ namespace TurfTankRegistrationApplication.Model
             if (ValidateScannedQR(scannedData, out List<string> validatedResults, out QRType type))
             {
                 
-                string id = validatedResults[0]+"|"+validatedResults[1];
+                string id = scannedData;
                 string ssid = validatedResults[2];
                 string password = validatedResults[3];
                 Initialize(type, id, ssid, password);
