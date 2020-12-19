@@ -46,8 +46,8 @@ namespace TurfTankRegistrationApplication
 			Authenticator = new TurfTankAuth(OAuthCredentials);
 			WifiClient = new HttpClient();
 			ApiClient = new Client(WifiClient);
-			MainPage = new NavigationPage (new SignInPage(Authenticator));
-		}
+            MainPage = new NavigationPage(new SignInPage(Authenticator));
+        }
 
 
 		/// <summary>
