@@ -12,7 +12,7 @@ namespace TurfTankRegistrationApplication.ViewModel
     public interface IRegistrateRobot
     {
         void RegistrateChassis(QRSticker result);
-        void RegistrateController(QRSticker result);
+        Task RegistrateController(QRSticker result);
         void RegistrateRoverSimcard(QRSticker result);
         Task RegistrateBaseSimcard(QRSticker result);
         void RegistrateTablet();
@@ -23,8 +23,10 @@ namespace TurfTankRegistrationApplication.ViewModel
     {
         public RobotPackage robotItem { get; set; }
 
-        public string ChassisSN { get; set; } 
-        public string ControllerSN { get; set; } 
+        public string ChassisSN { get; set; }
+        public string ControllerSN { get; set; }
+        public string ControllerSSID { get; set; }
+        public string ControllerPASSWORD { get; set; }
         public string RoverSN { get; set; } 
         public string BaseSN { get; set; }
         public string TabletSN { get; set; } 
@@ -82,6 +84,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         private async void OnScanDataReceived(object sender, string data)
         {
+            data.Trim();
             try
             {
                 QRSticker qrSticker;
@@ -106,7 +109,7 @@ namespace TurfTankRegistrationApplication.ViewModel
                         await RegistrateBaseSimcard(qrSticker);
                         break;
                     case QRType.controller:
-                        RegistrateController(qrSticker);
+                        await RegistrateController(qrSticker);
                         break;
                     case QRType.rover:
                         RegistrateRoverSimcard(qrSticker);
@@ -173,17 +176,27 @@ namespace TurfTankRegistrationApplication.ViewModel
             }
         }
 
-        public async void RegistrateController(QRSticker result)
+        // TODO: Update all registrate functions to match this form
+        // Refactor property changed to be used in both RobotPackage and the different components.
+        public async Task RegistrateController(QRSticker result)
         {
+
             if (result is ControllerQRSticker)
             {
                 robotItem.Controller.QR = result as ControllerQRSticker;
+                robotItem.Controller = await Controller.API.GetById(result.ID);
+                ControllerSN = robotItem.Controller.SerialNumber;
+                ControllerSSID = "SSID: " + robotItem.Controller.ActiveSSID;
+                ControllerPASSWORD = "Password: " + robotItem.Controller.ActivePassword;
+                OnPropertyChanged(nameof(ControllerSN));
+                OnPropertyChanged(nameof(ControllerSSID));
+                OnPropertyChanged(nameof(ControllerPASSWORD));
             }
 
             if (string.IsNullOrEmpty(robotItem.Controller.ID))
             {
                 robotItem.Controller.ID = result.ID;
-                ControllerSN = "Controller SN: " + robotItem.Controller.ID;
+                ControllerSN = $"ID:\n " + robotItem.Controller.ID;
                 OnPropertyChanged(nameof(ControllerSN));
             }
             else
@@ -191,7 +204,7 @@ namespace TurfTankRegistrationApplication.ViewModel
                 await Application.Current.MainPage.DisplayAlert("OBS!", "Controller is already scanned", "Ok");
             }
         }
-        
+
 
         public async void RegistrateRoverSimcard(QRSticker result)
         {
@@ -251,6 +264,17 @@ namespace TurfTankRegistrationApplication.ViewModel
             // Not implemented, but will save every component on the robotPackage instance to the DB
             await Application.Current.MainPage.DisplayAlert("Success!", "Robot saved", "OK");
         }
+
+
+        //TODO lav en generisk funktion til at hente components fra DB
+        public async Task<T> GetItemFromDB<T>(string id) where T : System.ComponentModel.IComponent, new()
+        {
+
+            throw new NotImplementedException();
+            return new T();
+        }
+
+        
         #endregion
     }
 }

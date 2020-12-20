@@ -13,6 +13,8 @@ namespace TurfTankRegistrationApplication.ViewModel
         public INavigation Navigation { get; set; }
 
         public string QRScannedData { get; set; }
+        public string BarcodeScannedData { get; set; }
+
 
         public QRSticker RoverQR { get; set; }
         public SimCard RoverSimcard { get; set; }
@@ -42,8 +44,12 @@ namespace TurfTankRegistrationApplication.ViewModel
             this.RoverQR = new QRSticker();
             CanScanSQ = true;
             Callback = new Action<object, string>(OnDataReceived);
-            ScanRoverQR = new Command(execute: async () => await DummyScanQR(), canExecute: () => CanScanSQ);
-            ScanRoverSim = new Command(execute: async () => await DummyScanBarcode(), canExecute: () => CanScanBarcode);
+            //ScanRoverQR = new Command(execute: async () => await DummyScanQR(), canExecute: () => CanScanSQ);
+            ScanRoverQR = new Command(() => NavigateToScanPage("rover"));
+
+            //ScanRoverSim = new Command(execute: async () => await DummyScanBarcode(), canExecute: () => CanScanBarcode);
+            ScanRoverSim = new Command(() => NavigateToScanPage(""));
+
             ConfirmPreregistration = new Command(execute: async () => await DummyConfirm());
             MessagingCenter.Subscribe<ScanPage, string>(this, "Result", Callback);
         }
@@ -51,6 +57,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         private async Task DummyScanQR()
         {
+
             await Task.Delay(2000);
             await Application.Current.MainPage.DisplayAlert("Success!", "Scanned the Rover QR-label " + RoverQR.ID, "OK");
 
@@ -113,7 +120,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         {
             ScanPage scanPage = new ScanPage();
             scanPage.vm.Title = "Scanning " + component;
-
+            scanPage.QRMustContain = component;
             Navigation.PushAsync(scanPage);
         }
 
@@ -124,9 +131,16 @@ namespace TurfTankRegistrationApplication.ViewModel
                 if (data.Contains("rover"))
                 {
                     QRScannedData = data;
-                    RoverQR = new QRSticker(data);
+                    //RoverQR = new QRSticker(data);
                     await Application.Current.MainPage.DisplayAlert("Success!", "Scanned the Rover QR-label " + RoverQR.ID, "OK");
                     CanScanBarcode = true;
+                    OnPropertyChanged(nameof(CanScanBarcode));
+                    //RoverQR.ID = QRScannedData;
+                    //OnPropertyChanged(nameof(QRScannedData));
+
+                    ScanQRColor = Color.DarkGreen;
+                    OnPropertyChanged(nameof(ScanQRColor));
+
 
                 }
                 else 

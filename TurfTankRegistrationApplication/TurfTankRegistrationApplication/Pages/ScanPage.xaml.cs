@@ -35,7 +35,8 @@ namespace TurfTankRegistrationApplication.Pages
             get => _qrMustContain;
             set => _qrMustContain = value;
         }
-        private string _qrMustContain = "TESTTTTTTTTT";
+        public string Separator { get; set; }
+        private string _qrMustContain = "";
 
 
         #endregion
@@ -46,13 +47,18 @@ namespace TurfTankRegistrationApplication.Pages
         ZXingScannerView _scanner = new ZXingScannerView();
         bool _manualInput = false;
 
+        ZXingBarcodeImageView _qr = new ZXingBarcodeImageView();
+
         #endregion
 
         #region Constructor
 
-        public ScanPage()
+        public ScanPage(string qrMustContain = "", string separator = "|")
         {
             InitializeComponent();
+            QRMustContain = qrMustContain;
+            Separator = separator;
+
             //Binding to the viewmodel
             BindingContext = vm = new ScanViewModel();
 
@@ -82,7 +88,8 @@ namespace TurfTankRegistrationApplication.Pages
 
             //View Stuff
             //Show/hide the QR sticker
-            //QR.IsVisible = true;
+            QR.IsVisible = true;
+            QR.BarcodeValue = "m";
 
         }
 
@@ -110,7 +117,7 @@ namespace TurfTankRegistrationApplication.Pages
 
         /// <summary>
         /// Stores the the scanned data in viewmodel.Result
-        /// 
+        /// When Button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -124,7 +131,7 @@ namespace TurfTankRegistrationApplication.Pages
         async void SwitchToManual_Clicked(System.Object sender, System.EventArgs e)
         {
             //TODO sammensæt QRMustcontain med manual input
-            
+
             Console.WriteLine("MANUAL INPUT ACTIVATED");
             _manualInput = !_manualInput;
             ManualInputView.IsVisible = _manualInput;
@@ -133,8 +140,8 @@ namespace TurfTankRegistrationApplication.Pages
             vm.ResultIsLocked = _manualInput;
             SwitchToManual.Text = vm.ResultIsLocked == true ? "SWITCH TO SCANNER INPUT" : "MANUAL INPUT";
             //after typing the data call
-            ManualLabel.Text = $"Plaese type the {QRMustContain} serialnumber";
-            vm.ManualInputText = QRMustContain + ";Serialnumber:";
+            ManualLabel.Text = $"Plaese type the {QRMustContain}{Separator}ID";
+            vm.ManualInputText = QRMustContain + Separator;
             await Task.Run(() =>
             {
                 ManualInputField.Focus();
@@ -151,6 +158,7 @@ namespace TurfTankRegistrationApplication.Pages
         {
             vm.ScanResult = "";
             QR.IsVisible = false;
+
             Dimmer.IsVisible = !_manualInput;
             vm.DimmValue = 0;
             vm.ScannerState = ScanViewModel.state.Ready_To_Scan;
@@ -318,17 +326,17 @@ namespace TurfTankRegistrationApplication.Pages
 
             //Device.BeginInvokeOnMainThread((Action)(() =>
             //{
-                if (QRMustContain != null && !zxinResultText.Contains(QRMustContain))
-                {
-                    SetScanPageStateToResultDoesNotMatchQRMustContainString();
-                    return;
-                }
-                // else QRMustcontain == null || it is contained in the scanned string
-                //Only update the vm.Result if the data has changed
-                else if (vm.ScanResult != zxinResultText)
-                {
-                    SetScanPageStateToScanResultReady(zxinResultText);
-                }
+            if (QRMustContain != null && !zxinResultText.Contains(QRMustContain))
+            {
+                SetScanPageStateToResultDoesNotMatchQRMustContainString();
+                return;
+            }
+            // else QRMustcontain == null || it is contained in the scanned string
+            //Only update the vm.Result if the data has changed
+            else if (vm.ScanResult != zxinResultText)
+            {
+                SetScanPageStateToScanResultReady(zxinResultText);
+            }
 
             //}));
 

@@ -37,6 +37,8 @@
     <Folder Include="Resources\" />
     <Folder Include="Views\Validation_views\" />
     <Folder Include="Helpers\" />
+    <Folder Include="ViewModel\PreRegistration\" />
+    <Folder Include="Pages\PreRegistration\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Views\Scanner.xaml" />

@@ -20,7 +20,6 @@ namespace TurfTankRegistrationApplication.Model
     public class Controller : Component, IController, IValidateable
     {
         #region Public Attributes
-        public string SerialNumber { get; set; }
         public string ActiveSSID { get; set; }
         public string ActivePassword { get; set; }
         public ControllerQRSticker QR { get; set; }

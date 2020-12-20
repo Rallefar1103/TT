@@ -12,6 +12,7 @@ namespace TurfTankRegistrationApplication.Model
     public interface IComponent
     {
         string ID { get; set; }
+        string SerialNumber { get; set; }
         bool ConnectedToRobot { get; set; }
         bool IsBroken { get; set; }
         string GetSerialNumber();
@@ -21,6 +22,7 @@ namespace TurfTankRegistrationApplication.Model
     public abstract class Component : IComponent, IValidateable
     {
         public string ID { get; set; }
+        public string SerialNumber { get; set; }
         public bool ConnectedToRobot { get; set; }
         public bool IsBroken { get; set; }
 
