@@ -176,9 +176,9 @@ namespace TurfTankRegistrationApplication.ViewModel
             }
         }
 
-        public async 
-        Task
-RegistrateController(QRSticker result)
+        // TODO: Update all registrate functions to match this form
+        // Refactor property changed to be used in both RobotPackage and the different components.
+        public async Task RegistrateController(QRSticker result)
         {
 
             if (result is ControllerQRSticker)
@@ -186,8 +186,8 @@ RegistrateController(QRSticker result)
                 robotItem.Controller.QR = result as ControllerQRSticker;
                 robotItem.Controller = await Controller.API.GetById(result.ID);
                 ControllerSN = robotItem.Controller.SerialNumber;
-                ControllerSSID = robotItem.Controller.ActiveSSID;
-                ControllerPASSWORD = robotItem.Controller.ActivePassword;
+                ControllerSSID = "SSID: " + robotItem.Controller.ActiveSSID;
+                ControllerPASSWORD = "Password: " + robotItem.Controller.ActivePassword;
                 OnPropertyChanged(nameof(ControllerSN));
                 OnPropertyChanged(nameof(ControllerSSID));
                 OnPropertyChanged(nameof(ControllerPASSWORD));
