@@ -71,7 +71,6 @@
   <ItemGroup>
     <Compile Include="AndroidTest\LoginTest.cs" />
     <Compile Include="Connection\RegistrationDBAPISwaggerTest.cs" />
-    <Compile Include="Tests.cs" />
     <Compile Include="AppInitializer.cs" />
   </ItemGroup>
   <ItemGroup />

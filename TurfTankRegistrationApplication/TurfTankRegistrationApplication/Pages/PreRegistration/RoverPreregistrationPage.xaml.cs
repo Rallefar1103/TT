@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TurfTankRegistrationApplication.ViewModel;
+using TurfTankRegistrationApplication.Views.Registration_views;
 using Xamarin.Forms;
 
 namespace TurfTankRegistrationApplication.Pages
@@ -26,6 +27,8 @@ namespace TurfTankRegistrationApplication.Pages
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center,
             };
+            SNLabel QRScannedData = new SNLabel();
+
 
             Button ScanBarcode = new Button
             {
@@ -39,6 +42,8 @@ namespace TurfTankRegistrationApplication.Pages
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center,
             };
+            SNLabel BarcodeSN = new SNLabel();
+
 
             Button ConfirmAndSave = new Button
             {
@@ -130,7 +135,10 @@ namespace TurfTankRegistrationApplication.Pages
 
 
             ScanQR.SetBinding(Button.CommandProperty, "ScanRoverQR");
+            QRScannedData.SetBinding(Label.TextProperty, "QRScannedData");
             ScanBarcode.SetBinding(Button.CommandProperty, "ScanRoverSim");
+            BarcodeSN.SetBinding(Label.TextProperty, "BarcodeSN");
+
             ConfirmAndSave.SetBinding(Button.CommandProperty, "ConfirmPreregistration");
 
             ScanQR.SetBinding(Button.IsEnabledProperty, "CanScanQR");
@@ -145,9 +153,13 @@ namespace TurfTankRegistrationApplication.Pages
             checkSimcardInserted.SetBinding(CheckBox.IsCheckedProperty, "toggleSimcardMounted");
 
             Grid.SetRow(ScanQR, 0);
+            Grid.SetRow(QRScannedData, 1);
+
             Grid.SetRow(ToggleQR, 1);
             Grid.SetRow(checkQRMounted, 1);
             Grid.SetRow(ScanBarcode, 2);
+            Grid.SetRow(BarcodeSN, 2);
+
             Grid.SetRow(ToggleSimcardInserted, 3);
             Grid.SetRow(checkSimcardInserted, 3);
             Grid.SetRow(box, 4);
@@ -163,9 +175,11 @@ namespace TurfTankRegistrationApplication.Pages
             Grid.SetColumnSpan(ConfirmAndSave, 2);
 
             layout.Children.Add(ScanQR);
+            layout.Children.Add(QRScannedData);
             layout.Children.Add(ToggleQR);
             layout.Children.Add(checkQRMounted);
             layout.Children.Add(ScanBarcode);
+            layout.Children.Add(BarcodeSN);
             layout.Children.Add(ToggleSimcardInserted);
             layout.Children.Add(checkSimcardInserted);
             layout.Children.Add(box);

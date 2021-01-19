@@ -100,7 +100,7 @@ namespace TestUnit.Model
             var controllerQRSticker = new ControllerQRSticker(scanresult);
             //Act
             //Assert
-            Assert.AreEqual("CONTROLLER|1234|TTAP1234|TTIO1234", controllerQRSticker.ID);
+            Assert.AreEqual("CONTROLLER|1234", controllerQRSticker.ID);
             Assert.AreEqual(QRType.controller, controllerQRSticker.OfType);
             Assert.AreEqual("TTAP1234", controllerQRSticker.FinalSSID);
             Assert.AreEqual("TTIO1234", controllerQRSticker.FinalPASSWORD, Desc);

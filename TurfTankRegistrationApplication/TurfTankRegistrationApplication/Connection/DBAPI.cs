@@ -64,7 +64,7 @@ namespace TurfTankRegistrationApplication.Connection
         public async Task<T> GetById(string id)
         {
             T type = new T();
-            if(type is RobotPackage)
+            if (type is RobotPackage)
             {
                 RobotItemModel robotSchema = await ApiClientRef.GetRobotByIdAsync(id);
 
@@ -79,19 +79,54 @@ namespace TurfTankRegistrationApplication.Connection
 
                     GPS newObject = new GPS(BaseSchema);
                     return (T)Convert.ChangeType(newObject, typeof(GPS));
+                }
+                else if (id.Contains("rover"))
+                {
+                    RobotRoverItemModel BaseSchema = await ApiClientRef.GetRoverByIdAsync(id);
 
+                    GPS newObject = new GPS(BaseSchema);
+                    return (T)Convert.ChangeType(newObject, typeof(GPS));
                 }
                 else
                 {
                     throw new Exception("Type GPS did not contain the correct GPS QR ID");
                 }
+            }
+            else if (type is Controller)
+            {
+                if (id.Contains("controller"))
+                {
+                    RobotControllerItemModel BaseSchema = await ApiClientRef.GetControllerByIdAsync(id);
 
+                    Controller newObject = new Controller(BaseSchema);
+                    return (T)Convert.ChangeType(newObject, typeof(Controller));
+
+                }
+                else
+                {
+                    throw new Exception("Type Controller did not contain the correct type in its ID");
+                }
+
+            }
+            else if (type is Tablet)
+            {
+                if (id.Contains("tablet"))
+                {
+                    RobotTabletItemModel BaseSchema = await ApiClientRef.GetTabletByIdAsync(id);
+
+                    Tablet newObject = new Tablet(BaseSchema);
+                    return (T)Convert.ChangeType(newObject, typeof(Tablet));
+
+                }
+                else
+                {
+                    throw new Exception("Type GPS did not contain the correct Tablet QR ID");
+                }
             }
             else
             {
                 throw new Exception($"The type {typeof(T)} is not yet added to the RegistrationDBAPI.GetById method, or might not be added to swagger yet.");
             }
-            
         }
 
         public async Task<List<T>> GetListOfObjects(List<T> someListWithIds)

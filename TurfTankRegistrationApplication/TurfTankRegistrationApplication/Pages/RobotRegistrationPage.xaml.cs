@@ -27,6 +27,8 @@ namespace TurfTankRegistrationApplication.Pages
 
             SNLabel ChassisSN = new SNLabel();
             SNLabel ControllerSN = new SNLabel();
+            SNLabel ControllerPASSWORD = new SNLabel();
+            SNLabel ControllerSSID = new SNLabel();
             SNLabel RoverSN = new SNLabel();
             SNLabel BaseSN = new SNLabel();
             SNLabel TabletSN = new SNLabel();
@@ -69,6 +71,8 @@ namespace TurfTankRegistrationApplication.Pages
             // View Bindings
             ChassisSN.SetBinding(Label.TextProperty, new Binding("ChassisSN"));
             ControllerSN.SetBinding(Label.TextProperty, new Binding("ControllerSN"));
+            ControllerSSID.SetBinding(Label.TextProperty, new Binding("ControllerSSID"));
+            ControllerPASSWORD.SetBinding(Label.TextProperty, new Binding("ControllerPASSWORD"));
             RoverSN.SetBinding(Label.TextProperty, new Binding("RoverSN"));
             BaseSN.SetBinding(Label.TextProperty, new Binding("BaseSN"));
             RoverSIM.SetBinding(Label.TextProperty, new Binding("RoverSIM"));
@@ -85,6 +89,14 @@ namespace TurfTankRegistrationApplication.Pages
             ControllerSN.TextColor = Color.DarkGreen;
             ControllerSN.FontSize = 18;
             ControllerSN.FontAttributes = FontAttributes.Bold;
+
+            ControllerSSID.TextColor = Color.DarkGreen;
+            ControllerSSID.FontSize = 18;
+            ControllerSSID.FontAttributes = FontAttributes.Bold;
+
+            ControllerPASSWORD.TextColor = Color.DarkGreen;
+            ControllerPASSWORD.FontSize = 18;
+            ControllerPASSWORD.FontAttributes = FontAttributes.Bold;
 
             RoverSN.TextColor = Color.DarkGreen;
             RoverSN.FontSize = 18;
@@ -116,6 +128,8 @@ namespace TurfTankRegistrationApplication.Pages
                         SpacerLabelOne,
                         ControllerBtn,
                         ControllerSN,
+                        ControllerSSID,
+                        ControllerPASSWORD,
                         SpacerLabelTwo,
                         RoverBtn,
                         RoverSN,
