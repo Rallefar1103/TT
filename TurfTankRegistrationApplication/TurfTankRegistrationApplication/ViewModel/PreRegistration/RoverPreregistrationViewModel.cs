@@ -35,6 +35,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         public bool toggleSimcardMounted { get; set; } = false;
 
         // UI Color properties
+
         public Color ScanQRColor { get; set; } = Color.Yellow;
         public Color ScanBarcodeColor { get; set; }
 
@@ -44,6 +45,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             this.RoverQR = new QRSticker();
             CanScanSQ = true;
             Callback = new Action<object, string>(OnDataReceived);
+
             //ScanRoverQR = new Command(execute: async () => await DummyScanQR(), canExecute: () => CanScanSQ);
             ScanRoverQR = new Command(() => NavigateToScanPage("rover"));
 

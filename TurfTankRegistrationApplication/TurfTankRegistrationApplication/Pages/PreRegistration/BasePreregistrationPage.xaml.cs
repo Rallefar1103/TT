@@ -22,7 +22,9 @@ namespace TurfTankRegistrationApplication.Pages
                 Margin = 15,
                 Text = "Scan QR",
                 TextColor = Color.Black,
+
                 BackgroundColor = Color.LightBlue,
+
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center,
             };
@@ -49,6 +51,7 @@ namespace TurfTankRegistrationApplication.Pages
                 BackgroundColor = Color.White,
                 VerticalOptions = LayoutOptions.EndAndExpand,
             };
+
             Image preregistratioImage = new Image
             {
                 Source = "BaseFlow.png",
@@ -177,10 +180,12 @@ namespace TurfTankRegistrationApplication.Pages
             layout.Children.Add(box);
             layout.Children.Add(ConfirmAndSave);
 
-            Content = layout;
 
+            Content = new ScrollView
+            {
+                Content = layout,
 
-
+            };
 
             InitializeComponent();
         }
