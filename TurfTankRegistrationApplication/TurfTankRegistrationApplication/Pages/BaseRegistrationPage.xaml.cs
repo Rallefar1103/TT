@@ -20,7 +20,7 @@ namespace TurfTankRegistrationApplication.Pages
                 WidthRequest = 150,
                 CornerRadius = 25,
                 Text = "Base SN",
-                BackgroundColor = Color.White,
+                BackgroundColor = Color.LightBlue,
             };
 
             Button BaseSimcard = new Button
@@ -28,7 +28,7 @@ namespace TurfTankRegistrationApplication.Pages
                 HeightRequest = 60,
                 WidthRequest = 150,
                 CornerRadius = 25,
-                Text = "Base Simcard",
+                Text = "Base QR",
                 BackgroundColor = Color.White,
             };
 

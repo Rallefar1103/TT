@@ -61,6 +61,7 @@ namespace TurfTankRegistrationApplication.ViewModel
                     OnPropertyChanged(nameof(ShowLoadingLabel));
 
                     wifiResults = wifiTask.Result.Where(element => !string.IsNullOrEmpty(element)).ToList();
+                    wifiResults.Add("TestWifi");//todo tilføjet for at kunne teste
                     OnPropertyChanged(nameof(wifiResults));
 
                     if (wifiResults.Count != 0)
@@ -108,8 +109,18 @@ namespace TurfTankRegistrationApplication.ViewModel
         // We might need to move this logic to the Model
         public async void ConnectToRobot()
         {
+            
             string ConnectedSSID = "";
             string ssid = GetCorrectWifi(SelectedNetwork);
+
+            if (SelectedNetwork == "TestWifi")//todo tilføjet for at kunne teste
+            {
+                //ssid = "TestWifi";
+                Console.WriteLine("WE ARE CONNECTED!");
+                await Application.Current.MainPage.DisplayAlert("Success!", "You are connected to: " + ssid, "Start Registration");
+                await Navigation.PushAsync(new RobotRegistrationPage(ssid));
+                return;
+            }
 
             // Connect to wifi
             DependencyService.Get<IWifiConnector>().ConnectToWifi(SelectedNetwork);
@@ -139,6 +150,7 @@ namespace TurfTankRegistrationApplication.ViewModel
                 await Navigation.PushAsync(new RobotRegistrationPage(ssid));
 
             }
+     
             else
             {
                 Console.WriteLine("OOPS WE END UP HERE!");

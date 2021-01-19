@@ -35,7 +35,8 @@ namespace TurfTankRegistrationApplication.ViewModel
         public bool toggleSimcardMounted { get; set; } = false;
 
         // UI Color properties
-        public Color ScanQRColor { get; set; }
+
+        public Color ScanQRColor { get; set; } = Color.Yellow;
         public Color ScanBarcodeColor { get; set; }
 
         public RoverPreregistrationViewModel(INavigation nav)
@@ -44,11 +45,12 @@ namespace TurfTankRegistrationApplication.ViewModel
             this.RoverQR = new QRSticker();
             CanScanSQ = true;
             Callback = new Action<object, string>(OnDataReceived);
-            ScanRoverQR = new Command(execute: async () => await DummyScanQR(), canExecute: () => CanScanSQ);
-            //ScanRoverQR = new Command(() => NavigateToScanPage("rover"));
 
-            ScanRoverSim = new Command(execute: async () => await DummyScanBarcode(), canExecute: () => CanScanBarcode);
-            //ScanRoverSim = new Command(() => NavigateToScanPage(""));
+            //ScanRoverQR = new Command(execute: async () => await DummyScanQR(), canExecute: () => CanScanSQ);
+            ScanRoverQR = new Command(() => NavigateToScanPage("rover"));
+
+            //ScanRoverSim = new Command(execute: async () => await DummyScanBarcode(), canExecute: () => CanScanBarcode);
+            ScanRoverSim = new Command(() => NavigateToScanPage(""));
 
             ConfirmPreregistration = new Command(execute: async () => await DummyConfirm());
             MessagingCenter.Subscribe<ScanPage, string>(this, "Result", Callback);

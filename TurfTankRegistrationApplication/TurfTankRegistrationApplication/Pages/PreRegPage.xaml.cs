@@ -22,7 +22,7 @@ namespace TurfTankRegistrationApplication.Pages
                 CornerRadius = 25,
                 Margin = 35,
                 Text = "Rover",
-                BackgroundColor = Color.White,
+                BackgroundColor = Color.Yellow,
             };
 
             Button Base = new Button
@@ -32,7 +32,7 @@ namespace TurfTankRegistrationApplication.Pages
                 CornerRadius = 25,
                 Margin = 35,
                 Text = "Base",
-                BackgroundColor = Color.White,
+                BackgroundColor = Color.LightBlue,
             };
 
             Button Tablet = new Button
@@ -42,7 +42,15 @@ namespace TurfTankRegistrationApplication.Pages
                 CornerRadius = 25,
                 Margin = 35,
                 Text = "Tablet",
-                BackgroundColor = Color.White,
+                BackgroundColor = Color.LightSalmon,
+            };
+
+            Image preregistratioImage = new Image
+            {
+                Source = "qrprocess2.png",
+                HeightRequest = 140,
+                WidthRequest = 200,
+                Margin = 35,
             };
 
             Rover.SetBinding(Button.CommandProperty, "NavigateToRoverPreReg");
@@ -57,6 +65,8 @@ namespace TurfTankRegistrationApplication.Pages
             layout.Children.Add(Rover);
             layout.Children.Add(Base);
             layout.Children.Add(Tablet);
+            layout.Children.Add(preregistratioImage);
+
 
             Content = layout;
 

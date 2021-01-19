@@ -19,7 +19,7 @@ namespace TurfTankRegistrationApplication.Helpers
             } else
             {
                 int RawInpuLength = RawInput.Length;
-                try
+                try //todo hvorfor er denne i en try catch blok når vi ikke håndterer catchen?
                 {
                     RawInput = RawInput.Substring(0, RawInpuLength - 3);
                     response = RawInput.Split(',');
