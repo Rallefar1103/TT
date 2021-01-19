@@ -170,9 +170,11 @@ namespace TurfTankRegistrationApplication.Pages
             layout.Children.Add(box);
             layout.Children.Add(ConfirmAndSave);
 
-            Content = layout;
+            Content = new ScrollView
+            {
+                Content = layout,
 
-
+            };
 
 
             InitializeComponent();

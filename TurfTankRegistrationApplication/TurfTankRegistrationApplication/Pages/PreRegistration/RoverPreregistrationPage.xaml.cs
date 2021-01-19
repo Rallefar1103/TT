@@ -76,7 +76,7 @@ namespace TurfTankRegistrationApplication.Pages
                 Color = Color.White,
                 HeightRequest = 100,
                 WidthRequest = 100,
-                
+
             };
 
             TapGestureRecognizer registerQRMounted = new TapGestureRecognizer();
@@ -184,9 +184,13 @@ namespace TurfTankRegistrationApplication.Pages
             layout.Children.Add(checkSimcardInserted);
             layout.Children.Add(box);
             layout.Children.Add(ConfirmAndSave);
-           
 
-            Content = layout;
+
+            Content = new ScrollView
+            {
+                Content = layout,
+            };
+                
 
             InitializeComponent();
         }

@@ -44,11 +44,11 @@ namespace TurfTankRegistrationApplication.ViewModel
             this.RoverQR = new QRSticker();
             CanScanSQ = true;
             Callback = new Action<object, string>(OnDataReceived);
-            //ScanRoverQR = new Command(execute: async () => await DummyScanQR(), canExecute: () => CanScanSQ);
-            ScanRoverQR = new Command(() => NavigateToScanPage("rover"));
+            ScanRoverQR = new Command(execute: async () => await DummyScanQR(), canExecute: () => CanScanSQ);
+            //ScanRoverQR = new Command(() => NavigateToScanPage("rover"));
 
-            //ScanRoverSim = new Command(execute: async () => await DummyScanBarcode(), canExecute: () => CanScanBarcode);
-            ScanRoverSim = new Command(() => NavigateToScanPage(""));
+            ScanRoverSim = new Command(execute: async () => await DummyScanBarcode(), canExecute: () => CanScanBarcode);
+            //ScanRoverSim = new Command(() => NavigateToScanPage(""));
 
             ConfirmPreregistration = new Command(execute: async () => await DummyConfirm());
             MessagingCenter.Subscribe<ScanPage, string>(this, "Result", Callback);
