@@ -24,7 +24,7 @@ namespace TurfTankRegistrationApplication.Pages
                 WidthRequest = 150,
                 CornerRadius = 25,
                 Text = "Rover SN",
-                BackgroundColor = Color.White,
+                BackgroundColor = Color.Yellow,
             };
 
             Button RoverSimcard = new Button
@@ -32,7 +32,7 @@ namespace TurfTankRegistrationApplication.Pages
                 HeightRequest = 60,
                 WidthRequest = 150,
                 CornerRadius = 25,
-                Text = "Rover Simcard",
+                Text = "Rover QR",
                 BackgroundColor = Color.White,
             };
 

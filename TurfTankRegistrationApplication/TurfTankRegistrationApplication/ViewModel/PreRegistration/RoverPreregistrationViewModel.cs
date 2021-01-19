@@ -35,7 +35,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         public bool toggleSimcardMounted { get; set; } = false;
 
         // UI Color properties
-        public Color ScanQRColor { get; set; }
+        public Color ScanQRColor { get; set; } = Color.Yellow;
         public Color ScanBarcodeColor { get; set; }
 
         public RoverPreregistrationViewModel(INavigation nav)

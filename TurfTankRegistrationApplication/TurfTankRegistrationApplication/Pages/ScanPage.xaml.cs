@@ -89,7 +89,7 @@ namespace TurfTankRegistrationApplication.Pages
             //View Stuff
             //Show/hide the QR sticker
             QR.IsVisible = true;
-            QR.BarcodeValue = "m";
+            QR.BarcodeValue = "0";
 
         }
 
