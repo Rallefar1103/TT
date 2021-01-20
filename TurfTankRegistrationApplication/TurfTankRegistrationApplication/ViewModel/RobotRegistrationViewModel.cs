@@ -175,9 +175,13 @@ namespace TurfTankRegistrationApplication.ViewModel
                 await Application.Current.MainPage.DisplayAlert("OBS!", "Chassis is already scanned", "Ok");
             }
         }
+<<<<<<< Updated upstream
 
         // TODO: Update all registrate functions to match this form
         // Refactor property changed to be used in both RobotPackage and the different components.
+=======
+        
+>>>>>>> Stashed changes
         public async Task RegistrateController(QRSticker result)
         {
 
@@ -273,8 +277,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             throw new NotImplementedException();
             return new T();
         }
-
-        
+       
         #endregion
     }
 }
