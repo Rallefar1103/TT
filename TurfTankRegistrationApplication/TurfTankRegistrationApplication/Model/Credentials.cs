@@ -136,7 +136,7 @@ namespace TurfTankRegistrationApplication.Model
         {
             //IsLoggedIn Skal ændres til false når databasen ikke længere anerkender access_token
             //så skal refreshtoken sendes til auth0 for at få et nyt access-token 
-            public bool IsLoggedIn { get; set; } = false;
+            public bool IsLoggedIn { get; set; }
 
             public string ClientId { get; set; }
             public string ClientSecret { get; set; }
@@ -157,6 +157,7 @@ namespace TurfTankRegistrationApplication.Model
             {
                 ClientId = GetSecret("Development", "ClientId");
                 ClientSecret = GetSecret("Development", "ClientSecret");
+                IsLoggedIn = false;
             }
 
             #region Private Turftank Attributes
@@ -171,7 +172,7 @@ namespace TurfTankRegistrationApplication.Model
 
         //IsLoggedIn Skal ændres til false når databasen ikke længere anerkender access_token
         //så skal refreshtoken sendes til auth0 for at få et nyt access-token 
-        public bool IsLoggedIn { get; set; } = false;
+        public bool IsLoggedIn { get; set; }
 
         public string ClientId { get; set; } 
         public string ClientSecret { get; set; } 
@@ -206,7 +207,7 @@ namespace TurfTankRegistrationApplication.Model
             string clientid, string clientsecret, string domain, string scope, string accesstoken,
             string accesstokenexpiration, string refreshtoken, string authorizecode, string state, string redirecturl)
         {
-            IsLoggedIn = false;
+            //IsLoggedIn = false;
 
             ClientId = clientid;
             ClientSecret = clientsecret;

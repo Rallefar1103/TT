@@ -129,12 +129,13 @@ namespace TurfTankRegistrationApplication.Connection
         {
             if (e.IsAuthenticated)
             {
+
                 App.account = e.Account;
                 var user = App.account.Username;
                 //var request = new OAuth2Request("GET", new Uri("https://dev-ggbq2i2p.us.auth0.com/users"), null, e.Account);
                 //var response = await request.GetResponseAsync();
                 await SecureStorage.SetAsync("TTRA", App.account.Serialize());
-
+                App.OAuthCredentials.IsLoggedIn = true;
                 if (App.account.Properties.ContainsKey("access_token"))
                 {
                     App.OAuthCredentials.AccessToken = e.Account.Properties["access_token"];
@@ -152,6 +153,11 @@ namespace TurfTankRegistrationApplication.Connection
                     await SecureStorage.SetAsync("Authentication_code", App.account.Properties["Authentication_code"]);
                 }
             }
+            else
+            {
+                App.OAuthCredentials.IsLoggedIn = false;
+            }
+
         }
 
 
@@ -179,8 +185,8 @@ namespace TurfTankRegistrationApplication.Connection
             //    default:
             //        break;
             //}
-            
-                var queryValues = new Dictionary<string, string>
+            App.OAuthCredentials.IsLoggedIn = false;
+            var queryValues = new Dictionary<string, string>
             {
                 {"refresh_token", App.OAuthCredentials.RefreshToken},
                 {"client_id", this.ClientId},

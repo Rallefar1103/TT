@@ -16,7 +16,6 @@ namespace TurfTankRegistrationApplication.ViewModel
         public string Token { get; set; }
 
         TurfTankAuth _authenticator;
-        
         #region Constructor
 
         public SignInViewModel2(INavigation navigation,TurfTankAuth auth)
@@ -39,8 +38,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         public async Task GoToMenuPageAsync()
         {
             
-            //_authenticator.Completed -= Handle_CompletedLoginOnPage;
-            //_authenticator.Completed += Handle_CompletedLoginOnPage;
+            
 
             //Todo Spring presenter over hvis user er logged in
             if (App.OAuthCredentials.IsLoggedIn)
@@ -50,17 +48,16 @@ namespace TurfTankRegistrationApplication.ViewModel
                 sb.Append("Stored   Refresh Token = ").AppendLine($"   {App.OAuthCredentials.RefreshToken}");
                 await Application.Current.MainPage.DisplayAlert("Authentication Results", sb.ToString(), "OK");
 
-                //await Navigation.PushAsync(new MenuPage());
+                await Navigation.PushAsync(new MenuPage());
             }
             else
             {
-                
-                _authenticator.Error += Handle_loginError;
-                //await _authenticator.RefreshTokenAsync();
                 var Presenter = new Xamarin.Auth.Presenters.OAuthLoginPresenter();
+                _authenticator.Error += Handle_loginError;
                 Presenter.Completed += Handle_CompletedLoginOnPage;               
                 Presenter.Login(authenticator: _authenticator);
                 Presenter = null;
+                 
             }
 
         }
@@ -73,6 +70,8 @@ namespace TurfTankRegistrationApplication.ViewModel
             sb.Append("Message: ").AppendLine($"{e.Message}");
 
             await Application.Current.MainPage.DisplayAlert("Login Error", sb.ToString(), "OK");
+            _authenticator.Error -= Handle_loginError;
+
 
         }
 
@@ -85,10 +84,13 @@ namespace TurfTankRegistrationApplication.ViewModel
                 sb.Append("Recieved Access  Token = ").AppendLine($"   {e.Account.Properties["access_token"]}");
                 sb.Append("\n\nStored   Access  Token = ").AppendLine($"   {App.OAuthCredentials.AccessToken}");
                 sb.Append("\nStored   Refresh Token = ").AppendLine($"   {App.OAuthCredentials.RefreshToken}");
+                App.OAuthCredentials.IsLoggedIn = true;
             }
             else
             {
                 sb.Append("Not authenticated ").AppendLine($"Account.Properties does not exist");
+                App.OAuthCredentials.IsLoggedIn = false;
+
             }
             await Application.Current.MainPage.DisplayAlert("Authentication Results", sb.ToString(), "OK");
 
