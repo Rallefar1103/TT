@@ -53,9 +53,8 @@ namespace TurfTankRegistrationApplication.ViewModel
             ScanRoverSim = new Command(() => NavigateToScanPage(""));
 
             ConfirmPreregistration = new Command(execute: async () => await DummyConfirm());
-            MessagingCenter.Subscribe<ScanPage, string>(this, "Result", Callback);
+            MessagingCenter.Subscribe<ScanPage, string>(this, "PreregistrationRoverResult", Callback);
         }
-
 
         private async Task DummyScanQR()
         {
@@ -120,7 +119,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public void NavigateToScanPage(string component)
         {
-            ScanPage scanPage = new ScanPage();
+            ScanPage scanPage = new ScanPage(returntypeKey: "PreregistrationRoverResult");
             scanPage.vm.Title = "Scanning " + component;
             scanPage.QRMustContain = component;
             Navigation.PushAsync(scanPage);

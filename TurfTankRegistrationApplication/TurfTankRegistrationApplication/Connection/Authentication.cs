@@ -111,14 +111,14 @@ namespace TurfTankRegistrationApplication.Connection
         }
 
 
-        /// <summary>
-        /// called when the initial URL is being constructed.
-        /// </summary>
-        /// <param name="query"></param>
-        protected override void OnCreatingInitialUrl(IDictionary<string, string> query)
-        {
-            base.OnCreatingInitialUrl(query);
-        }
+        ///// <summary>
+        ///// called when the initial URL is being constructed.
+        ///// </summary>
+        ///// <param name="query"></param>
+        //protected override void OnCreatingInitialUrl(IDictionary<string, string> query)
+        //{
+        //    base.OnCreatingInitialUrl(query);
+        //}
 
         /// <summary>
         /// Stores all tokens and authcodes in Securestorrage for quick access and the account for persistence
@@ -205,48 +205,48 @@ namespace TurfTankRegistrationApplication.Connection
         }
 
 
-        #region Refresh Token
+        //#region Refresh Token
 
-        /// <summary>
-        /// Gets a new token by showing refreshtoke
-        /// </summary>
-        /// <returns></returns>
-        public async Task RefreshTokenAsync()
-        {
-            var queryValues = new Dictionary<string,string>
-            {
-                { "grant_type", "refresh_token"},
-                { "refresh_token", _cred.RefreshToken},
-                { "client_id", _cred.ClientId},
-                {"client_secret", _cred.ClientSecret }
+        ///// <summary>
+        ///// Gets a new token by showing refreshtoke
+        ///// </summary>
+        ///// <returns></returns>
+        //public async Task RefreshTokenAsync()
+        //{
+        //    var queryValues = new Dictionary<string,string>
+        //    {
+        //        { "grant_type", "refresh_token"},
+        //        { "refresh_token", _cred.RefreshToken},
+        //        { "client_id", _cred.ClientId},
+        //        {"client_secret", _cred.ClientSecret }
 
-            };
-            var result = await this.RequestAccessTokenAsync(queryValues);
+        //    };
+        //    var result = await this.RequestAccessTokenAsync(queryValues);
 
-            await UpdateTokensAsync(result);
+        //    await UpdateTokensAsync(result);
 
-        }
+        //}
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public async Task GetAccessTokenAsync()
-        {
-            var queryValues = new Dictionary<string, string>
-            {
-                { "code", _cred.AuthorizeCode},
-                { "client_id", _cred.ClientId},
-                {"client_secret", _cred.ClientSecret },
-                { "grant_type", "Authorization_code"},
-                {"redirect_uri", _cred.RedirectURL }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <returns></returns>
+        //public async Task GetAccessTokenAsync()
+        //{
+        //    var queryValues = new Dictionary<string, string>
+        //    {
+        //        { "code", _cred.AuthorizeCode},
+        //        { "client_id", _cred.ClientId},
+        //        {"client_secret", _cred.ClientSecret },
+        //        { "grant_type", "Authorization_code"},
+        //        {"redirect_uri", _cred.RedirectURL }
 
-            };
-            var result = await this.RequestAccessTokenAsync(queryValues);
+        //    };
+        //    var result = await this.RequestAccessTokenAsync(queryValues);
 
-            await UpdateTokensAsync(result);
+        //    await UpdateTokensAsync(result);
 
-        }
+        //}
 
 
 
@@ -281,42 +281,42 @@ namespace TurfTankRegistrationApplication.Connection
             await SecureStorage.SetAsync("TTRA", account.Serialize());
         }
 
-        #endregion
+        //#endregion
 
-        #region POST and GET Data
+        //#region POST and GET Data
 
-        /// <summary>
-        /// Get text from Resource server using the Access_token
-        /// </summary>
-        /// <param name="fromResourceServer"></param>
-        /// <param name="properties"></param>
-        /// <param name="acc"></param>
-        /// <returns></returns>
-        public async Task<string> TTGetTextAsync(Uri fromResourceServer, IDictionary<string, string> properties, Account acc)
-        {
-            var request = new OAuth2Request("GET", fromResourceServer, properties, acc);
-            var response = await request.GetResponseAsync();
-            string text = await response.GetResponseTextAsync();
-            return text;
+        ///// <summary>
+        ///// Get text from Resource server using the Access_token
+        ///// </summary>
+        ///// <param name="fromResourceServer"></param>
+        ///// <param name="properties"></param>
+        ///// <param name="acc"></param>
+        ///// <returns></returns>
+        //public async Task<string> TTGetTextAsync(Uri fromResourceServer, IDictionary<string, string> properties, Account acc)
+        //{
+        //    var request = new OAuth2Request("GET", fromResourceServer, properties, acc);
+        //    var response = await request.GetResponseAsync();
+        //    string text = await response.GetResponseTextAsync();
+        //    return text;
 
-        }
+        //}
 
-        /// <summary>
-        /// Puts text on Resource server using the Access_token
-        /// </summary>
-        /// <param name="toResourceServer"></param>
-        /// <param name="properties"></param>
-        /// <param name="acc"></param>
-        /// <returns></returns>
-        public async Task<string> TTPutDataAsync(Uri toResourceServer, IDictionary<string, string> properties, Account acc)
-        {
-            var request = new OAuth2Request("POST", toResourceServer, properties, acc);
-            var response = await request.GetResponseAsync();
-            string text = await response.GetResponseTextAsync();
-            return text;
-        }
+        ///// <summary>
+        ///// Puts text on Resource server using the Access_token
+        ///// </summary>
+        ///// <param name="toResourceServer"></param>
+        ///// <param name="properties"></param>
+        ///// <param name="acc"></param>
+        ///// <returns></returns>
+        //public async Task<string> TTPutDataAsync(Uri toResourceServer, IDictionary<string, string> properties, Account acc)
+        //{
+        //    var request = new OAuth2Request("POST", toResourceServer, properties, acc);
+        //    var response = await request.GetResponseAsync();
+        //    string text = await response.GetResponseTextAsync();
+        //    return text;
+        //}
 
-        #endregion
+        //#endregion
 
 
     }

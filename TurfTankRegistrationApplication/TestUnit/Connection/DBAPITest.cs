@@ -73,6 +73,10 @@ namespace TestUnit.Connection
         {
             // Arrange Robot In Database and mock HttpClient
             RobotItemModel schema = RobotSchema;
+            schema.Id = SN;
+            schema.Controller.SerialNumber = ContSN;
+            schema.Controller.Ssid = SSID;
+            schema.Controller.SsidPassword = PW;
            
 
             var statuscodeInResponse = HttpStatusCode.OK;
@@ -81,6 +85,7 @@ namespace TestUnit.Connection
             var mockMessageHandler = new MockHttpMessageHandler(responseFromDB, statuscodeInResponse);
             var mockHttpClient = new HttpClient(mockMessageHandler);
             DBAPI<RobotPackage> testRegistrationDBAPI = new DBAPI<RobotPackage>(new Client(mockHttpClient));
+            
 
             // Act
             RobotPackage RobotTest = await testRegistrationDBAPI.GetById(SN);
@@ -116,6 +121,7 @@ namespace TestUnit.Connection
             Assert.AreEqual(schema.Controller.SerialNumber, RobotTest.Controller.ID, Desc);
             Assert.AreEqual("", RobotTest.Controller.ActiveSSID, Desc);
             Assert.AreEqual("", RobotTest.Controller.ActivePassword, Desc);
+            
         }
 
         // Add Tests for Controller, GPS, Tablet and Simcard

@@ -35,8 +35,12 @@ namespace TurfTankRegistrationApplication.Pages
             get => _qrMustContain;
             set => _qrMustContain = value;
         }
-        public string Separator { get; set; }
         private string _qrMustContain = "";
+
+        private string _returntypeKey= "Result";
+
+        public string Separator { get; set; }
+        
 
 
         #endregion
@@ -53,9 +57,10 @@ namespace TurfTankRegistrationApplication.Pages
 
         #region Constructor
 
-        public ScanPage(string qrMustContain = "", string separator = "|")
+        public ScanPage(string returntypeKey, string qrMustContain = "", string separator = "|")
         {
             InitializeComponent();
+            _returntypeKey = returntypeKey;
             QRMustContain = qrMustContain;
             Separator = separator;
 
@@ -349,8 +354,9 @@ namespace TurfTankRegistrationApplication.Pages
         /// </summary>
         void SendResultBack()
         {
+            
             _manualInput = false;
-            MessagingCenter.Send(this, "Result", vm.ScanResult);
+            MessagingCenter.Send(this, _returntypeKey, vm.ScanResult);
         }
 
         void ManualInputField_PropertyChanged(System.Object sender, System.ComponentModel.PropertyChangedEventArgs e)

@@ -43,10 +43,13 @@
   <ItemGroup>
     <EmbeddedResource Remove="Views\Scanner.xaml" />
     <EmbeddedResource Remove="Views\ScanPage.xaml" />
+    <EmbeddedResource Remove="Pages\PreRegistration\PreRegistrationPage.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Views\Scanner.xaml.cs" />
     <Compile Remove="Views\ScanPage.xaml.cs" />
+    <Compile Remove="ViewModel\PreRegistration\PreRegistrationViewModel.cs" />
+    <Compile Remove="Pages\PreRegistration\PreRegistrationPage.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">

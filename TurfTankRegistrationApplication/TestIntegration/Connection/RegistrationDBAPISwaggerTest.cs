@@ -30,7 +30,7 @@ namespace TestIntegration.Connection
         [TestCase("Should return a valid RobotPackage")]
         public async Task GetById_IdOnDatabase_ShouldGiveRobotPackage(string Desc)
         {
-            string IdWhichExistsOnDatabase = "1";
+            string IdWhichExistsOnDatabase = "13f627a7-d6e8-46a8-898a-36853a1e1481";
 
             RobotPackage robot = await RobotAPI.GetById(IdWhichExistsOnDatabase);
 

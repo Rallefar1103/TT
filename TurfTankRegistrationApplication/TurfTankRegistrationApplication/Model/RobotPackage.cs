@@ -35,7 +35,7 @@ namespace TurfTankRegistrationApplication.Model
         public GPS BaseGPS { get; set; }
         public bool IsSynchronized { get; set; }
         public bool IsSelected { get; set; }
-
+        
         public static IDBAPI<RobotPackage> API { get; set; } = new DBAPI<RobotPackage>();
 
         #endregion Public Attributes
