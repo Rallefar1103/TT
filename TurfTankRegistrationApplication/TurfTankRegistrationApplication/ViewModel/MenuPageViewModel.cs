@@ -27,8 +27,8 @@ namespace TurfTankRegistrationApplication.ViewModel
         
         public async Task GoToRobotRegistration()
         {
-            //await Navigation.PushAsync(new ListWifiPage());
-            await Navigation.PushAsync(new RobotRegistrationPage("TEST"));
+            await Navigation.PushAsync(new ListWifiPage());
+            //await Navigation.PushAsync(new RobotRegistrationPage("TEST"));
 
         }
 
