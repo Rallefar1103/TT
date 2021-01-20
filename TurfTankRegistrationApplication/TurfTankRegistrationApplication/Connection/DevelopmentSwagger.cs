@@ -11,7 +11,7 @@
 namespace TurfTankRegistrationApplication.Connection
 {
     using System = global::System;
-
+    
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.10.1.0 (NJsonSchema v10.3.3.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial class Client
     {

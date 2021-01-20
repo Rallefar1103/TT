@@ -216,7 +216,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             if (string.IsNullOrEmpty(robotItem.RoverGPS.Simcard.ID))
             {
                 robotItem.RoverGPS.Simcard.ID = result.ID;
-                RoverSIM = "Rover Simcard: " + robotItem.RoverGPS.Simcard.ID;
+                RoverSIM = "Rover QR: " + robotItem.RoverGPS.Simcard.ID;
                 OnPropertyChanged(nameof(RoverSIM));
             }
             else
@@ -256,12 +256,14 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public async void RegistrateTablet()
         {
-            // To be implemented
+            TabletSN = "Registered";
+            OnPropertyChanged(nameof(TabletSN));
         }
 
         public async void SaveRobotToDB()
         {
             // Not implemented, but will save every component on the robotPackage instance to the DB
+            
             await Application.Current.MainPage.DisplayAlert("Success!", "Robot saved", "OK");
         }
 

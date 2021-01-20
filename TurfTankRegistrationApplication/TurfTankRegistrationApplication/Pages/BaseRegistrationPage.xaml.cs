@@ -23,7 +23,7 @@ namespace TurfTankRegistrationApplication.Pages
                 BackgroundColor = Color.LightBlue,
             };
 
-            Button BaseSimcard = new Button
+            Button BaseQR = new Button
             {
                 HeightRequest = 60,
                 WidthRequest = 150,
@@ -43,9 +43,10 @@ namespace TurfTankRegistrationApplication.Pages
             };
 
             BaseSN.SetBinding(Button.CommandProperty, "ChangeBaseSN");
-            BaseSimcard.SetBinding(Button.CommandProperty, "ChangeBaseSimcard");
+            BaseQR.SetBinding(Button.CommandProperty, "ChangeBaseSimcard");
+            BaseQR.SetBinding(Button.BackgroundColorProperty, "BaseQRButtonColor");
 
-            Grid grid = new Grid
+           Grid grid = new Grid
             {
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center,
@@ -73,12 +74,12 @@ namespace TurfTankRegistrationApplication.Pages
             Grid.SetColumn(BaseSN, 0);
             Grid.SetRow(BaseSN, 2);
 
-            Grid.SetColumn(BaseSimcard, 1);
-            Grid.SetRow(BaseSimcard, 2);
+            Grid.SetColumn(BaseQR, 1);
+            Grid.SetRow(BaseQR, 2);
 
             grid.Children.Add(RegisterBase);
             grid.Children.Add(BaseSN);
-            grid.Children.Add(BaseSimcard);
+            grid.Children.Add(BaseQR);
 
             Content = grid;
 

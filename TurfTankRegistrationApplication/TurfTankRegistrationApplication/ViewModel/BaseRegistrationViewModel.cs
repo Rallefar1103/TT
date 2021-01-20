@@ -7,22 +7,38 @@ using Xamarin.Forms;
 
 namespace TurfTankRegistrationApplication.ViewModel
 {
-    public class BaseRegistrationViewModel
+    public class BaseRegistrationViewModel: BaseViewModel
     {
         public INavigation Navigation { get; set; }
 
         public GPS BaseStation { get; set; }
 
+        public Action<object, string> BaseQRCallback;
+
         public Command ChangeBaseSimcard { get; }
         public Command ChangeBaseSN { get; }
+
+        public Color BaseQRButtonColor { get; set; } = Color.White;
 
         public BaseRegistrationViewModel(INavigation navigation)
         {
             this.Navigation = navigation;
             this.BaseStation = new GPS();
+            BaseQRCallback = new Action<object, string>(ScanCallback);
             BaseStation.ofType = GPSType.Base;
             ChangeBaseSimcard = new Command(() => NavigateToScanPage("basestation"));
             ChangeBaseSN = new Command(async () => await GetBaseSerialNumber());
+            MessagingCenter.Subscribe<ScanPage, string>(this, "Result", BaseQRCallback);
+        }
+
+        private void ScanCallback(object sender, string data)
+        {
+            if (data != null)
+            {
+                BaseQRButtonColor = Color.DarkGreen;
+                OnPropertyChanged(nameof(BaseQRButtonColor));
+            }
+            MessagingCenter.Unsubscribe<ScanPage, string>(this, "Result");
         }
 
         public void NavigateToScanPage(string component)
