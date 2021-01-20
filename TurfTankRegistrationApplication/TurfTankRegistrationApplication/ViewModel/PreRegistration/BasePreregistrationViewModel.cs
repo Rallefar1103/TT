@@ -45,7 +45,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             ScanBaseQR = new Command(execute: async () => await DummyScanQR(), canExecute: () => CanScanSQ);
             ScanBaseSim = new Command(execute: async () => await DummyScanBarcode(), canExecute: () => CanScanBarcode);
             ConfirmPreregistration = new Command(execute: async () => await DummyConfirm());
-            MessagingCenter.Subscribe<ScanPage, string>(this, "Result", Callback);
+            MessagingCenter.Subscribe<ScanPage, string>(this, "PreregistrationBaseResult", Callback);
         }
 
 
@@ -120,7 +120,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public void NavigateToScanPage(string component)
         {
-            ScanPage scanPage = new ScanPage();
+            ScanPage scanPage = new ScanPage(returntypeKey: "PreregistrationBaseResult");
             scanPage.vm.Title = "Scanning " + component;
             
             Navigation.PushAsync(scanPage);

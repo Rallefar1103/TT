@@ -49,7 +49,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public void GetRoverSimcard(string component)
         {
-            ScanPage scanPage = new ScanPage();
+            ScanPage scanPage = new ScanPage(returntypeKey: "Result");
             scanPage.vm.Title = "Scanning " + component;
             scanPage.QRMustContain = component;
             Navigation.PushAsync(scanPage);

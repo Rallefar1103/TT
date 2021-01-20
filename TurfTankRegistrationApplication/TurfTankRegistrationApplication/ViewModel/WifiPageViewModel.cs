@@ -11,10 +11,10 @@ using Xamarin.Essentials;
 
 namespace TurfTankRegistrationApplication.ViewModel
 {
-    public class WifiPageViewModel : INotifyPropertyChanged
+    public class WifiPageViewModel : BaseViewModel
     {
         public INavigation Navigation { get; set; }
-        public event PropertyChangedEventHandler PropertyChanged;
+        //public event PropertyChangedEventHandler PropertyChanged;
 
         public List<string> wifiResults { get; set; }
         public string SelectedNetwork { get; set; }
@@ -161,9 +161,9 @@ namespace TurfTankRegistrationApplication.ViewModel
  
         }
 
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        //private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        //{
+        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        //}
     }
 }
