@@ -119,6 +119,7 @@ namespace TurfTankRegistrationApplication.ViewModel
                 Console.WriteLine("WE ARE CONNECTED!");
                 await Application.Current.MainPage.DisplayAlert("Success!", "You are connected to: " + ssid, "Start Registration");
                 await Navigation.PushAsync(new RobotRegistrationPage(ssid));
+
                 return;
             }
 

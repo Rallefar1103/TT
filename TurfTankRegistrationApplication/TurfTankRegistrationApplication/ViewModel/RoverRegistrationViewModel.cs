@@ -25,6 +25,8 @@ namespace TurfTankRegistrationApplication.ViewModel
         public HttpClient http { get; set; }
         public bool testing { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
+        public Action<object, string> RoverQRCallback;
+        public Color RoverQRButtonColor { get; set; } = Color.Yellow;
 
         public Command ChangeRoverSimcard { get; }
         public Command ChangeRoverSN { get; }
@@ -37,7 +39,9 @@ namespace TurfTankRegistrationApplication.ViewModel
             this.Navigation = navigation;
             ChangeRoverSimcard = new Command(() => GetRoverSimcard("rover"));
             ChangeRoverSN = new Command(() =>  NavigateToRoverSN());
-            
+            RoverQRCallback = new Action<object, string>(ScanCallback);
+            MessagingCenter.Subscribe<ScanPage, string>(this, "Result", RoverQRCallback);
+
         }
 
         public RoverRegistrationViewModel(INavigation navigation, HttpClient http)
@@ -45,6 +49,17 @@ namespace TurfTankRegistrationApplication.ViewModel
             this.testing = true;
             this.http = http;
             this.Navigation = navigation;
+        }
+
+
+        private void ScanCallback(object sender, string data)
+        {
+            if (data != null)
+            {
+                RoverQRButtonColor = Color.DarkGreen;
+                OnPropertyChanged(nameof(RoverQRButtonColor));
+            }
+            MessagingCenter.Unsubscribe<ScanPage, string>(this, "Result");
         }
 
         public void GetRoverSimcard(string component)

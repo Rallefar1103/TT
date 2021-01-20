@@ -18,7 +18,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         public Command ChangeBaseSimcard { get; }
         public Command ChangeBaseSN { get; }
 
-        public Color BaseQRButtonColor { get; set; } = Color.White;
+        public Color BaseQRButtonColor { get; set; } = Color.LightBlue;
 
         public BaseRegistrationViewModel(INavigation navigation)
         {

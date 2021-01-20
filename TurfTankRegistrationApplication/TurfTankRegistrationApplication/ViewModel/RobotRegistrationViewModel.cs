@@ -6,6 +6,7 @@ using TurfTankRegistrationApplication.Model;
 using Xamarin.Forms;
 using TurfTankRegistrationApplication.Pages;
 using TurfTankRegistrationApplication.Exceptions;
+using System.Linq;
 
 namespace TurfTankRegistrationApplication.ViewModel
 {
@@ -166,6 +167,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 
             if (string.IsNullOrEmpty(robotItem.SerialNumber))
             {
+                await Application.Current.MainPage.DisplayAlert("Success!", "Chassis is successfully scanned", "Ok");
                 robotItem.SerialNumber = result.ID;
                 ChassisSN = "Robot SN: " + robotItem.SerialNumber;
                 OnPropertyChanged(nameof(ChassisSN));
@@ -185,12 +187,17 @@ namespace TurfTankRegistrationApplication.ViewModel
             {
                 robotItem.Controller.QR = result as ControllerQRSticker;
                 robotItem.Controller = await Controller.API.GetById(result.ID);
-                ControllerSN = robotItem.Controller.SerialNumber;
-                ControllerSSID = "SSID: " + robotItem.Controller.ActiveSSID;
-                ControllerPASSWORD = "Password: " + robotItem.Controller.ActivePassword;
-                OnPropertyChanged(nameof(ControllerSN));
-                OnPropertyChanged(nameof(ControllerSSID));
-                OnPropertyChanged(nameof(ControllerPASSWORD));
+                if (robotItem.Controller != null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Success!", "Controller is successfully scanned", "Ok");
+                    ControllerSN = robotItem.Controller.SerialNumber;
+                    ControllerSSID = "SSID: " + robotItem.Controller.ActiveSSID;
+                    ControllerPASSWORD = "Password: " + robotItem.Controller.ActivePassword;
+                    OnPropertyChanged(nameof(ControllerSN));
+                    OnPropertyChanged(nameof(ControllerSSID));
+                    OnPropertyChanged(nameof(ControllerPASSWORD));
+                }
+                
             }
 
             if (string.IsNullOrEmpty(robotItem.Controller.ID))
@@ -216,6 +223,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             if (string.IsNullOrEmpty(robotItem.RoverGPS.Simcard.ID))
             {
                 robotItem.RoverGPS.Simcard.ID = result.ID;
+                await Application.Current.MainPage.DisplayAlert("Success!", "Scanned the Rover QR code! " + result.ID, "Ok");
                 RoverSIM = "Rover QR: " + robotItem.RoverGPS.Simcard.ID;
                 OnPropertyChanged(nameof(RoverSIM));
             }
@@ -237,8 +245,14 @@ namespace TurfTankRegistrationApplication.ViewModel
                 try
                 {
                     GPS response = await GPS.API.GetById(result.ID.Trim());
-                    BaseSN = "Base Serial Number: " + response.SerialNumber;
-                    OnPropertyChanged(nameof(BaseSIM));
+                    if (response != null)
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Success!", "Scanned the Base QR code! " + response.ID, "Ok");
+                        BaseSIM = "Base Simcard ID: " + response.ID;
+                        OnPropertyChanged(nameof(BaseSIM));
+
+                    }
+                    
                 }
                 catch (Exception e)
                 {
@@ -256,6 +270,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public async void RegistrateTablet()
         {
+            await Application.Current.MainPage.DisplayAlert("Success!", "Scanned the Tablet QR code!", "Ok");
             TabletSN = "Registered";
             OnPropertyChanged(nameof(TabletSN));
         }
@@ -265,7 +280,11 @@ namespace TurfTankRegistrationApplication.ViewModel
             // Not implemented, but will save every component on the robotPackage instance to the DB
             
             await Application.Current.MainPage.DisplayAlert("Success!", "Robot saved", "OK");
+            Application.Current.MainPage = new NavigationPage(new MenuPage());
+            await Navigation.PopToRootAsync();
+            
         }
+
 
 
         //TODO lav en generisk funktion til at hente components fra DB
