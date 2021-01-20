@@ -24,7 +24,7 @@ namespace TurfTankRegistrationApplication.Pages
                 WidthRequest = 150,
                 CornerRadius = 25,
                 Text = "Rover SN",
-                BackgroundColor = Color.Yellow,
+                BackgroundColor = Color.White,
             };
 
             Button RoverSimcard = new Button
@@ -33,7 +33,7 @@ namespace TurfTankRegistrationApplication.Pages
                 WidthRequest = 150,
                 CornerRadius = 25,
                 Text = "Rover QR",
-                BackgroundColor = Color.White,
+                BackgroundColor = Color.Yellow,
             };
 
             Label RegisterRover = new Label
@@ -48,6 +48,7 @@ namespace TurfTankRegistrationApplication.Pages
 
             RoverSN.SetBinding(Button.CommandProperty, "ChangeRoverSN");
             RoverSimcard.SetBinding(Button.CommandProperty, "ChangeRoverSimcard");
+            RoverSimcard.SetBinding(Button.BackgroundColorProperty, "RoverQRButtonColor");
 
 
 

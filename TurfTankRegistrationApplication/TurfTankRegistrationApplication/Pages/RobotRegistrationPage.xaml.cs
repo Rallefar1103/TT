@@ -77,8 +77,9 @@ namespace TurfTankRegistrationApplication.Pages
             BaseSN.SetBinding(Label.TextProperty, new Binding("BaseSN"));
             RoverSIM.SetBinding(Label.TextProperty, new Binding("RoverSIM"));
             BaseSIM.SetBinding(Label.TextProperty, new Binding("BaseSIM"));
+            TabletSN.SetBinding(Label.TextProperty, new Binding("TabletSN"));
 
-            SaveBtn.SetBinding(Button.CommandProperty, new Binding("DidSaveRobot"));
+            SaveBtn.SetBinding(Button.CommandProperty, new Binding("SaveRobot"));
 
             
             // View Component Attributes

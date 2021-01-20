@@ -20,7 +20,7 @@ namespace TurfTankRegistrationApplication.Pages
                 WidthRequest = 150,
                 CornerRadius = 25,
                 Text = "Base SN",
-                BackgroundColor = Color.LightBlue,
+                BackgroundColor = Color.White,
             };
 
             Button BaseQR = new Button
@@ -29,7 +29,7 @@ namespace TurfTankRegistrationApplication.Pages
                 WidthRequest = 150,
                 CornerRadius = 25,
                 Text = "Base QR",
-                BackgroundColor = Color.White,
+                BackgroundColor = Color.LightBlue,
             };
 
             Label RegisterBase = new Label
