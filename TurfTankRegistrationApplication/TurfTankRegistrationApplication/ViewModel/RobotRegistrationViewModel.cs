@@ -33,7 +33,10 @@ namespace TurfTankRegistrationApplication.ViewModel
         public string TabletSN { get; set; } 
         public string RoverSIM { get; set; } 
         public string BaseSIM { get; set; } 
-        public string TabletSIM { get; set; } 
+        public string TabletSIM { get; set; }
+
+        public bool ControllerSSIDVisible { get; set; } = false;
+        public bool ControllerPASSWORDVisible { get; set; } = false;
 
         public Command ChangeChassisSN { get; }
         public Command ChangeControllerSN { get; }
@@ -190,25 +193,28 @@ namespace TurfTankRegistrationApplication.ViewModel
                 if (robotItem.Controller != null)
                 {
                     await Application.Current.MainPage.DisplayAlert("Success!", "Controller is successfully scanned", "Ok");
-                    ControllerSN = robotItem.Controller.SerialNumber;
-                    ControllerSSID = "SSID: " + robotItem.Controller.ActiveSSID;
-                    ControllerPASSWORD = "Password: " + robotItem.Controller.ActivePassword;
-                    OnPropertyChanged(nameof(ControllerSN));
-                    OnPropertyChanged(nameof(ControllerSSID));
-                    OnPropertyChanged(nameof(ControllerPASSWORD));
+
+                    ControllerPASSWORDVisible = true;
+                    ControllerSSIDVisible = true;
+                    OnPropertyChanged(nameof(ControllerPASSWORDVisible));
+                    OnPropertyChanged(nameof(ControllerSSIDVisible));
+
+                    if (string.IsNullOrEmpty(robotItem.Controller.ID))
+                    {
+                        ControllerSN = "Serial: " + result.ID;
+                        ControllerSSID = "SSID: " + robotItem.Controller.ActiveSSID;
+                        ControllerPASSWORD = "Password: " + robotItem.Controller.ActivePassword;
+                        OnPropertyChanged(nameof(ControllerSN));
+                        OnPropertyChanged(nameof(ControllerSSID));
+                        OnPropertyChanged(nameof(ControllerPASSWORD));
+                    }
+                    else
+                    {
+                        await Application.Current.MainPage.DisplayAlert("OBS!", "Controller is already scanned", "Ok");
+                    }
+
                 }
                 
-            }
-
-            if (string.IsNullOrEmpty(robotItem.Controller.ID))
-            {
-                robotItem.Controller.ID = result.ID;
-                ControllerSN = $"ID:\n " + robotItem.Controller.ID;
-                OnPropertyChanged(nameof(ControllerSN));
-            }
-            else
-            {
-                await Application.Current.MainPage.DisplayAlert("OBS!", "Controller is already scanned", "Ok");
             }
         }
 
@@ -223,8 +229,8 @@ namespace TurfTankRegistrationApplication.ViewModel
             if (string.IsNullOrEmpty(robotItem.RoverGPS.Simcard.ID))
             {
                 robotItem.RoverGPS.Simcard.ID = result.ID;
-                await Application.Current.MainPage.DisplayAlert("Success!", "Scanned the Rover QR code! " + result.ID, "Ok");
-                RoverSIM = "Rover QR: " + robotItem.RoverGPS.Simcard.ID;
+                await Application.Current.MainPage.DisplayAlert("Success!", "Fetched the Rover Simcard " + result.ID, "Ok");
+                RoverSIM = "Rover Simcard: " + robotItem.RoverGPS.Simcard.ID;
                 OnPropertyChanged(nameof(RoverSIM));
             }
             else
@@ -247,8 +253,8 @@ namespace TurfTankRegistrationApplication.ViewModel
                     GPS response = await GPS.API.GetById(result.ID.Trim());
                     if (response != null)
                     {
-                        await Application.Current.MainPage.DisplayAlert("Success!", "Scanned the Base QR code! " + response.ID, "Ok");
-                        BaseSIM = "Base Simcard ID: " + response.ID;
+                        await Application.Current.MainPage.DisplayAlert("Success!", "Fetched the Base Simcard " + response.ID, "Ok");
+                        BaseSIM = "Base Simcard: " + response.ID;
                         OnPropertyChanged(nameof(BaseSIM));
 
                     }
@@ -271,7 +277,7 @@ namespace TurfTankRegistrationApplication.ViewModel
         public async void RegistrateTablet()
         {
             await Application.Current.MainPage.DisplayAlert("Success!", "Scanned the Tablet QR code!", "Ok");
-            TabletSN = "Registered";
+            TabletSN = "Tablet ID: 123456";
             OnPropertyChanged(nameof(TabletSN));
         }
 

@@ -72,7 +72,9 @@ namespace TurfTankRegistrationApplication.Pages
             ChassisSN.SetBinding(Label.TextProperty, new Binding("ChassisSN"));
             ControllerSN.SetBinding(Label.TextProperty, new Binding("ControllerSN"));
             ControllerSSID.SetBinding(Label.TextProperty, new Binding("ControllerSSID"));
+            ControllerSSID.SetBinding(Label.IsVisibleProperty, new Binding("ControllerSSIDVisible"));
             ControllerPASSWORD.SetBinding(Label.TextProperty, new Binding("ControllerPASSWORD"));
+            ControllerPASSWORD.SetBinding(Label.IsVisibleProperty, new Binding("ControllerPASSWORDVisible"));
             RoverSN.SetBinding(Label.TextProperty, new Binding("RoverSN"));
             BaseSN.SetBinding(Label.TextProperty, new Binding("BaseSN"));
             RoverSIM.SetBinding(Label.TextProperty, new Binding("RoverSIM"));

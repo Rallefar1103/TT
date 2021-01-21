@@ -40,7 +40,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             ChangeRoverSimcard = new Command(() => GetRoverSimcard("rover"));
             ChangeRoverSN = new Command(() =>  NavigateToRoverSN());
             RoverQRCallback = new Action<object, string>(ScanCallback);
-            MessagingCenter.Subscribe<ScanPage, string>(this, "Result", RoverQRCallback);
+            
 
         }
 
@@ -64,6 +64,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public void GetRoverSimcard(string component)
         {
+            MessagingCenter.Subscribe<ScanPage, string>(this, "Result", RoverQRCallback);
             ScanPage scanPage = new ScanPage(returntypeKey: "Result");
             scanPage.vm.Title = "Scanning " + component;
             scanPage.QRMustContain = component;

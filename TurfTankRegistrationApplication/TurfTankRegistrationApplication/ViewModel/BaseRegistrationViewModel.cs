@@ -28,7 +28,7 @@ namespace TurfTankRegistrationApplication.ViewModel
             BaseStation.ofType = GPSType.Base;
             ChangeBaseSimcard = new Command(() => NavigateToScanPage("basestation"));
             ChangeBaseSN = new Command(async () => await GetBaseSerialNumber());
-            MessagingCenter.Subscribe<ScanPage, string>(this, "Result", BaseQRCallback);
+            
         }
 
         private void ScanCallback(object sender, string data)
@@ -43,6 +43,7 @@ namespace TurfTankRegistrationApplication.ViewModel
 
         public void NavigateToScanPage(string component)
         {
+            MessagingCenter.Subscribe<ScanPage, string>(this, "Result", BaseQRCallback);
             ScanPage scanPage = new ScanPage(returntypeKey:"Result");
             scanPage.vm.Title = "Scanning " + component;
             scanPage.QRMustContain = component;
